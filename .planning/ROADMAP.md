@@ -34,11 +34,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Opening a PR triggers a GitHub Actions workflow that runs lint, typecheck, knip, test, and build -- the PR shows pass/fail status and a Cloudflare preview deployment URL for each app
   5. Merging a PR to main triggers a GitHub Actions workflow that runs lint, typecheck, knip, test, and build, then deploys all 3 apps to Cloudflare production via `wrangler deploy`
   6. CLAUDE.md exists at the repo root with project conventions that guide Claude during development
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md — Monorepo workspace structure, TypeScript config, code quality tools (Biome, Knip, Sherif), Lefthook pre-push hooks, and CLAUDE.md
+- [ ] 01-02-PLAN.md — GitHub Actions CI/CD: PR checks with preview deploys, PR cleanup, production deploy on merge
 
 ### Phase 2: Database and Data Migration
 **Goal**: D1 database is ready with a normalized schema and all ~1000 historical events migrated from DynamoDB without data loss
