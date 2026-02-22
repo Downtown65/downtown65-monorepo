@@ -1,0 +1,134 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  quality:
+    name: Quality Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint and format check
+        run: pnpm biome check .
+
+      - name: Typecheck
+        run: pnpm tsc --build
+
+      - name: Dead code detection
+        run: pnpm knip
+
+      - name: Dependency consistency
+        run: pnpm dlx sherif@latest
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build all apps
+        run: pnpm -r run build
+
+  preview-deploy:
+    name: Preview Deploy
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PR_NUM: ${{ github.event.pull_request.number }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Create per-PR D1 database
+        run: |
+          DB_NAME="dt65-pr-${PR_NUM}"
+          # Create DB (idempotent -- || true handles "already exists" error)
+          CREATE_OUTPUT=$(npx wrangler d1 create "$DB_NAME" 2>&1 || true)
+          # Extract DB ID: first try from create output, then fall back to d1 info
+          DB_ID=$(echo "$CREATE_OUTPUT" | grep -oP '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1)
+          if [ -z "$DB_ID" ] || [ "$DB_ID" = "null" ]; then
+            DB_ID=$(npx wrangler d1 info "$DB_NAME" --json | jq -r '.uuid')
+          fi
+          echo "D1_DB_ID=$DB_ID" >> $GITHUB_ENV
+          echo "Created/found D1 database: $DB_NAME ($DB_ID)"
+
+      - name: Deploy API preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: apps/api
+          command: deploy --name dt65-api-pr-${{ env.PR_NUM }} --d1 DB=${{ env.D1_DB_ID }}
+
+      - name: Deploy Events preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: apps/events
+          command: deploy --name dt65-events-pr-${{ env.PR_NUM }}
+
+      - name: Deploy WWW preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: apps/www
+          command: deploy --name dt65-www-pr-${{ env.PR_NUM }}
+
+      - name: Comment preview URLs on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNum = context.payload.pull_request.number;
+            const marker = '<!-- dt65-preview-urls -->';
+            const body = [
+              marker,
+              '### Preview Deployments',
+              '',
+              `- **API:** https://dt65-api-pr-${prNum}.workers.dev`,
+              `- **Events:** https://dt65-events-pr-${prNum}.workers.dev`,
+              `- **WWW:** https://dt65-www-pr-${prNum}.workers.dev`,
+              '',
+              `_Updated: ${new Date().toISOString()}_`,
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNum,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNum,
+                body,
+              });
+            }
