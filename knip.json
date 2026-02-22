@@ -1,0 +1,26 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "exclude": ["catalog"],
+  "workspaces": {
+    ".": {
+      "ignoreDependencies": ["rimraf", "tsx"],
+      "entry": [],
+      "project": []
+    },
+    "apps/api": {
+      "entry": "src/index.ts",
+      "ignoreDependencies": ["@cloudflare/vitest-pool-workers", "@vitest/coverage-v8"]
+    },
+    "apps/events": {
+      "entry": "src/index.ts",
+      "ignoreDependencies": ["@dt65/shared", "@vitest/coverage-v8"]
+    },
+    "apps/www": {
+      "entry": "src/index.ts",
+      "ignoreDependencies": ["@dt65/shared", "@vitest/coverage-v8"]
+    },
+    "packages/shared": {
+      "includeEntryExports": true
+    }
+  }
+}

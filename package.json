@@ -12,7 +12,12 @@
     "clean": "pnpm -r run clean"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "lefthook", "sharp", "workerd"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lefthook",
+      "sharp",
+      "workerd"
+    ]
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

@@ -1,0 +1,11 @@
+pre-push:
+  parallel: true
+  jobs:
+    - name: lint
+      run: pnpm biome check .
+
+    - name: typecheck
+      run: pnpm tsc --build
+
+    - name: knip
+      run: pnpm knip
