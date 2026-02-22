@@ -37,7 +37,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Monorepo workspace structure, TypeScript config, code quality tools (Biome, Knip, Sherif), Lefthook pre-push hooks, and CLAUDE.md
+- [x] 01-01-PLAN.md — Monorepo workspace structure, TypeScript config, code quality tools (Biome, Knip, Sherif), Lefthook pre-push hooks, and CLAUDE.md
 - [ ] 01-02-PLAN.md — GitHub Actions CI/CD: PR checks with preview deploys, PR cleanup, production deploy on merge
 
 ### Phase 2: Database and Data Migration
@@ -126,7 +126,7 @@ Note: Phase 5 depends on Phase 3 (not Phase 4) and can be parallelized with Phas
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Monorepo and Tooling | 0/2 | Not started | - |
+| 1. Monorepo and Tooling | 1/2 | In Progress | - |
 | 2. Database and Data Migration | 0/1 | Not started | - |
 | 3. API | 0/3 | Not started | - |
 | 4. Events Application | 0/3 | Not started | - |
