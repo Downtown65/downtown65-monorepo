@@ -1,0 +1,26 @@
+{
+  "name": "@dt65/root",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.29.2",
+  "scripts": {
+    "build": "pnpm -r run build",
+    "check": "biome check . && pnpm knip && pnpm dlx sherif@latest",
+    "lint": "biome check --write .",
+    "typecheck": "tsc --build",
+    "test": "pnpm -r run test",
+    "clean": "pnpm -r run clean"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "lefthook"]
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "knip": "catalog:",
+    "lefthook": "latest",
+    "rimraf": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}
