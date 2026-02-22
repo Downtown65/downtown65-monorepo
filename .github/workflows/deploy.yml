@@ -1,0 +1,78 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    name: Quality Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint and format check
+        run: pnpm biome check .
+
+      - name: Typecheck
+        run: pnpm tsc --build
+
+      - name: Dead code detection
+        run: pnpm knip
+
+      - name: Dependency consistency
+        run: pnpm dlx sherif@latest
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build all apps
+        run: pnpm -r run build
+
+  deploy:
+    name: Deploy All Apps
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Deploy API
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: apps/api
+          command: deploy
+
+      - name: Deploy Events
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: apps/events
+          command: deploy
+
+      - name: Deploy WWW
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: apps/www
+          command: deploy
