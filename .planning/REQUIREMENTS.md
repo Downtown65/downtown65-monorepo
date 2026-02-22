@@ -75,6 +75,12 @@ Deferred to future release. Tracked but not in current roadmap.
 - **EVNT-V2-01**: Event type filtering on listing page
 - **EVNT-V2-02**: Race event visual indicator/badge
 
+### Admin Panel
+
+- **ADMN-V2-01**: Admin can view and manage member accounts (edit, deactivate)
+- **ADMN-V2-02**: Admin can edit or delete any event (not just own)
+- **ADMN-V2-03**: Admin can track yearly membership fee payment status per member
+
 ## Out of Scope
 
 | Feature | Reason |
@@ -96,39 +102,39 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | — | Pending |
-| AUTH-02 | — | Pending |
-| AUTH-03 | — | Pending |
-| AUTH-04 | — | Pending |
-| AUTH-05 | — | Pending |
-| AUTH-06 | — | Pending |
-| EVNT-01 | — | Pending |
-| EVNT-02 | — | Pending |
-| EVNT-03 | — | Pending |
-| EVNT-04 | — | Pending |
-| EVNT-05 | — | Pending |
-| EVNT-06 | — | Pending |
-| EVNT-07 | — | Pending |
-| MAIL-01 | — | Pending |
-| MAIL-02 | — | Pending |
-| INFR-01 | — | Pending |
-| INFR-02 | — | Pending |
-| INFR-03 | — | Pending |
-| INFR-04 | — | Pending |
-| INFR-05 | — | Pending |
-| INFR-06 | — | Pending |
-| INFR-07 | — | Pending |
-| INFR-08 | — | Pending |
-| INFR-09 | — | Pending |
-| DATA-01 | — | Pending |
-| DATA-02 | — | Pending |
-| SITE-01 | — | Pending |
+| AUTH-01 | Phase 4 | Pending |
+| AUTH-02 | Phase 4 | Pending |
+| AUTH-03 | Phase 4 | Pending |
+| AUTH-04 | Phase 4 | Pending |
+| AUTH-05 | Phase 4 | Pending |
+| AUTH-06 | Phase 4 | Pending |
+| EVNT-01 | Phase 3 | Pending |
+| EVNT-02 | Phase 3 | Pending |
+| EVNT-03 | Phase 3 | Pending |
+| EVNT-04 | Phase 3 | Pending |
+| EVNT-05 | Phase 3 | Pending |
+| EVNT-06 | Phase 3 | Pending |
+| EVNT-07 | Phase 3 | Pending |
+| MAIL-01 | Phase 5 | Pending |
+| MAIL-02 | Phase 5 | Pending |
+| INFR-01 | Phase 1 | Pending |
+| INFR-02 | Phase 1 | Pending |
+| INFR-03 | Phase 1 | Pending |
+| INFR-04 | Phase 1 | Pending |
+| INFR-05 | Phase 3 | Pending |
+| INFR-06 | Phase 1 | Pending |
+| INFR-07 | Phase 3 | Pending |
+| INFR-08 | Phase 4 | Pending |
+| INFR-09 | Phase 4 | Pending |
+| DATA-01 | Phase 2 | Pending |
+| DATA-02 | Phase 2 | Pending |
+| SITE-01 | Phase 6 | Pending |
 
 **Coverage:**
 - v1 requirements: 27 total
-- Mapped to phases: 0
-- Unmapped: 27
+- Mapped to phases: 27
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-22*
-*Last updated: 2026-02-22 after initial definition*
+*Last updated: 2026-02-22 after roadmap creation*

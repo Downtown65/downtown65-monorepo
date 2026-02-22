@@ -73,6 +73,12 @@ Members can create sporting events and other members can join them — this is t
 | Mantine for events app | Component library for consistent UI, already chosen | — Pending |
 | Lefthook over Husky | Preferred git hook tool | — Pending |
 | AWS SES for email | Cost-effective, already working — only AWS component retained | — Pending |
+| Trunk-based dev + auto-deploy | Feature/fix branches → PR → merge to main → deploy all apps | — Pending |
+| No staging environment | Comprehensive CI + Cloudflare instant rollback sufficient for ~100 members | — Pending |
+| File-based routing (RR7) | Convention over configuration for events app routes | — Pending |
+| Auth0 Lock for login/reset | Built-in UI for login and forgot-password flows | — Pending |
+| registerSecret signup guard | Simple shared secret to keep registration closed | — Pending |
+| downtown65.site for dev | Switch to downtown65.com after v1 launch | — Pending |
 
 ---
-*Last updated: 2026-02-22 after initialization*
+*Last updated: 2026-02-22 after roadmap creation*
