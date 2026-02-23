@@ -18,7 +18,7 @@ packages/shared (@dt65/shared) Shared types, utilities, constants
 - **Language:** TypeScript 5.9 (strict mode)
 - **Linting/formatting:** Biome 2.x (strict, 2-space indent, semicolons, single quotes)
 - **Dead code detection:** Knip (strict, zero unused tolerance)
-- **Dependency consistency:** Sherif (run via `pnpm dlx sherif@latest`)
+- **Dependency consistency:** Sherif (pinned in catalog, run via `pnpm sherif`)
 - **Git hooks:** Lefthook (pre-push: lint, typecheck, knip)
 - **Testing:** Vitest + @cloudflare/vitest-pool-workers for integration tests
 - **CI/CD:** GitHub Actions -- PR checks + preview deploy, auto-deploy on merge to main
@@ -28,11 +28,20 @@ packages/shared (@dt65/shared) Shared types, utilities, constants
 ```bash
 pnpm install              # Install all workspace dependencies
 pnpm build                # Build all apps (wrangler dry-run)
-pnpm check                # Lint + knip + sherif (full quality check)
-pnpm lint                 # Biome lint with auto-fix
+pnpm check                # ci:lint + knip + sherif (full quality check)
+pnpm lint                 # Biome lint (check only, all workspaces)
+pnpm format               # Biome check with auto-fix (all workspaces)
+pnpm ci:lint              # Biome CI mode (all workspaces)
 pnpm typecheck            # TypeScript build mode (all workspaces)
 pnpm test                 # Run all tests across workspaces
 pnpm clean                # Remove dist/ in all workspaces
+```
+
+Per-workspace scripts (available in each app/package):
+```bash
+pnpm run lint             # biome lint (check only)
+pnpm run format           # biome check --write (auto-fix)
+pnpm run ci:lint          # biome ci (CI-friendly output)
 ```
 
 Per-app dev workflow:
@@ -84,7 +93,7 @@ pnpm --filter @dt65/www dev       # Start www dev server
 ## Pre-push Hooks
 
 Lefthook runs these checks on `git push` (parallel):
-1. `pnpm biome check .` -- lint and format check (no auto-fix)
+1. `pnpm ci:lint` -- Biome CI check (all workspaces)
 2. `pnpm tsc --build` -- typecheck all workspaces
 3. `pnpm knip` -- dead code detection
 

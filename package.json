@@ -5,7 +5,7 @@
   "packageManager": "pnpm@10.29.2",
   "scripts": {
     "build": "pnpm -r run build",
-    "check": "pnpm -r run ci:lint && pnpm knip && pnpm dlx sherif@latest",
+    "check": "pnpm -r run ci:lint && pnpm knip && sherif",
     "lint": "pnpm -r run lint",
     "format": "pnpm -r run format",
     "ci:lint": "pnpm -r run ci:lint",
@@ -27,6 +27,7 @@
     "knip": "catalog:",
     "lefthook": "latest",
     "rimraf": "catalog:",
+    "sherif": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"
   }

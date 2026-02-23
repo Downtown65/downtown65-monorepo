@@ -1,0 +1,31 @@
+name: Quality Checks
+description: Run all quality checks (lint, typecheck, knip, sherif, test, build)
+
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/setup
+
+    - name: Lint and format check
+      run: pnpm ci:lint
+      shell: bash
+
+    - name: Typecheck
+      run: pnpm typecheck
+      shell: bash
+
+    - name: Dead code detection
+      run: pnpm knip
+      shell: bash
+
+    - name: Dependency consistency
+      run: pnpm sherif
+      shell: bash
+
+    - name: Run tests
+      run: pnpm test
+      shell: bash
+
+    - name: Build all apps
+      run: pnpm build
+      shell: bash

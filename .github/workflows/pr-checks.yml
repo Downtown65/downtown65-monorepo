@@ -13,32 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - run: pnpm install --frozen-lockfile
-
-      - name: Lint and format check
-        run: pnpm biome check .
-
-      - name: Typecheck
-        run: pnpm tsc --build
-
-      - name: Dead code detection
-        run: pnpm knip
-
-      - name: Dependency consistency
-        run: pnpm dlx sherif@latest
-
-      - name: Run tests
-        run: pnpm test
-
-      - name: Build all apps
-        run: pnpm -r run build
+      - uses: ./.github/actions/quality-checks
 
   preview-deploy:
     name: Preview Deploy
@@ -52,14 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup
 
       - name: Create per-PR D1 database
         run: |
