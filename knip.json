@@ -4,6 +4,7 @@
   "workspaces": {
     ".": {
       "ignoreDependencies": ["rimraf", "tsx"],
+      "ignoreBinaries": ["wrangler"],
       "entry": [],
       "project": []
     },
