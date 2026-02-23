@@ -5,8 +5,10 @@
   "packageManager": "pnpm@10.29.2",
   "scripts": {
     "build": "pnpm -r run build",
-    "check": "biome check . && pnpm knip && pnpm dlx sherif@latest",
-    "lint": "biome check --write .",
+    "check": "pnpm -r run ci:lint && pnpm knip && pnpm dlx sherif@latest",
+    "lint": "pnpm -r run lint",
+    "format": "pnpm -r run format",
+    "ci:lint": "pnpm -r run ci:lint",
     "typecheck": "tsc --build",
     "test": "pnpm -r run test",
     "clean": "pnpm -r run clean"

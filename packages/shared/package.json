@@ -13,6 +13,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
+    "lint": "biome lint",
+    "format": "biome check --write",
+    "ci:lint": "biome ci",
     "clean": "rimraf dist"
   },
   "devDependencies": {
