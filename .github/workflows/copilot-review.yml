@@ -1,0 +1,13 @@
+name: Copilot Review
+
+on:
+  pull_request:
+
+jobs:
+  copilot-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: gh pr review ${{ github.event.pull_request.number }} --request-review "copilot"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
