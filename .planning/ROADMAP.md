@@ -14,7 +14,7 @@ This roadmap delivers the DT65 sports club ecosystem by building in strict depen
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Monorepo and Tooling** - TypeScript monorepo with pnpm workspaces, code quality tools, CI/CD pipeline with PR preview deploys and auto-deploy on merge, and development conventions
+- [x] **Phase 1: Monorepo and Tooling** - TypeScript monorepo with pnpm workspaces, code quality tools, CI/CD pipeline with PR preview deploys and auto-deploy on merge, and development conventions
 - [ ] **Phase 2: Database and Data Migration** - D1 schema design and migration of ~1000 existing events from DynamoDB
 - [ ] **Phase 3: API** - Hono API on Cloudflare Workers with Auth0 JWT validation, event CRUD, participation, and test infrastructure
 - [ ] **Phase 4: Events Application** - React Router 7 PWA with Auth0 Lock login, event management UI, and mobile-responsive Mantine layout
@@ -38,7 +38,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md — Monorepo workspace structure, TypeScript config, code quality tools (Biome, Knip, Sherif), Lefthook pre-push hooks, and CLAUDE.md
-- [ ] 01-02-PLAN.md — GitHub Actions CI/CD: PR checks with preview deploys, PR cleanup, production deploy on merge
+- [x] 01-02-PLAN.md — GitHub Actions CI/CD: PR checks with preview deploys, PR cleanup, production deploy on merge
 
 ### Phase 2: Database and Data Migration
 **Goal**: D1 database is ready with a normalized schema and all ~1000 historical events migrated from DynamoDB without data loss
@@ -126,7 +126,7 @@ Note: Phase 5 depends on Phase 3 (not Phase 4) and can be parallelized with Phas
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Monorepo and Tooling | 1/2 | In Progress | - |
+| 1. Monorepo and Tooling | 2/2 | Complete | 2026-02-24 |
 | 2. Database and Data Migration | 0/1 | Not started | - |
 | 3. API | 0/3 | Not started | - |
 | 4. Events Application | 0/3 | Not started | - |

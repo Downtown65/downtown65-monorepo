@@ -36,7 +36,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **INFR-01**: TypeScript monorepo with pnpm workspaces
 - [x] **INFR-02**: Biome linting/formatting, Knip dead code detection, Sherif dependency consistency
 - [x] **INFR-03**: Lefthook pre-push hooks (lint, typecheck, knip)
-- [ ] **INFR-04**: GitHub Actions CI pipeline
+- [x] **INFR-04**: GitHub Actions CI pipeline
 - [ ] **INFR-05**: Vitest unit/integration tests, Playwright E2E tests
 - [x] **INFR-06**: CLAUDE.md project instructions
 - [ ] **INFR-07**: API on Cloudflare Workers (Hono + Zod OpenAPI + Drizzle D1)
@@ -120,7 +120,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFR-01 | Phase 1 | Complete |
 | INFR-02 | Phase 1 | Complete |
 | INFR-03 | Phase 1 | Complete |
-| INFR-04 | Phase 1 | Pending |
+| INFR-04 | Phase 1 | Complete |
 | INFR-05 | Phase 3 | Pending |
 | INFR-06 | Phase 1 | Complete |
 | INFR-07 | Phase 3 | Pending |
