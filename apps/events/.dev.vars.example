@@ -1,0 +1,2 @@
+# Cloudflare Workers local dev environment variables
+# Copy to .dev.vars and fill in values: cp .dev.vars.example .dev.vars

@@ -26,6 +26,7 @@ packages/shared (@dt65/shared) Shared types, utilities, constants
 ## Commands
 
 ```bash
+pnpm dev                  # Start all apps in parallel (wrangler dev)
 pnpm install              # Install all workspace dependencies
 pnpm build                # Build all apps (wrangler dry-run)
 pnpm check                # ci:lint + knip + sherif (full quality check)
@@ -50,6 +51,14 @@ pnpm --filter @dt65/api dev       # Start API dev server
 pnpm --filter @dt65/events dev    # Start events dev server
 pnpm --filter @dt65/www dev       # Start www dev server
 ```
+
+## Local Development
+
+1. `pnpm install`
+2. Copy `.dev.vars.example` to `.dev.vars` in each app: `cp apps/api/.dev.vars.example apps/api/.dev.vars`
+3. `pnpm dev` — starts all 3 Workers locally via `wrangler dev`
+
+Each app runs on a different port (wrangler auto-assigns). Local D1 databases are created automatically in `.wrangler/` (gitignored).
 
 ## Coding Conventions
 
