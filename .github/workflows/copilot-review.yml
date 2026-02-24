@@ -5,7 +5,7 @@ on:
 
 jobs:
   copilot-review:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - run: gh pr review ${{ github.event.pull_request.number }} --request-review "copilot"
