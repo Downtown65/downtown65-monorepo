@@ -28,19 +28,28 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Deploy API
+        id: deploy-api
         uses: cloudflare/wrangler-action@v3
         with:
           workingDirectory: apps/api
           command: deploy
 
       - name: Deploy Events
+        id: deploy-events
         uses: cloudflare/wrangler-action@v3
         with:
           workingDirectory: apps/events
           command: deploy
 
       - name: Deploy WWW
+        id: deploy-www
         uses: cloudflare/wrangler-action@v3
         with:
           workingDirectory: apps/www
           command: deploy
+
+      - name: Summary
+        run: |
+          echo "**API:** ${{ steps.deploy-api.outputs.deployment-url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Events:** ${{ steps.deploy-events.outputs.deployment-url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**WWW:** ${{ steps.deploy-www.outputs.deployment-url }}" >> $GITHUB_STEP_SUMMARY
