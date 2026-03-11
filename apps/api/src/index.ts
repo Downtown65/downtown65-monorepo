@@ -9,6 +9,7 @@ app.get('/', (c) => {
     name: DT65_APP_NAME,
     status: 'ok',
     env: ENV.TEST_VALUE,
+    xApiKey: ENV.X_API_KEY.length > 0 ? 'is set' : 'not set',
   });
 });
 
