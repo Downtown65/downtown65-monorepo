@@ -32,7 +32,8 @@ jobs:
 
       - name: Load environment variables
         uses: dmno-dev/varlock@v1
-        working-directory: apps/api
+        with:
+          working-directory: apps/api
 
       - name: Deploy API
         id: deploy-api
