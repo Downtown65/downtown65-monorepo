@@ -23,7 +23,7 @@ jobs:
     env:
       PR_NUM: ${{ github.event.pull_request.number }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -46,19 +46,25 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           workingDirectory: apps/api
-          command: deploy --name dt65-api-pr-${{ env.PR_NUM }} --d1 DB=${{ env.D1_DB_ID }}
+          command: deploy --name downtown65-api-pr-${{ env.PR_NUM }} --d1 DB=${{ env.D1_DB_ID }}
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy Events preview
         uses: cloudflare/wrangler-action@v3
         with:
           workingDirectory: apps/events
-          command: deploy --name dt65-events-pr-${{ env.PR_NUM }}
+          command: deploy --name downtown65-events-pr-${{ env.PR_NUM }}
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy WWW preview
         uses: cloudflare/wrangler-action@v3
         with:
           workingDirectory: apps/www
-          command: deploy --name dt65-www-pr-${{ env.PR_NUM }}
+          command: deploy --name downtown65-www-pr-${{ env.PR_NUM }}
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Comment preview URLs on PR
         uses: actions/github-script@v7
