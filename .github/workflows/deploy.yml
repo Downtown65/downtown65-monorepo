@@ -40,7 +40,7 @@ jobs:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: apps/api
-          preCommand: pnpm run build
+          preCommands: pnpm run build
           environment: production
 
       - name: Deploy Events

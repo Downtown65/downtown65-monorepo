@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "dt65-api",
+  "name": "downtown65-api",
   "main": "src/index.ts",
   "compatibility_date": "2026-02-01",
   "compatibility_flags": ["nodejs_compat_v2"],
@@ -9,7 +9,7 @@
   },
   "env": {
     "production": {
-      "name": "production",
+      "name": "downtown65-api-production",
       "workers_dev": true
     }
   }
