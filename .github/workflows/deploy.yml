@@ -37,8 +37,8 @@ jobs:
       - name: Deploy API
         id: deploy-api
         uses: cloudflare/wrangler-action@v3
-        environment: production
         with:
+          environment: production
           workingDirectory: apps/api
           command: deploy
 
