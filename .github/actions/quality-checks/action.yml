@@ -11,7 +11,9 @@ runs:
       shell: bash
 
     - name: Typecheck
-      run: pnpm typecheck
+      run: |
+        pnpm run --filters=apps/api typegen
+        pnpm typecheck
       shell: bash
 
     - name: Dead code detection
