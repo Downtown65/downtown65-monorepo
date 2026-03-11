@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "wrangler dev",
     "build": "wrangler deploy --dry-run",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",

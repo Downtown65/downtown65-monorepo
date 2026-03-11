@@ -4,13 +4,18 @@
   "workspaces": {
     ".": {
       "ignoreDependencies": ["rimraf", "tsx"],
-      "ignoreBinaries": ["wrangler"],
+      "ignoreBinaries": ["wrangler", "varlock"],
       "entry": [],
       "project": []
     },
     "apps/api": {
-      "entry": "src/index.ts",
-      "ignoreDependencies": ["@cloudflare/vitest-pool-workers", "@vitest/coverage-v8"]
+      "entry": ["src/index.ts", "src/varlock-noop-patches.ts", "vite.config.ts"],
+      "ignoreDependencies": [
+        "@cloudflare/vitest-pool-workers",
+        "@vitest/coverage-v8",
+        "@varlock/infisical-plugin"
+      ],
+      "vite": false
     },
     "apps/events": {
       "entry": "src/index.ts",
