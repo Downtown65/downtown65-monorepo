@@ -6,5 +6,11 @@
   "compatibility_flags": ["nodejs_compat_v2"],
   "observability": {
     "enabled": true
+  },
+  "env": {
+    "production": {
+      "name": "production",
+      "workers_dev": true
+    }
   }
 }

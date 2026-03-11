@@ -1,7 +1,15 @@
 import { DT65_APP_NAME } from '@dt65/shared';
+import { Hono } from 'hono';
+import { ENV } from 'varlock/env';
 
-export default {
-  async fetch(): Promise<Response> {
-    return new Response(`${DT65_APP_NAME} - api`);
-  },
-};
+const app = new Hono();
+
+app.get('/', (c) => {
+  return c.json({
+    name: DT65_APP_NAME,
+    status: 'ok',
+    env: ENV.TEST_VALUE,
+  });
+});
+
+export default app;
