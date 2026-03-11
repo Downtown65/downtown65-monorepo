@@ -27,6 +27,13 @@ jobs:
 
       - uses: ./.github/actions/setup
 
+      - name: Load Secrets
+        run: pnpm exec -- varlock load
+        env:
+          APP_ENV: production
+          INFISICAL_CLIENT_SECRET: ${{ secrets.INFISICAL_CLIENT_SECRET }}
+          INFISICAL_CLIENT_ID: ${{ vars.INFISICAL_CLIENT_ID }}
+
       - name: Deploy API
         id: deploy-api
         uses: cloudflare/wrangler-action@v3
