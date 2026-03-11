@@ -22,25 +22,25 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      INFISICAL_CLIENT_SECRET: ${{ secrets.INFISICAL_CLIENT_SECRET }}
+      INFISICAL_CLIENT_ID: ${{ vars.INFISICAL_CLIENT_ID }}
+      APP_ENV: production
     steps:
       - uses: actions/checkout@v4
 
       - uses: ./.github/actions/setup
 
-      - name: Load Secrets
-        run: pnpm exec -- varlock load
-        env:
-          APP_ENV: production
-          INFISICAL_CLIENT_SECRET: ${{ secrets.INFISICAL_CLIENT_SECRET }}
-          INFISICAL_CLIENT_ID: ${{ vars.INFISICAL_CLIENT_ID }}
+      - name: Load environment variables
+        uses: dmno-dev/varlock@v1
+        working-directory: apps/api
 
       - name: Deploy API
         id: deploy-api
         uses: cloudflare/wrangler-action@v3
         with:
-          environment: production
           workingDirectory: apps/api
-          command: deploy
+          preCommand: pnpm run build
+          environment: production
 
       - name: Deploy Events
         id: deploy-events
