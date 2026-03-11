@@ -37,6 +37,8 @@ jobs:
         id: deploy-api
         uses: cloudflare/wrangler-action@v3
         with:
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: apps/api
           preCommand: pnpm run build
           environment: production
