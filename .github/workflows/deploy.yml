@@ -31,9 +31,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Load environment variables
-        uses: dmno-dev/varlock-github-action@v1
-        with:
-          working-directory: apps/api
+        run: pnpm --filter @dt65/api exec varlock load
 
       - name: Deploy API
         id: deploy-api
