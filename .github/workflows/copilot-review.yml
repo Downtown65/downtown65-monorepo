@@ -3,11 +3,17 @@ name: Copilot Review
 on:
   pull_request:
 
+permissions:
+  pull-requests: write
+
 jobs:
   copilot-review:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
-      - run: gh pr review ${{ github.event.pull_request.number }} --request-review "copilot"
+      - name: Request Copilot review
+        run: |
+          gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers \
+            --method POST \
+            --field "reviewers[]=copilot-pull-request-reviewer"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
