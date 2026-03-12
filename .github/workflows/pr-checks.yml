@@ -53,6 +53,7 @@ jobs:
           cat > apps/api/wrangler.pr.jsonc <<EOF
           {
             "\$schema": "./node_modules/wrangler/config-schema.json",
+            "account_id": "${CLOUDFLARE_ACCOUNT_ID}",
             "name": "downtown65-api-pr-${PR_NUM}",
             "main": "src/index.ts",
             "compatibility_date": "2026-02-01",
