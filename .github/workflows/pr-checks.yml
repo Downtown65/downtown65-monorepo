@@ -48,12 +48,33 @@ jobs:
           echo "D1_DB_ID=$DB_ID" >> $GITHUB_ENV
           echo "Created/found D1 database: $DB_NAME ($DB_ID)"
 
+      - name: Generate PR wrangler config
+        run: |
+          cat > apps/api/wrangler.pr.jsonc <<EOF
+          {
+            "\$schema": "./node_modules/wrangler/config-schema.json",
+            "name": "downtown65-api-pr-${PR_NUM}",
+            "main": "src/index.ts",
+            "compatibility_date": "2026-02-01",
+            "compatibility_flags": ["nodejs_compat_v2"],
+            "observability": { "enabled": true },
+            "workers_dev": true,
+            "d1_databases": [
+              {
+                "binding": "DB",
+                "database_name": "dt65-pr-${PR_NUM}",
+                "database_id": "${D1_DB_ID}"
+              }
+            ]
+          }
+          EOF
+
       - name: Deploy API preview
         uses: cloudflare/wrangler-action@v3
         with:
           workingDirectory: apps/api
           preCommands: pnpm run build
-          command: deploy --name downtown65-api-pr-${{ env.PR_NUM }} --d1 DB=${{ env.D1_DB_ID }}
+          command: deploy --config wrangler.pr.jsonc
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
