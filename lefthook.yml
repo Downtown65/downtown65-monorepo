@@ -1,3 +1,9 @@
+pre-commit:
+  jobs:
+    - name: biome check
+      glob: "*.{ts,tsx,js,jsx,json,jsonc,css}"
+      run: pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files} && git add {staged_files}
+
 commit-msg:
   jobs:
     - name: commitlint
