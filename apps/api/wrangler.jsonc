@@ -1,5 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
+  "account_id": "f0d08be6b3920962ad06ae5e4a772f20",
   "name": "downtown65-api",
   "main": "src/index.ts",
   "compatibility_date": "2026-02-01",
