@@ -39,7 +39,7 @@ jobs:
 
       - name: Create per-PR D1 database
         run: |
-          DB_NAME="dt65-pr-${PR_NUM}"
+          DB_NAME="downtown65-pr-${PR_NUM}"
           # Create DB (idempotent -- || true handles "already exists" error)
           CREATE_OUTPUT=$(npx wrangler d1 create "$DB_NAME" 2>&1 || true)
           # Extract DB ID: first try from create output, then fall back to d1 info

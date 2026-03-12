@@ -21,14 +21,14 @@ jobs:
 
       - name: Delete preview Workers
         run: |
-          npx wrangler delete --name "dt65-api-pr-${PR_NUM}" --force 2>/dev/null || true
-          npx wrangler delete --name "dt65-events-pr-${PR_NUM}" --force 2>/dev/null || true
-          npx wrangler delete --name "dt65-www-pr-${PR_NUM}" --force 2>/dev/null || true
+          npx wrangler delete --name "downtown65-api-pr-${PR_NUM}" --force 2>/dev/null || true
+          npx wrangler delete --name "downtown65-events-pr-${PR_NUM}" --force 2>/dev/null || true
+          npx wrangler delete --name "downtown65-www-pr-${PR_NUM}" --force 2>/dev/null || true
           echo "Deleted preview Workers for PR #${PR_NUM}"
 
       - name: Delete per-PR D1 database
         run: |
-          DB_NAME="dt65-pr-${PR_NUM}"
+          DB_NAME="downtown65-pr-${PR_NUM}"
           # Use d1 info to check if DB exists, then delete by name
           DB_ID=$(npx wrangler d1 info "$DB_NAME" --json 2>/dev/null | jq -r '.uuid' 2>/dev/null)
           if [ -n "$DB_ID" ] && [ "$DB_ID" != "null" ]; then
