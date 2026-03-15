@@ -48,10 +48,10 @@ Plans:
   1. Static site is deployed to Cloudflare and accessible at the club's public URL
   2. Site displays club information pages built with Astro and Tailwind CSS
   3. Site links to the events application (link target will resolve once the events app is deployed in Phase 5)
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 02-01: TBD
+- [ ] 02-01-PLAN.md — Astro static landing page with Tailwind v4: setup, all sections (Hero, About, Membership, Board Members, Social Media, Footer), and visual design review
 
 ### Phase 3: Database and Data Migration
 **Goal**: D1 database is ready with a normalized schema and all ~1000 historical events migrated from DynamoDB without data loss
