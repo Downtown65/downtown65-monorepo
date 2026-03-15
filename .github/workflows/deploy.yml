@@ -59,6 +59,7 @@ jobs:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: apps/www
+          preCommands: pnpm run build
           command: deploy
 
       - name: Summary

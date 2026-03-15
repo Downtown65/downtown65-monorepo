@@ -24,8 +24,8 @@
       "ignoreDependencies": ["@dt65/shared", "@vitest/coverage-v8"]
     },
     "apps/www": {
-      "entry": "src/index.ts",
-      "ignoreDependencies": ["@dt65/shared", "@vitest/coverage-v8"]
+      "entry": ["src/pages/**/*.astro"],
+      "ignoreDependencies": ["@vitest/coverage-v8", "tailwindcss", "wrangler"]
     },
     "packages/shared": {
       "includeEntryExports": true

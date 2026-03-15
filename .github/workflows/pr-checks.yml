@@ -93,6 +93,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           workingDirectory: apps/www
+          preCommands: pnpm run build
           command: deploy --name downtown65-www-pr-${{ env.PR_NUM }}
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
