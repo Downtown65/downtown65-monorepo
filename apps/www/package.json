@@ -3,9 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
-    "build": "wrangler deploy --dry-run",
-    "typecheck": "tsc --noEmit",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
     "test": "vitest run --passWithNoTests",
     "lint": "biome lint",
     "format": "biome check --write",
@@ -13,9 +14,12 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@dt65/shared": "workspace:*"
+    "@tailwindcss/vite": "catalog:",
+    "astro": "catalog:",
+    "tailwindcss": "catalog:"
   },
   "devDependencies": {
+    "@astrojs/check": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",

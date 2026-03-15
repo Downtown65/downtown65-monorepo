@@ -1,9 +1,4 @@
 {
   "files": [],
-  "references": [
-    { "path": "apps/api" },
-    { "path": "apps/events" },
-    { "path": "apps/www" },
-    { "path": "packages/shared" }
-  ]
+  "references": [{ "path": "apps/api" }, { "path": "apps/events" }, { "path": "packages/shared" }]
 }

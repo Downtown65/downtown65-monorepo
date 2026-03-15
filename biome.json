@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
   "files": {
-    "includes": ["**", "!.claude", "!.agents", "!.planning"]
+    "includes": ["**", "!.claude", "!.agents", "!.planning", "!**/.astro"]
   },
   "formatter": {
     "enabled": true,
