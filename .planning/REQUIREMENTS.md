@@ -102,33 +102,33 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 4 | Pending |
-| AUTH-02 | Phase 4 | Pending |
-| AUTH-03 | Phase 4 | Pending |
-| AUTH-04 | Phase 4 | Pending |
-| AUTH-05 | Phase 4 | Pending |
-| AUTH-06 | Phase 4 | Pending |
-| EVNT-01 | Phase 3 | Pending |
-| EVNT-02 | Phase 3 | Pending |
-| EVNT-03 | Phase 3 | Pending |
-| EVNT-04 | Phase 3 | Pending |
-| EVNT-05 | Phase 3 | Pending |
-| EVNT-06 | Phase 3 | Pending |
-| EVNT-07 | Phase 3 | Pending |
-| MAIL-01 | Phase 5 | Pending |
-| MAIL-02 | Phase 5 | Pending |
+| AUTH-01 | Phase 5 | Pending |
+| AUTH-02 | Phase 5 | Pending |
+| AUTH-03 | Phase 5 | Pending |
+| AUTH-04 | Phase 5 | Pending |
+| AUTH-05 | Phase 5 | Pending |
+| AUTH-06 | Phase 5 | Pending |
+| EVNT-01 | Phase 4 | Pending |
+| EVNT-02 | Phase 4 | Pending |
+| EVNT-03 | Phase 4 | Pending |
+| EVNT-04 | Phase 4 | Pending |
+| EVNT-05 | Phase 4 | Pending |
+| EVNT-06 | Phase 4 | Pending |
+| EVNT-07 | Phase 4 | Pending |
+| MAIL-01 | Phase 6 | Pending |
+| MAIL-02 | Phase 6 | Pending |
 | INFR-01 | Phase 1 | Complete |
 | INFR-02 | Phase 1 | Complete |
 | INFR-03 | Phase 1 | Complete |
 | INFR-04 | Phase 1 | Complete |
-| INFR-05 | Phase 3 | Pending |
+| INFR-05 | Phase 4 | Pending |
 | INFR-06 | Phase 1 | Complete |
-| INFR-07 | Phase 3 | Pending |
-| INFR-08 | Phase 4 | Pending |
-| INFR-09 | Phase 4 | Pending |
-| DATA-01 | Phase 2 | Pending |
-| DATA-02 | Phase 2 | Pending |
-| SITE-01 | Phase 6 | Pending |
+| INFR-07 | Phase 4 | Pending |
+| INFR-08 | Phase 5 | Pending |
+| INFR-09 | Phase 5 | Pending |
+| DATA-01 | Phase 3 | Pending |
+| DATA-02 | Phase 3 | Pending |
+| SITE-01 | Phase 2 | Pending |
 
 **Coverage:**
 - v1 requirements: 27 total
@@ -137,4 +137,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-22*
-*Last updated: 2026-02-22 after roadmap creation*
+*Last updated: 2026-03-15 after phase reordering*
