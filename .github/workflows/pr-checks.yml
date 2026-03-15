@@ -109,7 +109,7 @@ jobs:
               '',
               `- **API:** downtown65-api-pr-${prNum}.dt65.workers.dev`,
               `- **Events:** downtown65-events-pr-${prNum}.dt65.workers.dev`,
-              `- **WWW:** downtown65-www-pr--${prNum}.dt65.workers.dev`,
+              `- **WWW:** downtown65-www-pr-${prNum}.dt65.workers.dev`,
               '',
               `_Updated: ${new Date().toISOString()}_`,
             ].join('\n');
