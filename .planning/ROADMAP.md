@@ -47,7 +47,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Static site is deployed to Cloudflare and accessible at the club's public URL
   2. Site displays club information pages built with Astro and Tailwind CSS
-  3. Site links to the events application (link target will resolve once the events app is deployed in Phase 5)
+  3. Events app link is deferred -- will be added in Phase 5 when the events app is deployed
 **Plans**: 1 plan
 
 Plans:
