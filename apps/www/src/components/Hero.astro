@@ -1,7 +1,24 @@
 ---
+const stickers = [
+  { src: '/images/stickers/skull.png', alt: 'DT65 skull', class: 'top-[8%] left-[5%] w-28 -rotate-12 sm:w-36 md:w-44' },
+  { src: '/images/stickers/dt65-front.png', alt: 'DT65 t-shirt front', class: 'top-[5%] right-[6%] w-24 rotate-6 sm:w-32 md:w-40' },
+  { src: '/images/stickers/dt65-sticker.png', alt: 'Downtown 65 logo', class: 'top-[45%] left-[2%] w-32 rotate-[-8deg] sm:w-40 md:left-[4%] md:w-48' },
+  { src: '/images/stickers/logo.png', alt: 'Downtown 65 oval logo', class: 'top-[50%] right-[3%] w-28 rotate-12 sm:w-36 md:right-[5%] md:w-44' },
+  { src: '/images/stickers/palkkapäivä.png', alt: 'Palkkapäivä skeleton', class: 'bottom-[8%] left-[8%] w-28 rotate-6 sm:w-36 md:w-44' },
+  { src: '/images/stickers/dt65-back.png', alt: 'DT65 t-shirt back', class: 'bottom-[6%] right-[8%] w-24 -rotate-6 sm:w-32 md:w-40' },
+];
 ---
 
 <section class="grid-background relative flex min-h-screen items-center justify-center overflow-hidden px-4">
+  {stickers.map((s) => (
+    <img
+      src={s.src}
+      alt={s.alt}
+      loading="lazy"
+      class={`pointer-events-none absolute hidden opacity-80 transition-opacity duration-500 md:block ${s.class}`}
+    />
+  ))}
+
   <div class="relative z-10 text-center">
     <h1
       class="font-display text-primary-pink text-2xl leading-relaxed tracking-wider sm:text-3xl md:text-4xl lg:text-5xl"
