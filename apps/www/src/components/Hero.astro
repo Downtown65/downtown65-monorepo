@@ -40,7 +40,8 @@ const stickers = [
     stickers.map((s) => (
       <img
         src={s.src}
-        alt={s.alt}
+        alt=""
+        aria-hidden="true"
         loading="lazy"
         class={`pointer-events-none absolute z-20 opacity-80 transition-opacity duration-500 ${s.class}`}
       />
