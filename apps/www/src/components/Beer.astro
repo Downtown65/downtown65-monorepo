@@ -1,0 +1,38 @@
+---
+const beers = [
+  {
+    name: 'IPA 65',
+    image: '/images/ipa-etiketti.jpg',
+    alt: 'IPA 65 beer label',
+  },
+  {
+    name: 'NEIPA 65',
+    image: '/images/nejpa-etiketti.jpg',
+    alt: 'NEIPA 65 beer label',
+  },
+];
+---
+
+<section class="bg-surface px-4 py-20 sm:py-28">
+  <div class="mx-auto max-w-4xl">
+    <h2 class="mb-4 text-center text-2xl font-bold text-primary-pink sm:text-3xl">
+      Seuran omat oluet
+    </h2>
+    <p class="mx-auto mb-12 max-w-xl text-center text-lg text-text-secondary">
+      Kunnon urheiluseuralla on omat oluet. Meilla niita on kaksi.
+    </p>
+    <div class="grid grid-cols-1 items-center gap-10 sm:grid-cols-2">
+      {beers.map((beer) => (
+        <div class="flex flex-col items-center">
+          <img
+            src={beer.image}
+            alt={beer.alt}
+            loading="lazy"
+            class="sticker w-56 sm:w-64 md:w-72"
+          />
+          <p class="mt-4 text-lg font-bold text-text-primary">{beer.name}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
