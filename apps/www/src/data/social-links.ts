@@ -1,8 +1,8 @@
 const socialLinks = {
-  facebook: 'https://facebook.com/downtown65',
-  instagram: 'https://instagram.com/downtown65',
+  facebook: 'https://www.facebook.com/downtown65endurance',
+  instagram: 'https://www.instagram.com/downtown65endurance',
 } as const;
 
-const email = 'hello@downtown65.com';
+const email = 'hello (a) downtown65.com';
 
 export { email, socialLinks };

@@ -9,7 +9,9 @@
   --color-text-primary: #ffffff;
   --color-text-secondary: #a0a0a0;
   --color-surface-card: #111111;
-  --font-display: "Press Start 2P", monospace;
+  --font-display: "Jura", monospace;
+  --hero-title-size: clamp(3rem, 8vw, 6rem);
+  --hero-subtitle-size: clamp(1.5rem, 4vw, 3rem);
 }
 
 html {

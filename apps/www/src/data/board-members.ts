@@ -7,43 +7,43 @@ interface BoardMember {
 
 const boardMembers: BoardMember[] = [
   {
-    nickname: 'Jasen 1',
+    nickname: 'Janne Nurmi',
     title: 'Puheenjohtaja',
     photoPath: '/images/board/placeholder.svg',
     rotation: '-2deg',
   },
   {
-    nickname: 'Jasen 2',
+    nickname: 'Jani Brandt',
     title: 'Varapuheenjohtaja',
     photoPath: '/images/board/placeholder.svg',
     rotation: '1.5deg',
   },
   {
-    nickname: 'Jasen 3',
+    nickname: 'Jani Markkanen',
     title: 'Sihteeri',
     photoPath: '/images/board/placeholder.svg',
     rotation: '-1deg',
   },
   {
-    nickname: 'Jasen 4',
+    nickname: 'Jani Brandt',
     title: 'Rahastonhoitaja',
     photoPath: '/images/board/placeholder.svg',
     rotation: '2deg',
   },
   {
-    nickname: 'Jasen 5',
+    nickname: 'Vepe Korhonen',
     title: 'Jasen',
     photoPath: '/images/board/placeholder.svg',
     rotation: '-1.5deg',
   },
   {
-    nickname: 'Jasen 6',
+    nickname: 'Niko Niklander',
     title: 'Jasen',
     photoPath: '/images/board/placeholder.svg',
     rotation: '1deg',
   },
   {
-    nickname: 'Jasen 7',
+    nickname: 'Juho Poutanen',
     title: 'Jasen',
     photoPath: '/images/board/placeholder.svg',
     rotation: '-2.5deg',
