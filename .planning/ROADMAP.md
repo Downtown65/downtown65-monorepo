@@ -128,7 +128,7 @@ Note: Phase 6 depends on Phase 4 (not Phase 5) and can be parallelized with Phas
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Monorepo and Tooling | 2/2 | Complete    | 2026-02-24 |
-| 2. Static Website | 0/1 | Not started | - |
+| 2. Static Website | 1/1 | Complete | 2026-03-17 |
 | 3. Database and Data Migration | 0/2 | Not started | - |
 | 4. API | 0/3 | Not started | - |
 | 5. Events Application | 0/3 | Not started | - |
