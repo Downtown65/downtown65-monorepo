@@ -14,11 +14,11 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@tailwindcss/vite": "catalog:",
     "astro": "catalog:",
     "tailwindcss": "catalog:"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "catalog:",
     "@astrojs/check": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "rimraf": "catalog:",
