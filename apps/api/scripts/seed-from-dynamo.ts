@@ -41,6 +41,51 @@ function boolToInt(value: unknown): number {
   return value === true || value === 'true' || value === 1 ? 1 : 0;
 }
 
+/**
+ * Recursively unmarshall DynamoDB typed JSON to plain values.
+ * Handles S, N, BOOL, NULL, M, L, and SS/NS/BS set types.
+ */
+function unmarshallValue(attr: unknown): unknown {
+  if (attr === null || attr === undefined || typeof attr !== 'object') {
+    return attr;
+  }
+
+  const obj = attr as Record<string, unknown>;
+
+  if ('S' in obj) return obj.S;
+  if ('N' in obj) return Number(obj.N);
+  if ('BOOL' in obj) return obj.BOOL;
+  if ('NULL' in obj) return null;
+  if ('L' in obj) return (obj.L as unknown[]).map(unmarshallValue);
+  if ('SS' in obj) return obj.SS;
+  if ('NS' in obj) return (obj.NS as string[]).map(Number);
+  if ('M' in obj) {
+    const map = obj.M as Record<string, unknown>;
+    const result: Record<string, unknown> = {};
+    for (const [key, val] of Object.entries(map)) {
+      result[key] = unmarshallValue(val);
+    }
+    return result;
+  }
+
+  // Plain object — recurse into each key
+  const result: Record<string, unknown> = {};
+  for (const [key, val] of Object.entries(obj)) {
+    result[key] = unmarshallValue(val);
+  }
+  return result;
+}
+
+function unmarshallItem(line: unknown): unknown {
+  const obj = line as Record<string, unknown>;
+  const item = (obj.Item ?? obj) as Record<string, unknown>;
+  const result: Record<string, unknown> = {};
+  for (const [key, val] of Object.entries(item)) {
+    result[key] = unmarshallValue(val);
+  }
+  return result;
+}
+
 function extractEventId(pk: string): string {
   const parts = pk.split('#');
   const id = parts[1];
@@ -122,9 +167,12 @@ const SEED_FILE = join(DATA_DIR, 'seed.sql');
 // 1. Read and validate source files
 // ---------------------------------------------------------------------------
 
-function readJsonFile<T>(filePath: string): T {
+function readJsonLinesFile(filePath: string): unknown[] {
   const content = readFileSync(filePath, 'utf-8');
-  return JSON.parse(content) as T;
+  return content
+    .split('\n')
+    .filter((line) => line.trim() !== '')
+    .map((line) => JSON.parse(line) as unknown);
 }
 
 function checkFilesExist(): void {
@@ -164,7 +212,7 @@ interface UserRecord {
 }
 
 function parseAuth0Users(): Map<string, UserRecord> {
-  const raw = readJsonFile<unknown[]>(join(DATA_DIR, AUTH0_FILE));
+  const raw = readJsonLinesFile(join(DATA_DIR, AUTH0_FILE));
   const users = new Map<string, UserRecord>();
 
   for (const item of raw) {
@@ -191,8 +239,9 @@ function parseDynamoEvents(): DynamoEvent[] {
   let totalCount = 0;
 
   for (const file of EVENT_FILES) {
-    const raw = readJsonFile<unknown[]>(join(DATA_DIR, file));
-    const eventItems = raw.filter(isDynamoEventItem);
+    const rawLines = readJsonLinesFile(join(DATA_DIR, file));
+    const unmarshalled = rawLines.map(unmarshallItem);
+    const eventItems = unmarshalled.filter(isDynamoEventItem);
 
     totalCount += eventItems.length;
 
