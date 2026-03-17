@@ -17,11 +17,13 @@
     "@dt65/shared": "workspace:*",
     "@varlock/infisical-plugin": "^0.0.3",
     "@varlock/vite-integration": "^0.2.3",
+    "drizzle-orm": "catalog:",
     "hono": "4.7.5",
     "varlock": "^0.4.0"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.27.0",
+    "drizzle-kit": "catalog:",
     "@cloudflare/vitest-pool-workers": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "rimraf": "catalog:",
