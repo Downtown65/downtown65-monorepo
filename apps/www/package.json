@@ -18,8 +18,8 @@
     "tailwindcss": "catalog:"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "catalog:",
     "@astrojs/check": "catalog:",
+    "@tailwindcss/vite": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",
