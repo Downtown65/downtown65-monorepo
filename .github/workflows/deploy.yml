@@ -55,6 +55,8 @@ jobs:
       - name: Deploy WWW
         id: deploy-www
         uses: cloudflare/wrangler-action@v3
+        env:
+          SITE_URL: https://downtown65-www-production.dt65.workers.dev
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}

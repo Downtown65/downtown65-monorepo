@@ -95,6 +95,8 @@ jobs:
 
       - name: Deploy WWW preview
         uses: cloudflare/wrangler-action@v3
+        env:
+          SITE_URL: https://downtown65-www-pr-${{ env.PR_NUM }}.dt65.workers.dev
         with:
           workingDirectory: apps/www
           preCommands: pnpm run build
