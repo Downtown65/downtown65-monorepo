@@ -80,12 +80,12 @@ Plans:
   5. A member can join and leave events via the API; the participant list for an event reflects current participants with their nicknames
   6. The API returns a chronological list of upcoming events
   7. Vitest test suite exists with unit and integration tests that run against the Workers runtime and pass in CI
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
-- [ ] 04-03: TBD
+- [ ] 04-01-PLAN.md — OpenAPIHono foundation: deps, schema migration (joined_at), middleware (api-key, JWT, errors), Scalar docs, shared EVENT_TYPES
+- [ ] 04-02-PLAN.md — Event CRUD endpoints: create, list, get detail (public), update (owner), delete (owner) with Zod OpenAPI schemas and Drizzle service
+- [ ] 04-03-PLAN.md — Participation endpoints (join/leave) and integration test suite for all API endpoints
 
 ### Phase 5: Events Application
 **Goal**: Members can use a mobile-responsive web application to log in, browse events, create/edit events, and join/leave events
