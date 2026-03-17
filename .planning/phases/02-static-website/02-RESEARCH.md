@@ -8,7 +8,7 @@
 
 Phase 2 converts the existing bare Cloudflare Worker placeholder at `apps/www` into a fully designed Astro static site. The site is a single landing page for Downtown 65 sports club, served via Cloudflare Workers static assets.
 
-Astro 6.0.4 (released March 10, 2026) is the current stable version and supports Node.js 22+ (matching the project). For a purely static site, **no Cloudflare adapter is needed** -- Astro builds to `dist/` and wrangler deploys static assets directly. Tailwind CSS v4 integrates via the `@tailwindcss/vite` plugin (not the deprecated `@astrojs/tailwind` integration).
+Astro 6.0.4 is the current stable version and supports Node.js 22+ (matching the project). For a purely static site, **no Cloudflare adapter is needed** -- Astro builds to `dist/` and wrangler deploys static assets directly. Tailwind CSS v4 integrates via the `@tailwindcss/vite` plugin (not the deprecated `@astrojs/tailwind` integration).
 
 The existing monorepo infrastructure (CI/CD, biome, knip, TypeScript project references) remains intact. The main work is: install Astro + Tailwind, create the landing page with the specified design system (dark grid background, sticker aesthetic, pink accent), configure wrangler for static asset serving, and update tooling configs.
 
