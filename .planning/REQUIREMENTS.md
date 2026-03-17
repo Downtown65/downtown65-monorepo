@@ -45,7 +45,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Data
 
-- [x] **DATA-01**: D1 database schema for events, participation, email preferences
+- [x] **DATA-01**: D1 database schema for events, participation, email preferences (email preferences deferred to Phase 6 — events + participation + users complete in Phase 3)
 - [x] **DATA-02**: ~1000 existing events migrated from DynamoDB to D1
 
 ### Website
@@ -126,7 +126,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFR-07 | Phase 4 | Pending |
 | INFR-08 | Phase 5 | Pending |
 | INFR-09 | Phase 5 | Pending |
-| DATA-01 | Phase 3 | Complete |
+| DATA-01 | Phase 3, 6 | Partial (email prefs Phase 6) |
 | DATA-02 | Phase 3 | Complete |
 | SITE-01 | Phase 2 | Pending |
 
