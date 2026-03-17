@@ -10,7 +10,7 @@
     },
     "apps/api": {
       "entry": ["src/index.ts", "vite.config.ts"],
-      "ignore": ["src/varlock-noop-patches.ts"],
+      "ignore": ["src/varlock-noop-patches.ts", "worker-configuration.d.ts"],
       "ignoreDependencies": [
         "@cloudflare/vitest-pool-workers",
         "@varlock/infisical-plugin",
