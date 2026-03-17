@@ -51,7 +51,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 02-01-PLAN.md — Astro static landing page with Tailwind v4: setup, all sections (Hero, About, Membership, Board Members, Social Media, Footer), and visual design review
+- [x] 02-01-PLAN.md — Astro static landing page with Tailwind v4: setup, all sections (Hero, About, Membership, Board Members, Social Media, Footer), and visual design review
 
 ### Phase 3: Database and Data Migration
 **Goal**: D1 database is ready with a normalized schema and all ~1000 historical events migrated from DynamoDB without data loss
@@ -62,10 +62,11 @@ Plans:
   2. All ~1000 existing events from DynamoDB are present in D1 with correct data (dates, types, titles, descriptions verified by spot-checking against source)
   3. A migration script exists that can be re-run against a fresh D1 database to reproduce the import from a DynamoDB export
   4. D1 backup procedure is documented and tested -- a backup can be created before any schema migration
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD
+- [ ] 03-01-PLAN.md — Drizzle ORM schema (users, events, users_to_events), D1 binding, migration generation and local apply
+- [ ] 03-02-PLAN.md — DynamoDB/Auth0 migration script, seed.sql generation, data validation
 
 ### Phase 4: API
 **Goal**: A deployed Hono API on Cloudflare Workers serves all event and participation endpoints with Auth0 JWT-protected access and automated tests
@@ -128,7 +129,7 @@ Note: Phase 6 depends on Phase 4 (not Phase 5) and can be parallelized with Phas
 |-------|----------------|--------|-----------|
 | 1. Monorepo and Tooling | 2/2 | Complete    | 2026-02-24 |
 | 2. Static Website | 0/1 | Not started | - |
-| 3. Database and Data Migration | 0/1 | Not started | - |
+| 3. Database and Data Migration | 0/2 | Not started | - |
 | 4. API | 0/3 | Not started | - |
 | 5. Events Application | 0/3 | Not started | - |
 | 6. Email Notifications | 0/1 | Not started | - |
