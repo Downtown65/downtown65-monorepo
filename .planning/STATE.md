@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** Members can create sporting events and other members can join them
-**Current focus:** Phase 3: Database and Data Migration -- Plan 01 complete, Plan 02 next
+**Current focus:** Phase 3 complete -- ready for Phase 4: API Development
 
 ## Current Position
 
 Phase: 3 of 6 (Database and Data Migration)
-Plan: 1 of 2 in current phase
-Status: In Progress
-Last activity: 2026-03-17 -- Completed 03-01-PLAN.md (D1 database schema setup)
+Plan: 2 of 2 in current phase (COMPLETE)
+Status: Phase Complete
+Last activity: 2026-03-17 -- Completed 03-02-PLAN.md (DynamoDB-to-D1 data migration)
 
-Progress: [███░░░░░░░] 25%
+Progress: [████░░░░░░] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 9 min
-- Total execution time: 0.5 hours
+- Total plans completed: 4
+- Average duration: 13 min
+- Total execution time: 0.8 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Monorepo and Tooling | 2/2 | 24 min | 12 min |
-| 3. Database and Data Migration | 1/2 | 4 min | 4 min |
+| 3. Database and Data Migration | 2/2 | 29 min | 15 min |
 
 **Recent Trend:**
-- Last 5 plans: 9m, 15m, 4m
-- Trend: Accelerating
+- Last 5 plans: 9m, 15m, 4m, 25m
+- Trend: Stable
 
 *Updated after each plan completion*
 
@@ -71,6 +71,9 @@ Recent decisions affecting current work:
 - [03-01]: Excluded worker-configuration.d.ts from Biome linting (auto-generated file with any types)
 - [03-01]: Added worker-configuration.d.ts to knip ignore (ambient declaration not imported)
 - [03-01]: Used local-dev-placeholder as D1 database_id (real ID set when creating remote D1)
+- [03-02]: Used per-line biome-ignore comments for console usage in CLI migration script (biome-ignore-all not valid)
+- [03-02]: Added scripts/*.ts to knip entry points for migration scripts
+- [03-02]: Orphaned participants (5 deleted Auth0 accounts) skipped with warnings, not errors
 
 ### Pending Todos
 
@@ -84,5 +87,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-17
-Stopped at: Completed 03-01-PLAN.md (D1 database schema setup)
-Resume file: .planning/phases/03-database-and-data-migration/03-01-SUMMARY.md
+Stopped at: Completed 03-02-PLAN.md (DynamoDB-to-D1 data migration) -- Phase 3 complete
+Resume file: .planning/phases/03-database-and-data-migration/03-02-SUMMARY.md
