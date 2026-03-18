@@ -18,13 +18,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Events
 
-- [ ] **EVNT-01**: Member can create event with type (15 types), date, time, location, title, subtitle, description, race flag
-- [ ] **EVNT-02**: Member can edit their own events
-- [ ] **EVNT-03**: Member can delete their own events
+- [x] **EVNT-01**: Member can create event with type (15 types), date, time, location, title, subtitle, description, race flag
+- [x] **EVNT-02**: Member can edit their own events
+- [x] **EVNT-03**: Member can delete their own events
 - [ ] **EVNT-04**: Member can join an event
 - [ ] **EVNT-05**: Member can leave an event
-- [ ] **EVNT-06**: Member can view chronological list of upcoming events
-- [ ] **EVNT-07**: Member can view event details with participant list
+- [x] **EVNT-06**: Member can view chronological list of upcoming events
+- [x] **EVNT-07**: Member can view event details with participant list
 
 ### Email
 
@@ -108,13 +108,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-04 | Phase 5 | Pending |
 | AUTH-05 | Phase 5 | Pending |
 | AUTH-06 | Phase 5 | Pending |
-| EVNT-01 | Phase 4 | Pending |
-| EVNT-02 | Phase 4 | Pending |
-| EVNT-03 | Phase 4 | Pending |
+| EVNT-01 | Phase 4 | Complete |
+| EVNT-02 | Phase 4 | Complete |
+| EVNT-03 | Phase 4 | Complete |
 | EVNT-04 | Phase 4 | Pending |
 | EVNT-05 | Phase 4 | Pending |
-| EVNT-06 | Phase 4 | Pending |
-| EVNT-07 | Phase 4 | Pending |
+| EVNT-06 | Phase 4 | Complete |
+| EVNT-07 | Phase 4 | Complete |
 | MAIL-01 | Phase 6 | Pending |
 | MAIL-02 | Phase 6 | Pending |
 | INFR-01 | Phase 1 | Complete |
