@@ -5,12 +5,15 @@ const EventTypeSchema = z.enum(EVENT_TYPES).openapi({
   example: 'RUNNING',
 });
 
+const ISODateSchema = z.iso.date();
+const ISOTimeSchema = z.iso.time({ precision: -1 });
+
 export const CreateEventSchema = z
   .object({
     type: EventTypeSchema,
     title: z.string().min(1).max(200),
-    dateStart: z.string().date(),
-    timeStart: z.string().optional(),
+    dateStart: ISODateSchema,
+    timeStart: ISOTimeSchema.optional(),
     location: z.string().max(200).optional(),
     subtitle: z.string().max(200).optional(),
     description: z.string().optional(),
@@ -22,8 +25,8 @@ export const UpdateEventSchema = z
   .object({
     type: EventTypeSchema.optional(),
     title: z.string().min(1).max(200).optional(),
-    dateStart: z.string().date().optional(),
-    timeStart: z.string().optional(),
+    dateStart: ISODateSchema.optional(),
+    timeStart: ISOTimeSchema.optional(),
     location: z.string().max(200).optional(),
     subtitle: z.string().max(200).optional(),
     description: z.string().optional(),
@@ -36,8 +39,8 @@ export const EventSchema = z
     id: z.number(),
     type: EventTypeSchema,
     title: z.string(),
-    dateStart: z.string(),
-    timeStart: z.string().nullable(),
+    dateStart: ISODateSchema,
+    timeStart: ISOTimeSchema.nullable(),
     location: z.string().nullable(),
     subtitle: z.string().nullable(),
     description: z.string().nullable(),
@@ -53,8 +56,8 @@ export const EventSummarySchema = z
   .object({
     id: z.number(),
     title: z.string(),
-    dateStart: z.string(),
-    timeStart: z.string().nullable(),
+    dateStart: ISODateSchema,
+    timeStart: ISOTimeSchema.nullable(),
     type: EventTypeSchema,
     location: z.string().nullable(),
     race: z.boolean(),
@@ -76,8 +79,8 @@ export const EventDetailSchema = z
     id: z.number(),
     type: EventTypeSchema,
     title: z.string(),
-    dateStart: z.string(),
-    timeStart: z.string().nullable(),
+    dateStart: ISODateSchema,
+    timeStart: ISOTimeSchema.nullable(),
     location: z.string().nullable(),
     subtitle: z.string().nullable(),
     description: z.string().nullable(),
