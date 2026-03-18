@@ -1,6 +1,7 @@
 import type { EventType } from '@dt65/shared';
 import { asc, eq, gte, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
+import { eventIdCondition } from '@/db/query-helpers';
 import { events, users, usersToEvents } from '@/db/schema';
 
 type EventInput = {
@@ -67,18 +68,6 @@ function toBool(value: number): boolean {
   return value === 1;
 }
 
-/**
- * Parse a route param as either an integer ID or a legacy ULID.
- * Returns the appropriate query condition.
- */
-function parseIdParam(idParam: string) {
-  const numericId = Number(idParam);
-  if (Number.isInteger(numericId) && numericId > 0) {
-    return eq(events.id, numericId);
-  }
-  return eq(events.ulid, idParam);
-}
-
 function buildUpdateFields(data: EventUpdateInput): Record<string, unknown> {
   const fields: Record<string, unknown> = {};
   const fieldMap: Record<string, unknown> = {
@@ -123,7 +112,7 @@ function toEventRow(event: typeof events.$inferSelect, participantCount: number)
 }
 
 async function findEventById(db: ReturnType<typeof drizzle>, idParam: string) {
-  const condition = parseIdParam(idParam);
+  const condition = eventIdCondition(idParam);
   const rows = await db.select().from(events).where(condition).limit(1);
   return rows[0] ?? null;
 }

@@ -1,19 +1,12 @@
 import { and, eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
+import { eventIdCondition } from '@/db/query-helpers';
 import { events, usersToEvents } from '@/db/schema';
 
 type ParticipantResult = { ok: true } | { ok: false; error: 'NOT_FOUND' | 'PAST_EVENT' };
 
-function parseIdParam(idParam: string) {
-  const numericId = Number(idParam);
-  if (Number.isInteger(numericId) && numericId > 0) {
-    return eq(events.id, numericId);
-  }
-  return eq(events.ulid, idParam);
-}
-
 async function findEvent(db: ReturnType<typeof drizzle>, idParam: string) {
-  const condition = parseIdParam(idParam);
+  const condition = eventIdCondition(idParam);
   const rows = await db.select().from(events).where(condition).limit(1);
   return rows[0] ?? null;
 }
