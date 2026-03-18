@@ -4,6 +4,10 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-02-01",
   "compatibility_flags": ["nodejs_compat_v2"],
+  "vars": {
+    "AUTH0_DOMAIN": "dev-placeholder.auth0.com",
+    "AUTH0_AUDIENCE": "https://dev-placeholder"
+  },
   "observability": {
     "enabled": true
   },

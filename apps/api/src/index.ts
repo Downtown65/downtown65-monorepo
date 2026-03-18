@@ -1,15 +1,31 @@
 import { DT65_APP_NAME } from '@dt65/shared';
-import { Hono } from 'hono';
-import { ENV } from 'varlock/env';
+import { Scalar } from '@scalar/hono-api-reference';
+import { createApp } from '@/app';
+import { apiKeyMiddleware } from '@/middleware/api-key';
+import { jwtAuth } from '@/middleware/auth';
+import { errorHandler, notFoundHandler } from '@/middleware/error-handler';
 
-const app = new Hono();
+const app = createApp();
 
+// Middleware stack
+app.use('/api/*', apiKeyMiddleware());
+app.use('/api/*', jwtAuth());
+
+// Error handlers
+app.onError(errorHandler);
+app.notFound(notFoundHandler);
+
+// OpenAPI documentation
+app.doc31('/doc', {
+  openapi: '3.1.0',
+  info: { title: 'DT65 API', version: '1.0.0' },
+});
+
+app.get('/scalar', Scalar({ url: '/doc' }));
+
+// Health check (no auth required)
 app.get('/', (c) => {
-  return c.json({
-    name: DT65_APP_NAME,
-    status: 'ok',
-    env: ENV.TEST_VALUE,
-  });
+  return c.json({ name: DT65_APP_NAME, status: 'ok' });
 });
 
 export default app;

@@ -27,8 +27,6 @@
       "entry": ["src/pages/**/*.astro"],
       "ignoreDependencies": ["@vitest/coverage-v8", "wrangler"]
     },
-    "packages/shared": {
-      "includeEntryExports": true
-    }
+    "packages/shared": {}
   }
 }
