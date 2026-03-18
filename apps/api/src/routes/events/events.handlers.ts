@@ -20,8 +20,8 @@ import type {
 
 export const handleCreateEvent: RouteHandler<typeof createEventRoute, AppEnv> = async (c) => {
   const body = c.req.valid('json');
-  const { sub } = c.get('jwtPayload');
-  const event = await createEvent(c.env.DB, body, sub);
+  const userId = c.get('userId');
+  const event = await createEvent(c.env.DB, body, userId);
   return c.json(event, 201);
 };
 
@@ -44,9 +44,9 @@ export const handleGetEvent: RouteHandler<typeof getEventRoute, AppEnv> = async 
 export const handleUpdateEvent: RouteHandler<typeof updateEventRoute, AppEnv> = async (c) => {
   const { id } = c.req.valid('param');
   const body = c.req.valid('json');
-  const { sub } = c.get('jwtPayload');
+  const userId = c.get('userId');
 
-  const result = await updateEvent(c.env.DB, id, body, sub);
+  const result = await updateEvent(c.env.DB, id, body, userId);
 
   if (!result.ok) {
     if (result.error === 'NOT_FOUND') {
@@ -60,9 +60,9 @@ export const handleUpdateEvent: RouteHandler<typeof updateEventRoute, AppEnv> = 
 
 export const handleDeleteEvent: RouteHandler<typeof deleteEventRoute, AppEnv> = async (c) => {
   const { id } = c.req.valid('param');
-  const { sub } = c.get('jwtPayload');
+  const userId = c.get('userId');
 
-  const result = await deleteEvent(c.env.DB, id, sub);
+  const result = await deleteEvent(c.env.DB, id, userId);
 
   if (!result.ok) {
     if (result.error === 'NOT_FOUND') {
@@ -76,9 +76,9 @@ export const handleDeleteEvent: RouteHandler<typeof deleteEventRoute, AppEnv> = 
 
 export const handleJoinEvent: RouteHandler<typeof joinEventRoute, AppEnv> = async (c) => {
   const { id } = c.req.valid('param');
-  const { sub } = c.get('jwtPayload');
+  const userId = c.get('userId');
 
-  const result = await joinEvent(c.env.DB, id, sub);
+  const result = await joinEvent(c.env.DB, id, userId);
 
   if (!result.ok) {
     if (result.error === 'NOT_FOUND') {
@@ -92,9 +92,9 @@ export const handleJoinEvent: RouteHandler<typeof joinEventRoute, AppEnv> = asyn
 
 export const handleLeaveEvent: RouteHandler<typeof leaveEventRoute, AppEnv> = async (c) => {
   const { id } = c.req.valid('param');
-  const { sub } = c.get('jwtPayload');
+  const userId = c.get('userId');
 
-  const result = await leaveEvent(c.env.DB, id, sub);
+  const result = await leaveEvent(c.env.DB, id, userId);
 
   if (!result.ok) {
     if (result.error === 'NOT_FOUND') {

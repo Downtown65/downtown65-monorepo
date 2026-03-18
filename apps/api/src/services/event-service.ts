@@ -26,7 +26,7 @@ type EventUpdateInput = {
 };
 
 type EventRow = {
-  id: string;
+  id: number;
   type: EventType;
   title: string;
   dateStart: string;
@@ -35,7 +35,7 @@ type EventRow = {
   subtitle: string | null;
   description: string | null;
   race: boolean;
-  creatorId: string;
+  creatorId: number;
   createdAt: string;
   updatedAt: string;
   participantCount: number;
@@ -43,14 +43,14 @@ type EventRow = {
 
 type EventDetail = Omit<EventRow, 'participantCount'> & {
   participants: Array<{
-    userId: string;
+    userId: number;
     nickname: string;
     joinedAt: string;
   }>;
 };
 
 type EventSummary = {
-  id: string;
+  id: number;
   title: string;
   dateStart: string;
   timeStart: string | null;
@@ -58,13 +58,25 @@ type EventSummary = {
   location: string | null;
   race: boolean;
   participantCount: number;
-  creatorId: string;
+  creatorId: number;
 };
 
 type Result<T> = { ok: true; data: T } | { ok: false; error: 'FORBIDDEN' | 'NOT_FOUND' };
 
 function toBool(value: number): boolean {
   return value === 1;
+}
+
+/**
+ * Parse a route param as either an integer ID or a legacy ULID.
+ * Returns the appropriate query condition.
+ */
+function parseIdParam(idParam: string) {
+  const numericId = Number(idParam);
+  if (Number.isInteger(numericId) && numericId > 0) {
+    return eq(events.id, numericId);
+  }
+  return eq(events.ulid, idParam);
 }
 
 function buildUpdateFields(data: EventUpdateInput): Record<string, unknown> {
@@ -110,14 +122,15 @@ function toEventRow(event: typeof events.$inferSelect, participantCount: number)
   };
 }
 
-async function findEventById(db: ReturnType<typeof drizzle>, id: string) {
-  const rows = await db.select().from(events).where(eq(events.id, id)).limit(1);
+async function findEventById(db: ReturnType<typeof drizzle>, idParam: string) {
+  const condition = parseIdParam(idParam);
+  const rows = await db.select().from(events).where(condition).limit(1);
   return rows[0] ?? null;
 }
 
 async function getParticipantCount(
   db: ReturnType<typeof drizzle>,
-  eventId: string,
+  eventId: number,
 ): Promise<number> {
   const rows = await db
     .select({ count: sql<number>`count(*)` })
@@ -129,26 +142,29 @@ async function getParticipantCount(
 export async function createEvent(
   d1: D1Database,
   data: EventInput,
-  creatorId: string,
+  creatorId: number,
 ): Promise<EventRow> {
   const db = drizzle(d1);
   const now = new Date().toISOString();
-  const id = crypto.randomUUID();
 
-  await db.insert(events).values({
-    id,
-    title: data.title,
-    subtitle: data.subtitle ?? null,
-    eventType: data.type,
-    dateStart: data.dateStart,
-    timeStart: data.timeStart ?? null,
-    location: data.location ?? null,
-    description: data.description ?? null,
-    race: data.race ? 1 : 0,
-    creatorId,
-    createdAt: now,
-    updatedAt: now,
-  });
+  const rows = await db
+    .insert(events)
+    .values({
+      title: data.title,
+      subtitle: data.subtitle ?? null,
+      eventType: data.type,
+      dateStart: data.dateStart,
+      timeStart: data.timeStart ?? null,
+      location: data.location ?? null,
+      description: data.description ?? null,
+      race: data.race ? 1 : 0,
+      creatorId,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .returning({ id: events.id });
+
+  const id = rows[0]?.id as number;
 
   return {
     id,
@@ -167,10 +183,10 @@ export async function createEvent(
   };
 }
 
-export async function getEventById(d1: D1Database, id: string): Promise<EventDetail | null> {
+export async function getEventById(d1: D1Database, idParam: string): Promise<EventDetail | null> {
   const db = drizzle(d1);
 
-  const event = await findEventById(db, id);
+  const event = await findEventById(db, idParam);
   if (!event) {
     return null;
   }
@@ -183,7 +199,7 @@ export async function getEventById(d1: D1Database, id: string): Promise<EventDet
     })
     .from(usersToEvents)
     .innerJoin(users, eq(usersToEvents.userId, users.id))
-    .where(eq(usersToEvents.eventId, id));
+    .where(eq(usersToEvents.eventId, event.id));
 
   return {
     id: event.id,
@@ -204,13 +220,13 @@ export async function getEventById(d1: D1Database, id: string): Promise<EventDet
 
 export async function updateEvent(
   d1: D1Database,
-  id: string,
+  idParam: string,
   data: EventUpdateInput,
-  requesterId: string,
+  requesterId: number,
 ): Promise<Result<EventRow>> {
   const db = drizzle(d1);
 
-  const event = await findEventById(db, id);
+  const event = await findEventById(db, idParam);
   if (!event) {
     return { ok: false, error: 'NOT_FOUND' };
   }
@@ -222,22 +238,22 @@ export async function updateEvent(
   const now = new Date().toISOString();
   const updateFields = { ...buildUpdateFields(data), updatedAt: now };
 
-  await db.update(events).set(updateFields).where(eq(events.id, id));
+  await db.update(events).set(updateFields).where(eq(events.id, event.id));
 
-  const updatedRows = await findEventById(db, id);
-  const count = await getParticipantCount(db, id);
+  const updatedRows = await findEventById(db, String(event.id));
+  const count = await getParticipantCount(db, event.id);
 
   return { ok: true, data: toEventRow(updatedRows ?? event, count) };
 }
 
 export async function deleteEvent(
   d1: D1Database,
-  id: string,
-  requesterId: string,
+  idParam: string,
+  requesterId: number,
 ): Promise<Result<void>> {
   const db = drizzle(d1);
 
-  const event = await findEventById(db, id);
+  const event = await findEventById(db, idParam);
   if (!event) {
     return { ok: false, error: 'NOT_FOUND' };
   }
@@ -246,7 +262,7 @@ export async function deleteEvent(
     return { ok: false, error: 'FORBIDDEN' };
   }
 
-  await db.delete(events).where(eq(events.id, id));
+  await db.delete(events).where(eq(events.id, event.id));
 
   return { ok: true, data: undefined };
 }

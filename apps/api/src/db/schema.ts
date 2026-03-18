@@ -1,26 +1,39 @@
-import { index, integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import {
+  index,
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from 'drizzle-orm/sqlite-core';
 
-export const users = sqliteTable('users', {
-  id: text('id').primaryKey(), // Auth0 sub (e.g., "auth0|abc123")
-  nickname: text('nickname').notNull(),
-  picture: text('picture').notNull(),
-  createdAt: text('created_at').notNull(),
-  updatedAt: text('updated_at').notNull(),
-});
+export const users = sqliteTable(
+  'users',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    auth0Sub: text('auth0_sub').notNull(),
+    nickname: text('nickname').notNull(),
+    picture: text('picture').notNull(),
+    createdAt: text('created_at').notNull(),
+    updatedAt: text('updated_at').notNull(),
+  },
+  (table) => [uniqueIndex('users_auth0_sub_idx').on(table.auth0Sub)],
+);
 
 export const events = sqliteTable(
   'events',
   {
-    id: text('id').primaryKey(), // ULID from DynamoDB
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    ulid: text('ulid'), // Legacy ULID from DynamoDB import
     title: text('title').notNull(),
     subtitle: text('subtitle'),
-    eventType: text('event_type').notNull(), // validated in API layer, not DB
-    dateStart: text('date_start').notNull(), // ISO date string
+    eventType: text('event_type').notNull(),
+    dateStart: text('date_start').notNull(),
     timeStart: text('time_start'),
     location: text('location'),
-    description: text('description'), // raw HTML
-    race: integer('race').notNull().default(0), // boolean as 0/1
-    creatorId: text('creator_id')
+    description: text('description'),
+    race: integer('race').notNull().default(0),
+    creatorId: integer('creator_id')
       .notNull()
       .references(() => users.id),
     createdAt: text('created_at').notNull(),
@@ -30,16 +43,17 @@ export const events = sqliteTable(
     index('events_date_start_idx').on(table.dateStart),
     index('events_event_type_idx').on(table.eventType),
     index('events_creator_id_idx').on(table.creatorId),
+    uniqueIndex('events_ulid_idx').on(table.ulid),
   ],
 );
 
 export const usersToEvents = sqliteTable(
   'users_to_events',
   {
-    userId: text('user_id')
+    userId: integer('user_id')
       .notNull()
       .references(() => users.id),
-    eventId: text('event_id')
+    eventId: integer('event_id')
       .notNull()
       .references(() => events.id, { onDelete: 'cascade' }),
     joinedAt: text('joined_at').notNull(),

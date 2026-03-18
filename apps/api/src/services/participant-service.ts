@@ -4,8 +4,17 @@ import { events, usersToEvents } from '@/db/schema';
 
 type ParticipantResult = { ok: true } | { ok: false; error: 'NOT_FOUND' | 'PAST_EVENT' };
 
-async function findUpcomingEvent(db: ReturnType<typeof drizzle>, eventId: string) {
-  const rows = await db.select().from(events).where(eq(events.id, eventId)).limit(1);
+function parseIdParam(idParam: string) {
+  const numericId = Number(idParam);
+  if (Number.isInteger(numericId) && numericId > 0) {
+    return eq(events.id, numericId);
+  }
+  return eq(events.ulid, idParam);
+}
+
+async function findEvent(db: ReturnType<typeof drizzle>, idParam: string) {
+  const condition = parseIdParam(idParam);
+  const rows = await db.select().from(events).where(condition).limit(1);
   return rows[0] ?? null;
 }
 
@@ -16,12 +25,12 @@ function isEventPast(dateStart: string): boolean {
 
 export async function joinEvent(
   d1: D1Database,
-  eventId: string,
-  userId: string,
+  idParam: string,
+  userId: number,
 ): Promise<ParticipantResult> {
   const db = drizzle(d1);
 
-  const event = await findUpcomingEvent(db, eventId);
+  const event = await findEvent(db, idParam);
   if (!event) {
     return { ok: false, error: 'NOT_FOUND' };
   }
@@ -36,7 +45,7 @@ export async function joinEvent(
     .insert(usersToEvents)
     .values({
       userId,
-      eventId,
+      eventId: event.id,
       joinedAt: now,
     })
     .onConflictDoNothing();
@@ -46,12 +55,12 @@ export async function joinEvent(
 
 export async function leaveEvent(
   d1: D1Database,
-  eventId: string,
-  userId: string,
+  idParam: string,
+  userId: number,
 ): Promise<ParticipantResult> {
   const db = drizzle(d1);
 
-  const event = await findUpcomingEvent(db, eventId);
+  const event = await findEvent(db, idParam);
   if (!event) {
     return { ok: false, error: 'NOT_FOUND' };
   }
@@ -62,7 +71,7 @@ export async function leaveEvent(
 
   await db
     .delete(usersToEvents)
-    .where(and(eq(usersToEvents.userId, userId), eq(usersToEvents.eventId, eventId)));
+    .where(and(eq(usersToEvents.userId, userId), eq(usersToEvents.eventId, event.id)));
 
   return { ok: true };
 }
