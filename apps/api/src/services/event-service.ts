@@ -1,32 +1,33 @@
+import type { EventType } from '@dt65/shared';
 import { asc, eq, gte, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { events, users, usersToEvents } from '@/db/schema';
 
 type EventInput = {
-  type: string;
+  type: EventType;
   title: string;
   dateStart: string;
-  timeStart?: string;
-  location?: string;
-  subtitle?: string;
-  description?: string;
+  timeStart?: string | undefined;
+  location?: string | undefined;
+  subtitle?: string | undefined;
+  description?: string | undefined;
   race: boolean;
 };
 
 type EventUpdateInput = {
-  type?: string;
-  title?: string;
-  dateStart?: string;
-  timeStart?: string;
-  location?: string;
-  subtitle?: string;
-  description?: string;
-  race?: boolean;
+  type?: EventType | undefined;
+  title?: string | undefined;
+  dateStart?: string | undefined;
+  timeStart?: string | undefined;
+  location?: string | undefined;
+  subtitle?: string | undefined;
+  description?: string | undefined;
+  race?: boolean | undefined;
 };
 
 type EventRow = {
   id: string;
-  type: string;
+  type: EventType;
   title: string;
   dateStart: string;
   timeStart: string | null;
@@ -53,7 +54,7 @@ type EventSummary = {
   title: string;
   dateStart: string;
   timeStart: string | null;
-  type: string;
+  type: EventType;
   location: string | null;
   race: boolean;
   participantCount: number;
@@ -94,7 +95,7 @@ function buildUpdateFields(data: EventUpdateInput): Record<string, unknown> {
 function toEventRow(event: typeof events.$inferSelect, participantCount: number): EventRow {
   return {
     id: event.id,
-    type: event.eventType,
+    type: event.eventType as EventType,
     title: event.title,
     dateStart: event.dateStart,
     timeStart: event.timeStart,
@@ -186,7 +187,7 @@ export async function getEventById(d1: D1Database, id: string): Promise<EventDet
 
   return {
     id: event.id,
-    type: event.eventType,
+    type: event.eventType as EventType,
     title: event.title,
     dateStart: event.dateStart,
     timeStart: event.timeStart,
@@ -275,6 +276,7 @@ export async function listUpcomingEvents(d1: D1Database): Promise<EventSummary[]
 
   return rows.map((row) => ({
     ...row,
+    type: row.type as EventType,
     race: toBool(row.race),
   }));
 }

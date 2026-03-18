@@ -2,18 +2,20 @@ import { DT65_APP_NAME } from '@dt65/shared';
 import { Scalar } from '@scalar/hono-api-reference';
 import { createApp } from '@/app';
 import { apiKeyMiddleware } from '@/middleware/api-key';
-import { jwtAuth } from '@/middleware/auth';
 import { errorHandler, notFoundHandler } from '@/middleware/error-handler';
+import { eventsRouter } from '@/routes/events/events.index';
 
 const app = createApp();
 
 // Middleware stack
 app.use('/api/*', apiKeyMiddleware());
-app.use('/api/*', jwtAuth());
 
 // Error handlers
 app.onError(errorHandler);
 app.notFound(notFoundHandler);
+
+// Routes
+app.route('/', eventsRouter);
 
 // OpenAPI documentation
 app.doc31('/doc', {
