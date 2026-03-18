@@ -1,0 +1,101 @@
+import { EVENT_TYPES } from '@dt65/shared';
+import { z } from '@hono/zod-openapi';
+
+export const EventTypeSchema = z.enum(EVENT_TYPES).openapi({
+  example: 'RUNNING',
+});
+
+export const CreateEventSchema = z
+  .object({
+    type: EventTypeSchema,
+    title: z.string().min(1).max(200),
+    dateStart: z.string().date(),
+    timeStart: z.string().optional(),
+    location: z.string().max(200).optional(),
+    subtitle: z.string().max(200).optional(),
+    description: z.string().optional(),
+    race: z.boolean().default(false),
+  })
+  .openapi('CreateEvent');
+
+export const UpdateEventSchema = z
+  .object({
+    type: EventTypeSchema.optional(),
+    title: z.string().min(1).max(200).optional(),
+    dateStart: z.string().date().optional(),
+    timeStart: z.string().optional(),
+    location: z.string().max(200).optional(),
+    subtitle: z.string().max(200).optional(),
+    description: z.string().optional(),
+    race: z.boolean().optional(),
+  })
+  .openapi('UpdateEvent');
+
+export const EventSchema = z
+  .object({
+    id: z.string(),
+    type: EventTypeSchema,
+    title: z.string(),
+    dateStart: z.string(),
+    timeStart: z.string().nullable(),
+    location: z.string().nullable(),
+    subtitle: z.string().nullable(),
+    description: z.string().nullable(),
+    race: z.boolean(),
+    creatorId: z.string(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    participantCount: z.number(),
+  })
+  .openapi('Event');
+
+export const EventSummarySchema = z
+  .object({
+    id: z.string(),
+    title: z.string(),
+    dateStart: z.string(),
+    timeStart: z.string().nullable(),
+    type: EventTypeSchema,
+    location: z.string().nullable(),
+    race: z.boolean(),
+    participantCount: z.number(),
+    creatorId: z.string(),
+  })
+  .openapi('EventSummary');
+
+const ParticipantSchema = z.object({
+  userId: z.string(),
+  nickname: z.string(),
+  joinedAt: z.string(),
+});
+
+export const EventDetailSchema = z
+  .object({
+    id: z.string(),
+    type: EventTypeSchema,
+    title: z.string(),
+    dateStart: z.string(),
+    timeStart: z.string().nullable(),
+    location: z.string().nullable(),
+    subtitle: z.string().nullable(),
+    description: z.string().nullable(),
+    race: z.boolean(),
+    creatorId: z.string(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    participants: z.array(ParticipantSchema),
+  })
+  .openapi('EventDetail');
+
+export const ErrorSchema = z
+  .object({
+    error: z.object({
+      code: z.string(),
+      message: z.string(),
+    }),
+  })
+  .openapi('Error');
+
+export const IdParamSchema = z.object({
+  id: z.string().openapi({ param: { name: 'id', in: 'path' }, example: '01HQ...' }),
+});
