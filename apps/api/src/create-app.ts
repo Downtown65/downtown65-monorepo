@@ -19,13 +19,34 @@ export function createApiApp(authService: AuthenticationService) {
   // Routes
   app.route('/', createEventsRouter(authService));
 
+  // OpenAPI security scheme
+  app.openAPIRegistry.registerComponent('securitySchemes', 'apiKey', {
+    type: 'apiKey',
+    in: 'header',
+    name: 'x-api-key',
+  });
+
   // OpenAPI documentation
   app.doc31('/doc', {
     openapi: '3.1.0',
     info: { title: 'DT65 API', version: '1.0.0' },
+    security: [{ apiKey: [] }],
   });
 
-  app.get('/scalar', Scalar({ url: '/doc' }));
+  app.get(
+    '/scalar',
+    Scalar({
+      url: '/doc',
+      authentication: {
+        preferredSecurityScheme: 'apiKey',
+        securitySchemes: {
+          apiKey: {
+            value: 'x-api-key-secret',
+          },
+        },
+      },
+    }),
+  );
 
   // Health check (no auth required)
   app.get('/', (c) => {

@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { createMiddleware } from 'hono/factory';
 import { HTTPException } from 'hono/http-exception';
+import { ENV } from 'varlock/env';
 import type { AppEnv } from '@/app';
 import { users } from '@/db/schema';
 import type { AuthenticationService } from '@/services/authentication-service';
@@ -21,8 +22,8 @@ export function jwtAuth(authService: AuthenticationService) {
     let sub: string;
     try {
       const payload = await authService.verifyToken(token, {
-        domain: c.env.AUTH0_DOMAIN,
-        audience: c.env.AUTH0_AUDIENCE,
+        domain: ENV.AUTH0_DOMAIN,
+        audience: ENV.AUTH0_AUDIENCE,
       });
       sub = payload.sub;
     } catch {
