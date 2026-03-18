@@ -39,7 +39,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **INFR-04**: GitHub Actions CI pipeline
 - [ ] **INFR-05**: Vitest unit/integration tests, Playwright E2E tests
 - [x] **INFR-06**: CLAUDE.md project instructions
-- [ ] **INFR-07**: API on Cloudflare Workers (Hono + Zod OpenAPI + Drizzle D1)
+- [x] **INFR-07**: API on Cloudflare Workers (Hono + Zod OpenAPI + Drizzle D1)
 - [ ] **INFR-08**: Events app (React Router 7 + Mantine + Tabler Icons)
 - [ ] **INFR-09**: Mobile-responsive UI
 
@@ -123,7 +123,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFR-04 | Phase 1 | Complete |
 | INFR-05 | Phase 4 | Pending |
 | INFR-06 | Phase 1 | Complete |
-| INFR-07 | Phase 4 | Pending |
+| INFR-07 | Phase 4 | Complete |
 | INFR-08 | Phase 5 | Pending |
 | INFR-09 | Phase 5 | Pending |
 | DATA-01 | Phase 3, 6 | Partial (email prefs Phase 6) |
