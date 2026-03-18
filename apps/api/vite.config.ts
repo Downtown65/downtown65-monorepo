@@ -24,6 +24,7 @@ export default defineConfig(async () => {
     plugins: [varlock, cloudflare()],
     resolve: {
       alias: {
+        '@': path.resolve(import.meta.dirname, 'src'),
         'varlock/patch-console': noopPatches,
         'varlock/patch-server-response': noopPatches,
         'varlock/patch-response': noopPatches,
