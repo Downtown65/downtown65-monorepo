@@ -1,7 +1,7 @@
 import { EVENT_TYPES } from '@dt65/shared';
 import { z } from '@hono/zod-openapi';
 
-export const EventTypeSchema = z.enum(EVENT_TYPES).openapi({
+const EventTypeSchema = z.enum(EVENT_TYPES).openapi({
   example: 'RUNNING',
 });
 
