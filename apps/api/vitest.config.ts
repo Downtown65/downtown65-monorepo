@@ -9,6 +9,7 @@ export default defineWorkersConfig(async () => {
     resolve: {
       alias: {
         '@': path.resolve(import.meta.dirname, 'src'),
+        'varlock/env': path.resolve(import.meta.dirname, 'src/__tests__/varlock-env-mock.ts'),
       },
     },
     test: {
@@ -21,9 +22,6 @@ export default defineWorkersConfig(async () => {
           miniflare: {
             bindings: {
               TEST_MIGRATIONS: migrations,
-              X_API_KEY: 'test-api-key',
-              AUTH0_DOMAIN: 'test.auth0.com',
-              AUTH0_AUDIENCE: 'https://test-audience',
             },
           },
         },
