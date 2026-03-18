@@ -42,6 +42,7 @@ export const usersToEvents = sqliteTable(
     eventId: text('event_id')
       .notNull()
       .references(() => events.id, { onDelete: 'cascade' }),
+    joinedAt: text('joined_at').notNull(),
   },
   (table) => [primaryKey({ columns: [table.userId, table.eventId] })],
 );

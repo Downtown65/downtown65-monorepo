@@ -1,3 +1,4 @@
 // @dt65/shared - public API
-// Export shared types, utilities, and constants here
-export const DT65_APP_NAME = 'Downtown 65';
+// This barrel file is the package entry point; re-exports are intentional.
+// biome-ignore lint/performance/noBarrelFile: package entry point requires barrel exports
+export { DT65_APP_NAME, EVENT_TYPES, type EventType } from './constants';

@@ -15,10 +15,12 @@
   },
   "dependencies": {
     "@dt65/shared": "workspace:*",
+    "@hono/zod-openapi": "catalog:",
+    "@scalar/hono-api-reference": "catalog:",
     "@varlock/infisical-plugin": "^0.0.3",
     "@varlock/vite-integration": "^0.2.3",
     "drizzle-orm": "catalog:",
-    "hono": "4.7.5",
+    "hono": "catalog:",
     "varlock": "^0.4.0"
   },
   "devDependencies": {

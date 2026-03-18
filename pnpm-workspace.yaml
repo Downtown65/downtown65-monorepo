@@ -15,7 +15,9 @@ catalog:
   "@cloudflare/vitest-pool-workers": 0.12.1
   "@tailwindcss/vite": 4.2.1
   astro: 6.0.4
-  "@hono/zod-openapi": 1.2.1
+  hono: 4.12.8
+  "@hono/zod-openapi": 1.2.2
+  "@scalar/hono-api-reference": 0.10.3
   "@types/node": 25.0.3
   "@vitest/coverage-v8": 3.2.0
   jwt-decode: 4.0.0
