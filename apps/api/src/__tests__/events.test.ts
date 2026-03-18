@@ -12,7 +12,6 @@ const mockAuth = new MockAuth0Service();
 const app = createApiApp(mockAuth);
 
 let userId1: number;
-let userId2: number;
 
 function futureDate(): string {
   const date = new Date();
@@ -40,7 +39,7 @@ beforeAll(async () => {
     nickname: 'TestUser1',
     picture: 'https://example.com/pic1.jpg',
   });
-  userId2 = await insertTestUser({
+  await insertTestUser({
     auth0Sub: AUTH0_SUB_2,
     nickname: 'TestUser2',
     picture: 'https://example.com/pic2.jpg',
