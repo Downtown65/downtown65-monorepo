@@ -7,10 +7,13 @@ import {
   listUpcomingEvents,
   updateEvent,
 } from '@/services/event-service';
+import { joinEvent, leaveEvent } from '@/services/participant-service';
 import type {
   createEventRoute,
   deleteEventRoute,
   getEventRoute,
+  joinEventRoute,
+  leaveEventRoute,
   listEventsRoute,
   updateEventRoute,
 } from './events.routes';
@@ -69,4 +72,36 @@ export const handleDeleteEvent: RouteHandler<typeof deleteEventRoute, AppEnv> = 
   }
 
   return c.body(null, 204);
+};
+
+export const handleJoinEvent: RouteHandler<typeof joinEventRoute, AppEnv> = async (c) => {
+  const { id } = c.req.valid('param');
+  const { sub } = c.get('jwtPayload');
+
+  const result = await joinEvent(c.env.DB, id, sub);
+
+  if (!result.ok) {
+    if (result.error === 'NOT_FOUND') {
+      return c.json({ error: { code: 'NOT_FOUND', message: 'Event not found' } }, 404);
+    }
+    return c.json({ error: { code: 'PAST_EVENT', message: 'Cannot join a past event' } }, 400);
+  }
+
+  return c.json({ message: 'Joined event' }, 200);
+};
+
+export const handleLeaveEvent: RouteHandler<typeof leaveEventRoute, AppEnv> = async (c) => {
+  const { id } = c.req.valid('param');
+  const { sub } = c.get('jwtPayload');
+
+  const result = await leaveEvent(c.env.DB, id, sub);
+
+  if (!result.ok) {
+    if (result.error === 'NOT_FOUND') {
+      return c.json({ error: { code: 'NOT_FOUND', message: 'Event not found' } }, 404);
+    }
+    return c.json({ error: { code: 'PAST_EVENT', message: 'Cannot leave a past event' } }, 400);
+  }
+
+  return c.json({ message: 'Left event' }, 200);
 };

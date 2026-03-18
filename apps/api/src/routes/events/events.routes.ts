@@ -6,6 +6,7 @@ import {
   EventSchema,
   EventSummarySchema,
   IdParamSchema,
+  SuccessMessageSchema,
   UpdateEventSchema,
 } from './events.schemas';
 
@@ -108,6 +109,54 @@ export const deleteEventRoute = createRoute({
     403: {
       content: { 'application/json': { schema: ErrorSchema } },
       description: 'Not the event owner',
+    },
+    404: {
+      content: { 'application/json': { schema: ErrorSchema } },
+      description: 'Event not found',
+    },
+  },
+});
+
+export const joinEventRoute = createRoute({
+  method: 'post',
+  path: '/api/events/{id}/participants',
+  tags: ['Participants'],
+  summary: 'Join an event',
+  request: {
+    params: IdParamSchema,
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: SuccessMessageSchema } },
+      description: 'Successfully joined event',
+    },
+    400: {
+      content: { 'application/json': { schema: ErrorSchema } },
+      description: 'Cannot join past event',
+    },
+    404: {
+      content: { 'application/json': { schema: ErrorSchema } },
+      description: 'Event not found',
+    },
+  },
+});
+
+export const leaveEventRoute = createRoute({
+  method: 'delete',
+  path: '/api/events/{id}/participants',
+  tags: ['Participants'],
+  summary: 'Leave an event',
+  request: {
+    params: IdParamSchema,
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: SuccessMessageSchema } },
+      description: 'Successfully left event',
+    },
+    400: {
+      content: { 'application/json': { schema: ErrorSchema } },
+      description: 'Cannot leave past event',
     },
     404: {
       content: { 'application/json': { schema: ErrorSchema } },

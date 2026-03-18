@@ -9,13 +9,9 @@
       "project": []
     },
     "apps/api": {
-      "entry": ["src/index.ts", "vite.config.ts", "scripts/*.ts"],
+      "entry": ["src/index.ts", "vite.config.ts", "scripts/*.ts", "src/__tests__/**/*.ts"],
       "ignore": ["src/varlock-noop-patches.ts", "worker-configuration.d.ts"],
-      "ignoreDependencies": [
-        "@cloudflare/vitest-pool-workers",
-        "@varlock/infisical-plugin",
-        "@vitest/coverage-v8"
-      ],
+      "ignoreDependencies": ["@varlock/infisical-plugin", "@vitest/coverage-v8", "cloudflare"],
       "vite": false,
       "vitest": false
     },

@@ -63,11 +63,13 @@ export const EventSummarySchema = z
   })
   .openapi('EventSummary');
 
-const ParticipantSchema = z.object({
-  userId: z.string(),
-  nickname: z.string(),
-  joinedAt: z.string(),
-});
+const ParticipantSchema = z
+  .object({
+    userId: z.string(),
+    nickname: z.string(),
+    joinedAt: z.string(),
+  })
+  .openapi('Participant');
 
 export const EventDetailSchema = z
   .object({
@@ -95,6 +97,12 @@ export const ErrorSchema = z
     }),
   })
   .openapi('Error');
+
+export const SuccessMessageSchema = z
+  .object({
+    message: z.string(),
+  })
+  .openapi('SuccessMessage');
 
 export const IdParamSchema = z.object({
   id: z.string().openapi({ param: { name: 'id', in: 'path' }, example: '01HQ...' }),

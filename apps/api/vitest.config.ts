@@ -1,9 +1,30 @@
-import { cloudflare } from '@cloudflare/vite-plugin';
-import { defineConfig } from 'vitest/config';
+import path from 'node:path';
+import { defineWorkersConfig, readD1Migrations } from '@cloudflare/vitest-pool-workers/config';
 
-export default defineConfig({
-  plugins: [cloudflare()],
-  test: {
-    passWithNoTests: true,
-  },
+export default defineWorkersConfig(async () => {
+  const migrationsPath = path.resolve(import.meta.dirname, 'drizzle');
+  const migrations = await readD1Migrations(migrationsPath);
+
+  return {
+    resolve: {
+      alias: {
+        '@': path.resolve(import.meta.dirname, 'src'),
+      },
+    },
+    test: {
+      setupFiles: ['./src/__tests__/setup.ts'],
+      poolOptions: {
+        workers: {
+          wrangler: {
+            configPath: './wrangler.jsonc',
+          },
+          miniflare: {
+            bindings: {
+              TEST_MIGRATIONS: migrations,
+            },
+          },
+        },
+      },
+    },
+  };
 });
