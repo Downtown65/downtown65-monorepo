@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Monorepo and Tooling** - TypeScript monorepo with pnpm workspaces, code quality tools, CI/CD pipeline with PR preview deploys and auto-deploy on merge, and development conventions
 - [ ] **Phase 2: Static Website** - Astro static site for public club information
 - [ ] **Phase 3: Database and Data Migration** - D1 schema design and migration of ~1000 existing events from DynamoDB
-- [ ] **Phase 4: API** - Hono API on Cloudflare Workers with Auth0 JWT validation, event CRUD, participation, and test infrastructure
+- [x] **Phase 4: API** - Hono API on Cloudflare Workers with Auth0 JWT validation, event CRUD, participation, and test infrastructure
 - [ ] **Phase 5: Events Application** - React Router 7 PWA with Auth0 Lock login, event management UI, and mobile-responsive Mantine layout
 - [ ] **Phase 6: Email Notifications** - New event email notifications via AWS SES with member opt-in/out preferences
 
@@ -83,9 +83,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — OpenAPIHono foundation: deps, schema migration (joined_at), middleware (api-key, JWT, errors), Scalar docs, shared EVENT_TYPES
-- [ ] 04-02-PLAN.md — Event CRUD endpoints: create, list, get detail (public), update (owner), delete (owner) with Zod OpenAPI schemas and Drizzle service
-- [ ] 04-03-PLAN.md — Participation endpoints (join/leave) and integration test suite for all API endpoints
+- [x] 04-01-PLAN.md — OpenAPIHono foundation: deps, schema migration (joined_at), middleware (api-key, JWT, errors), Scalar docs, shared EVENT_TYPES
+- [x] 04-02-PLAN.md — Event CRUD endpoints: create, list, get detail (public), update (owner), delete (owner) with Zod OpenAPI schemas and Drizzle service
+- [x] 04-03-PLAN.md — Participation endpoints (join/leave) and integration test suite for all API endpoints
 
 ### Phase 5: Events Application
 **Goal**: Members can use a mobile-responsive web application to log in, browse events, create/edit events, and join/leave events
