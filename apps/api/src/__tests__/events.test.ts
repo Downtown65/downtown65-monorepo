@@ -2,13 +2,17 @@ import { env } from 'cloudflare:test';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { createApiApp } from '@/create-app';
 import { MockAuth0Service } from './mock-authentication-service';
+import { insertTestUser } from './test-helpers';
 
-const USER_1 = 'auth0|test-user-1';
-const USER_2 = 'auth0|test-user-2';
+const AUTH0_SUB_1 = 'auth0|test-user-1';
+const AUTH0_SUB_2 = 'auth0|test-user-2';
 const API_KEY = env.X_API_KEY;
 
 const mockAuth = new MockAuth0Service();
 const app = createApiApp(mockAuth);
+
+let userId1: number;
+let userId2: number;
 
 function futureDate(): string {
   const date = new Date();
@@ -16,10 +20,10 @@ function futureDate(): string {
   return date.toISOString().split('T')[0] as string;
 }
 
-function authHeaders(userId: string) {
+function authHeaders(auth0Sub: string) {
   return {
     'x-api-key': API_KEY,
-    authorization: `Bearer ${userId}`,
+    authorization: `Bearer ${auth0Sub}`,
     'content-type': 'application/json',
   };
 }
@@ -31,17 +35,16 @@ function apiKeyHeaders() {
 }
 
 beforeAll(async () => {
-  const now = new Date().toISOString();
-  await env.DB.prepare(
-    'INSERT OR IGNORE INTO users (id, nickname, picture, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-  )
-    .bind(USER_1, 'TestUser1', 'https://example.com/pic1.jpg', now, now)
-    .run();
-  await env.DB.prepare(
-    'INSERT OR IGNORE INTO users (id, nickname, picture, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-  )
-    .bind(USER_2, 'TestUser2', 'https://example.com/pic2.jpg', now, now)
-    .run();
+  userId1 = await insertTestUser({
+    auth0Sub: AUTH0_SUB_1,
+    nickname: 'TestUser1',
+    picture: 'https://example.com/pic1.jpg',
+  });
+  userId2 = await insertTestUser({
+    auth0Sub: AUTH0_SUB_2,
+    nickname: 'TestUser2',
+    picture: 'https://example.com/pic2.jpg',
+  });
 });
 
 describe('health check', () => {
@@ -71,7 +74,7 @@ describe('POST /api/events', () => {
       '/api/events',
       {
         method: 'POST',
-        headers: authHeaders(USER_1),
+        headers: authHeaders(AUTH0_SUB_1),
         body: JSON.stringify({
           type: 'RUNNING',
           title: 'Morning Run',
@@ -86,7 +89,7 @@ describe('POST /api/events', () => {
     expect(body).toMatchObject({
       title: 'Morning Run',
       type: 'RUNNING',
-      creatorId: USER_1,
+      creatorId: userId1,
       race: false,
     });
   });
@@ -96,7 +99,7 @@ describe('POST /api/events', () => {
       '/api/events',
       {
         method: 'POST',
-        headers: authHeaders(USER_1),
+        headers: authHeaders(AUTH0_SUB_1),
         body: JSON.stringify({ title: 'No type or date' }),
       },
       env,
@@ -107,14 +110,13 @@ describe('POST /api/events', () => {
 
 describe('GET /api/events', () => {
   it('returns upcoming events', async () => {
-    const res = await app.request('/api/events', { headers: authHeaders(USER_1) }, env);
+    const res = await app.request('/api/events', { headers: authHeaders(AUTH0_SUB_1) }, env);
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(Array.isArray(body)).toBe(true);
   });
 
   it('returns events ordered by dateStart ASC', async () => {
-    // Create two events with different dates
     const date1 = futureDate();
     const date2 = new Date();
     date2.setFullYear(date2.getFullYear() + 2);
@@ -124,7 +126,7 @@ describe('GET /api/events', () => {
       '/api/events',
       {
         method: 'POST',
-        headers: authHeaders(USER_1),
+        headers: authHeaders(AUTH0_SUB_1),
         body: JSON.stringify({ type: 'CYCLING', title: 'Later', dateStart: dateStr2 }),
       },
       env,
@@ -133,13 +135,13 @@ describe('GET /api/events', () => {
       '/api/events',
       {
         method: 'POST',
-        headers: authHeaders(USER_1),
+        headers: authHeaders(AUTH0_SUB_1),
         body: JSON.stringify({ type: 'RUNNING', title: 'Sooner', dateStart: date1 }),
       },
       env,
     );
 
-    const res = await app.request('/api/events', { headers: authHeaders(USER_1) }, env);
+    const res = await app.request('/api/events', { headers: authHeaders(AUTH0_SUB_1) }, env);
     const body = (await res.json()) as Array<{ dateStart: string }>;
 
     for (let i = 1; i < body.length; i++) {
@@ -152,12 +154,11 @@ describe('GET /api/events', () => {
 
 describe('GET /api/events/:id', () => {
   it('returns event detail with participants (public, no JWT)', async () => {
-    // Create an event first
     const createRes = await app.request(
       '/api/events',
       {
         method: 'POST',
-        headers: authHeaders(USER_1),
+        headers: authHeaders(AUTH0_SUB_1),
         body: JSON.stringify({
           type: 'RUNNING',
           title: 'Public Detail Test',
@@ -166,9 +167,8 @@ describe('GET /api/events/:id', () => {
       },
       env,
     );
-    const created = (await createRes.json()) as { id: string };
+    const created = (await createRes.json()) as { id: number };
 
-    // Fetch with only API key (no JWT)
     const res = await app.request(`/api/events/${created.id}`, { headers: apiKeyHeaders() }, env);
     expect(res.status).toBe(200);
     const body = (await res.json()) as { participants: unknown[] };
@@ -177,7 +177,7 @@ describe('GET /api/events/:id', () => {
   });
 
   it('returns 404 for non-existent event', async () => {
-    const res = await app.request('/api/events/nonexistent-id', { headers: apiKeyHeaders() }, env);
+    const res = await app.request('/api/events/999999', { headers: apiKeyHeaders() }, env);
     expect(res.status).toBe(404);
   });
 });
@@ -188,7 +188,7 @@ describe('PUT /api/events/:id', () => {
       '/api/events',
       {
         method: 'POST',
-        headers: authHeaders(USER_1),
+        headers: authHeaders(AUTH0_SUB_1),
         body: JSON.stringify({
           type: 'RUNNING',
           title: 'To Be Updated',
@@ -197,13 +197,13 @@ describe('PUT /api/events/:id', () => {
       },
       env,
     );
-    const created = (await createRes.json()) as { id: string };
+    const created = (await createRes.json()) as { id: number };
 
     const res = await app.request(
       `/api/events/${created.id}`,
       {
         method: 'PUT',
-        headers: authHeaders(USER_1),
+        headers: authHeaders(AUTH0_SUB_1),
         body: JSON.stringify({ title: 'Updated Title' }),
       },
       env,
@@ -218,7 +218,7 @@ describe('PUT /api/events/:id', () => {
       '/api/events',
       {
         method: 'POST',
-        headers: authHeaders(USER_1),
+        headers: authHeaders(AUTH0_SUB_1),
         body: JSON.stringify({
           type: 'RUNNING',
           title: 'Ownership Test',
@@ -227,13 +227,13 @@ describe('PUT /api/events/:id', () => {
       },
       env,
     );
-    const created = (await createRes.json()) as { id: string };
+    const created = (await createRes.json()) as { id: number };
 
     const res = await app.request(
       `/api/events/${created.id}`,
       {
         method: 'PUT',
-        headers: authHeaders(USER_2),
+        headers: authHeaders(AUTH0_SUB_2),
         body: JSON.stringify({ title: 'Hijacked' }),
       },
       env,
@@ -248,7 +248,7 @@ describe('DELETE /api/events/:id', () => {
       '/api/events',
       {
         method: 'POST',
-        headers: authHeaders(USER_1),
+        headers: authHeaders(AUTH0_SUB_1),
         body: JSON.stringify({
           type: 'RUNNING',
           title: 'To Be Deleted',
@@ -257,16 +257,15 @@ describe('DELETE /api/events/:id', () => {
       },
       env,
     );
-    const created = (await createRes.json()) as { id: string };
+    const created = (await createRes.json()) as { id: number };
 
     const res = await app.request(
       `/api/events/${created.id}`,
-      { method: 'DELETE', headers: authHeaders(USER_1) },
+      { method: 'DELETE', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
     expect(res.status).toBe(204);
 
-    // Verify it's gone
     const getRes = await app.request(
       `/api/events/${created.id}`,
       { headers: apiKeyHeaders() },
@@ -280,7 +279,7 @@ describe('DELETE /api/events/:id', () => {
       '/api/events',
       {
         method: 'POST',
-        headers: authHeaders(USER_1),
+        headers: authHeaders(AUTH0_SUB_1),
         body: JSON.stringify({
           type: 'RUNNING',
           title: 'Cannot Delete',
@@ -289,11 +288,11 @@ describe('DELETE /api/events/:id', () => {
       },
       env,
     );
-    const created = (await createRes.json()) as { id: string };
+    const created = (await createRes.json()) as { id: number };
 
     const res = await app.request(
       `/api/events/${created.id}`,
-      { method: 'DELETE', headers: authHeaders(USER_2) },
+      { method: 'DELETE', headers: authHeaders(AUTH0_SUB_2) },
       env,
     );
     expect(res.status).toBe(403);

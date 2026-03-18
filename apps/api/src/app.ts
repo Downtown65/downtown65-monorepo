@@ -8,7 +8,7 @@ export type Bindings = {
 };
 
 export type Variables = {
-  jwtPayload: { sub: string };
+  userId: number;
 };
 
 export type AppEnv = { Bindings: Bindings; Variables: Variables };

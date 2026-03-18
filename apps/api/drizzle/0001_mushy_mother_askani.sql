@@ -1,1 +1,0 @@
-ALTER TABLE `users_to_events` ADD `joined_at` text DEFAULT '' NOT NULL;

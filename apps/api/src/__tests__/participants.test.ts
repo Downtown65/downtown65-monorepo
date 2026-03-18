@@ -2,13 +2,16 @@ import { env } from 'cloudflare:test';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { createApiApp } from '@/create-app';
 import { MockAuth0Service } from './mock-authentication-service';
+import { insertPastEvent, insertTestUser } from './test-helpers';
 
-const USER_1 = 'auth0|test-user-1';
-const USER_2 = 'auth0|test-user-2';
+const AUTH0_SUB_1 = 'auth0|test-user-1';
+const AUTH0_SUB_2 = 'auth0|test-user-2';
 const API_KEY = env.X_API_KEY;
 
 const mockAuth = new MockAuth0Service();
 const app = createApiApp(mockAuth);
+
+let userId1: number;
 
 function futureDate(): string {
   const date = new Date();
@@ -16,10 +19,10 @@ function futureDate(): string {
   return date.toISOString().split('T')[0] as string;
 }
 
-function authHeaders(userId: string) {
+function authHeaders(auth0Sub: string) {
   return {
     'x-api-key': API_KEY,
-    authorization: `Bearer ${userId}`,
+    authorization: `Bearer ${auth0Sub}`,
     'content-type': 'application/json',
   };
 }
@@ -30,12 +33,12 @@ function apiKeyHeaders() {
   };
 }
 
-async function createFutureEvent(title: string): Promise<string> {
+async function createFutureEvent(title: string): Promise<number> {
   const res = await app.request(
     '/api/events',
     {
       method: 'POST',
-      headers: authHeaders(USER_1),
+      headers: authHeaders(AUTH0_SUB_1),
       body: JSON.stringify({
         type: 'RUNNING',
         title,
@@ -44,34 +47,21 @@ async function createFutureEvent(title: string): Promise<string> {
     },
     env,
   );
-  const body = (await res.json()) as { id: string };
+  const body = (await res.json()) as { id: number };
   return body.id;
 }
 
-async function createPastEvent(): Promise<string> {
-  // Insert directly via D1 since the API doesn't allow creating past events
-  const id = crypto.randomUUID();
-  const now = new Date().toISOString();
-  await env.DB.prepare(
-    'INSERT INTO events (id, title, event_type, date_start, race, creator_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-  )
-    .bind(id, 'Past Event', 'RUNNING', '2020-01-01', 0, USER_1, now, now)
-    .run();
-  return id;
-}
-
 beforeAll(async () => {
-  const now = new Date().toISOString();
-  await env.DB.prepare(
-    'INSERT OR IGNORE INTO users (id, nickname, picture, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-  )
-    .bind(USER_1, 'TestUser1', 'https://example.com/pic1.jpg', now, now)
-    .run();
-  await env.DB.prepare(
-    'INSERT OR IGNORE INTO users (id, nickname, picture, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-  )
-    .bind(USER_2, 'TestUser2', 'https://example.com/pic2.jpg', now, now)
-    .run();
+  userId1 = await insertTestUser({
+    auth0Sub: AUTH0_SUB_1,
+    nickname: 'TestUser1',
+    picture: 'https://example.com/pic1.jpg',
+  });
+  await insertTestUser({
+    auth0Sub: AUTH0_SUB_2,
+    nickname: 'TestUser2',
+    picture: 'https://example.com/pic2.jpg',
+  });
 });
 
 describe('POST /api/events/:id/participants (join)', () => {
@@ -79,7 +69,7 @@ describe('POST /api/events/:id/participants (join)', () => {
     const eventId = await createFutureEvent('Join Test');
     const res = await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'POST', headers: authHeaders(USER_1) },
+      { method: 'POST', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
     expect(res.status).toBe(200);
@@ -92,23 +82,23 @@ describe('POST /api/events/:id/participants (join)', () => {
 
     await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'POST', headers: authHeaders(USER_1) },
+      { method: 'POST', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
 
     const res = await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'POST', headers: authHeaders(USER_1) },
+      { method: 'POST', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
     expect(res.status).toBe(200);
   });
 
   it('returns 400 for past event', async () => {
-    const eventId = await createPastEvent();
+    const eventId = await insertPastEvent(userId1);
     const res = await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'POST', headers: authHeaders(USER_1) },
+      { method: 'POST', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
     expect(res.status).toBe(400);
@@ -116,8 +106,8 @@ describe('POST /api/events/:id/participants (join)', () => {
 
   it('returns 404 for non-existent event', async () => {
     const res = await app.request(
-      '/api/events/nonexistent-id/participants',
-      { method: 'POST', headers: authHeaders(USER_1) },
+      '/api/events/999999/participants',
+      { method: 'POST', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
     expect(res.status).toBe(404);
@@ -131,14 +121,14 @@ describe('DELETE /api/events/:id/participants (leave)', () => {
     // Join first
     await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'POST', headers: authHeaders(USER_1) },
+      { method: 'POST', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
 
     // Leave
     const res = await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'DELETE', headers: authHeaders(USER_1) },
+      { method: 'DELETE', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
     expect(res.status).toBe(200);
@@ -148,17 +138,17 @@ describe('DELETE /api/events/:id/participants (leave)', () => {
     const eventId = await createFutureEvent('Idempotent Leave Test');
     const res = await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'DELETE', headers: authHeaders(USER_1) },
+      { method: 'DELETE', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
     expect(res.status).toBe(200);
   });
 
   it('returns 400 for past event', async () => {
-    const eventId = await createPastEvent();
+    const eventId = await insertPastEvent(userId1);
     const res = await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'DELETE', headers: authHeaders(USER_1) },
+      { method: 'DELETE', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
     expect(res.status).toBe(400);
@@ -172,7 +162,7 @@ describe('participant list on event detail', () => {
     // Join as USER_1
     await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'POST', headers: authHeaders(USER_1) },
+      { method: 'POST', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
 
@@ -181,11 +171,11 @@ describe('participant list on event detail', () => {
     expect(res.status).toBe(200);
 
     const body = (await res.json()) as {
-      participants: Array<{ userId: string; nickname: string; joinedAt: string }>;
+      participants: Array<{ userId: number; nickname: string; joinedAt: string }>;
     };
     expect(body.participants).toHaveLength(1);
     expect(body.participants[0]).toMatchObject({
-      userId: USER_1,
+      userId: userId1,
       nickname: 'TestUser1',
     });
     const participant = body.participants[0] as { joinedAt: string };
@@ -198,12 +188,12 @@ describe('participant list on event detail', () => {
     // Join then leave
     await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'POST', headers: authHeaders(USER_1) },
+      { method: 'POST', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
     await app.request(
       `/api/events/${eventId}/participants`,
-      { method: 'DELETE', headers: authHeaders(USER_1) },
+      { method: 'DELETE', headers: authHeaders(AUTH0_SUB_1) },
       env,
     );
 

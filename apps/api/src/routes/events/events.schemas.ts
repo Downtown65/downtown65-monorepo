@@ -33,7 +33,7 @@ export const UpdateEventSchema = z
 
 export const EventSchema = z
   .object({
-    id: z.string(),
+    id: z.number(),
     type: EventTypeSchema,
     title: z.string(),
     dateStart: z.string(),
@@ -42,7 +42,7 @@ export const EventSchema = z
     subtitle: z.string().nullable(),
     description: z.string().nullable(),
     race: z.boolean(),
-    creatorId: z.string(),
+    creatorId: z.number(),
     createdAt: z.string(),
     updatedAt: z.string(),
     participantCount: z.number(),
@@ -51,7 +51,7 @@ export const EventSchema = z
 
 export const EventSummarySchema = z
   .object({
-    id: z.string(),
+    id: z.number(),
     title: z.string(),
     dateStart: z.string(),
     timeStart: z.string().nullable(),
@@ -59,13 +59,13 @@ export const EventSummarySchema = z
     location: z.string().nullable(),
     race: z.boolean(),
     participantCount: z.number(),
-    creatorId: z.string(),
+    creatorId: z.number(),
   })
   .openapi('EventSummary');
 
 const ParticipantSchema = z
   .object({
-    userId: z.string(),
+    userId: z.number(),
     nickname: z.string(),
     joinedAt: z.string(),
   })
@@ -73,7 +73,7 @@ const ParticipantSchema = z
 
 export const EventDetailSchema = z
   .object({
-    id: z.string(),
+    id: z.number(),
     type: EventTypeSchema,
     title: z.string(),
     dateStart: z.string(),
@@ -82,7 +82,7 @@ export const EventDetailSchema = z
     subtitle: z.string().nullable(),
     description: z.string().nullable(),
     race: z.boolean(),
-    creatorId: z.string(),
+    creatorId: z.number(),
     createdAt: z.string(),
     updatedAt: z.string(),
     participants: z.array(ParticipantSchema),
@@ -105,5 +105,5 @@ export const SuccessMessageSchema = z
   .openapi('SuccessMessage');
 
 export const IdParamSchema = z.object({
-  id: z.string().openapi({ param: { name: 'id', in: 'path' }, example: '01HQ...' }),
+  id: z.string().openapi({ param: { name: 'id', in: 'path' }, example: '42' }),
 });

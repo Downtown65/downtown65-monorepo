@@ -1,7 +1,7 @@
 import { DT65_APP_NAME } from '@dt65/shared';
 import { Scalar } from '@scalar/hono-api-reference';
 import { createApp } from '@/app';
-import { apiKeyMiddleware } from '@/middleware/api-key';
+import { apiKeyAuth } from '@/middleware/api-key';
 import { errorHandler, notFoundHandler } from '@/middleware/error-handler';
 import { createEventsRouter } from '@/routes/events/events.index';
 import type { AuthenticationService } from '@/services/authentication-service';
@@ -10,7 +10,7 @@ export function createApiApp(authService: AuthenticationService) {
   const app = createApp();
 
   // Middleware stack
-  app.use('/api/*', apiKeyMiddleware());
+  app.use('/api/*', apiKeyAuth);
 
   // Error handlers
   app.onError(errorHandler);
