@@ -6,7 +6,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "typegen": "varlock typegen & wrangler types",
+    "typegen": "varlock typegen && wrangler types",
     "test": "vitest run --config vitest.config.ts",
     "lint": "biome lint",
     "format": "biome check --write",
