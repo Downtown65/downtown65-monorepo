@@ -15,8 +15,8 @@ This roadmap delivers the DT65 sports club ecosystem by building in strict depen
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Monorepo and Tooling** - TypeScript monorepo with pnpm workspaces, code quality tools, CI/CD pipeline with PR preview deploys and auto-deploy on merge, and development conventions
-- [ ] **Phase 2: Static Website** - Astro static site for public club information
-- [ ] **Phase 3: Database and Data Migration** - D1 schema design and migration of ~1000 existing events from DynamoDB
+- [x] **Phase 2: Static Website** - Astro static site for public club information
+- [x] **Phase 3: Database and Data Migration** - D1 schema design and migration of ~1000 existing events from DynamoDB
 - [x] **Phase 4: API** - Hono API on Cloudflare Workers with Auth0 JWT validation, event CRUD, participation, and test infrastructure
 - [ ] **Phase 5: Events Application** - React Router 7 PWA with Auth0 Lock login, event management UI, and mobile-responsive Mantine layout
 - [ ] **Phase 6: Email Notifications** - New event email notifications via AWS SES with member opt-in/out preferences
@@ -65,8 +65,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Drizzle ORM schema (users, events, users_to_events), D1 binding, migration generation and local apply
-- [ ] 03-02-PLAN.md — DynamoDB/Auth0 migration script, seed.sql generation, data validation
+- [x] 03-01-PLAN.md — Drizzle ORM schema (users, events, users_to_events), D1 binding, migration generation and local apply
+- [x] 03-02-PLAN.md — DynamoDB/Auth0 migration script, seed.sql generation, data validation
 
 ### Phase 4: API
 **Goal**: A deployed Hono API on Cloudflare Workers serves all event and participation endpoints with Auth0 JWT-protected access and automated tests
@@ -127,9 +127,9 @@ Note: Phase 6 depends on Phase 4 (not Phase 5) and can be parallelized with Phas
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Monorepo and Tooling | 2/2 | Complete    | 2026-02-24 |
+| 1. Monorepo and Tooling | 2/2 | Complete | 2026-02-24 |
 | 2. Static Website | 1/1 | Complete | 2026-03-17 |
-| 3. Database and Data Migration | 0/2 | Not started | - |
-| 4. API | 0/3 | Not started | - |
+| 3. Database and Data Migration | 2/2 | Complete | 2026-03-17 |
+| 4. API | 3/3 | Complete | 2026-03-18 |
 | 5. Events Application | 0/3 | Not started | - |
 | 6. Email Notifications | 0/1 | Not started | - |
