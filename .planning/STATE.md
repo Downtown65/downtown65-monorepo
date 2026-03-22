@@ -14,7 +14,7 @@ Plan: 3 of 3 in current phase -- DONE
 Status: Complete
 Last activity: 2026-03-18 -- Completed 04-03-PLAN.md (Participation endpoints + tests)
 
-Progress: [██████████] 100%
+Progress: [██████░░░░] 4/6 phases complete
 
 ## Performance Metrics
 
@@ -28,6 +28,7 @@ Progress: [██████████] 100%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Monorepo and Tooling | 2/2 | 24 min | 12 min |
+| 2. Static Website | 1/1 | - | - |
 | 3. Database and Data Migration | 2/2 | 29 min | 15 min |
 | 4. API Development | 3/3 | 30 min | 10 min |
 
