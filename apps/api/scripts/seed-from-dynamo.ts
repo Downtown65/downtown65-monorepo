@@ -30,6 +30,15 @@ function logError(message: string): void {
   console.error(message);
 }
 
+/**
+ * Global mapping from Auth0 user IDs (auth0_sub) to deterministic numeric
+ * user IDs used as primary keys in the relational database.
+ *
+ * This is populated in generateUserInserts and consumed by the generators for
+ * dependent tables (e.g. events).
+ */
+const auth0ToDbUserId = new Map<string, number>();
+
 function escapeSql(value: string | null | undefined): string {
   if (value == null) return 'NULL';
   // Replace single quotes with doubled single quotes for SQL escaping
@@ -378,14 +387,22 @@ function generateUserInserts(users: Map<string, UserRecord>): string[] {
   const allUsers = Array.from(users.values());
   const batchSize = 50;
 
-  for (let i = 0; i < allUsers.length; i += batchSize) {
-    const batch = allUsers.slice(i, i + batchSize);
+  // Assign deterministic numeric IDs to each user and populate the global
+  // auth0_sub -> numeric ID mapping for use in dependent inserts.
+  const mappedUsers = allUsers.map((u, index) => {
+    const dbId = index + 1;
+    auth0ToDbUserId.set(u.id, dbId);
+    return { dbId, user: u };
+  });
+
+  for (let i = 0; i < mappedUsers.length; i += batchSize) {
+    const batch = mappedUsers.slice(i, i + batchSize);
     const values = batch.map(
-      (u) =>
-        `(${escapeSql(u.id)}, ${escapeSql(u.nickname)}, ${escapeSql(u.picture)}, ${escapeSql(u.createdAt)}, ${escapeSql(u.updatedAt)})`,
+      ({ dbId, user: u }) =>
+        `(${dbId}, ${escapeSql(u.id)}, ${escapeSql(u.nickname)}, ${escapeSql(u.picture)}, ${escapeSql(u.createdAt)}, ${escapeSql(u.updatedAt)})`,
     );
     statements.push(
-      `INSERT INTO users (id, nickname, picture, created_at, updated_at) VALUES\n${values.join(',\n')};`,
+      `INSERT INTO users (id, auth0_sub, nickname, picture, created_at, updated_at) VALUES\n${values.join(',\n')};`,
     );
   }
 
@@ -398,10 +415,16 @@ function generateEventInserts(events: EventRecord[]): string[] {
 
   for (let i = 0; i < events.length; i += batchSize) {
     const batch = events.slice(i, i + batchSize);
-    const values = batch.map(
-      (e) =>
-        `(${escapeSql(e.id)}, ${escapeSql(e.title)}, ${escapeSql(e.subtitle)}, ${escapeSql(e.eventType)}, ${escapeSql(e.dateStart)}, ${escapeSql(e.timeStart)}, ${escapeSql(e.location)}, ${escapeSql(e.description)}, ${e.race}, ${escapeSql(e.creatorId)}, ${escapeSql(e.createdAt)}, ${escapeSql(e.updatedAt)})`,
-    );
+    const values = batch.map((e) => {
+      const creatorDbId = auth0ToDbUserId.get(e.creatorId);
+      if (creatorDbId === undefined) {
+        throw new Error(
+          `Missing numeric user ID mapping for event creator with auth0_sub "${e.creatorId}" (event id: ${e.id})`,
+        );
+      }
+
+      return `(${escapeSql(e.id)}, ${escapeSql(e.title)}, ${escapeSql(e.subtitle)}, ${escapeSql(e.eventType)}, ${escapeSql(e.dateStart)}, ${escapeSql(e.timeStart)}, ${escapeSql(e.location)}, ${escapeSql(e.description)}, ${e.race}, ${creatorDbId}, ${escapeSql(e.createdAt)}, ${escapeSql(e.updatedAt)})`;
+    });
     statements.push(
       `INSERT INTO events (id, title, subtitle, event_type, date_start, time_start, location, description, race, creator_id, created_at, updated_at) VALUES\n${values.join(',\n')};`,
     );
