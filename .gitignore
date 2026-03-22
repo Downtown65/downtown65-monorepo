@@ -4,6 +4,7 @@ dist/
 .wrangler/
 .dev.vars
 *.tsbuildinfo
+worker-configuration.d.ts
 .DS_Store
 coverage/
 .zed/
