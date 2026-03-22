@@ -426,7 +426,7 @@ function generateEventInserts(events: EventRecord[]): string[] {
       return `(${escapeSql(e.id)}, ${escapeSql(e.title)}, ${escapeSql(e.subtitle)}, ${escapeSql(e.eventType)}, ${escapeSql(e.dateStart)}, ${escapeSql(e.timeStart)}, ${escapeSql(e.location)}, ${escapeSql(e.description)}, ${e.race}, ${creatorDbId}, ${escapeSql(e.createdAt)}, ${escapeSql(e.updatedAt)})`;
     });
     statements.push(
-      `INSERT INTO events (id, title, subtitle, event_type, date_start, time_start, location, description, race, creator_id, created_at, updated_at) VALUES\n${values.join(',\n')};`,
+      `INSERT INTO events (ulid, title, subtitle, event_type, date_start, time_start, location, description, race, creator_id, created_at, updated_at) VALUES\n${values.join(',\n')};`,
     );
   }
 
