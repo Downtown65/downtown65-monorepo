@@ -13,3 +13,6 @@ runs:
 
     - run: pnpm install --frozen-lockfile
       shell: bash
+
+    - run: pnpm typegen
+      shell: bash

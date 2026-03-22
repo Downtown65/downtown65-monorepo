@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "pnpm -r --parallel run dev",
     "build": "pnpm -r run build",
+    "typegen": "pnpm -r run typegen",
     "check": "pnpm -r run ci:lint && pnpm knip && sherif",
     "lint": "pnpm -r run lint",
     "format": "pnpm -r run format",
