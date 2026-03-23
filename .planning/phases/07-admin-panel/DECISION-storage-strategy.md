@@ -108,7 +108,7 @@ We use `app_metadata.role` as the role field and add it to JWT access tokens via
 ```javascript
 exports.onExecutePostLogin = async (event, api) => {
   const role = event.user.app_metadata?.role || 'member';
-  api.accessToken.setCustomClaim('https://dt65.club/role', role);
+  api.accessToken.setCustomClaim('https://downtown65.com/role', role);
 };
 ```
 
@@ -116,7 +116,7 @@ exports.onExecutePostLogin = async (event, api) => {
 
 ```typescript
 // Extract role from JWT custom claim
-const role = payload['https://dt65.club/role'] as string;
+const role = payload['https://downtown65.com/role'] as string;
 // Gate admin endpoints
 if (!['admin', 'board_member'].includes(role)) {
   throw new HTTPException(403);
