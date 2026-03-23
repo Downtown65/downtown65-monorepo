@@ -61,8 +61,9 @@ export function EventWizard({
           <StepEventType
             value={state.eventType}
             onChange={(type: EventType) => {
+              const isFirstSelection = state.eventType === null;
               dispatch({ type: 'SET_EVENT_TYPE', payload: type });
-              setActive(1);
+              if (isFirstSelection) setActive(1);
             }}
           />
         </Stepper.Step>
