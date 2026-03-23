@@ -60,7 +60,10 @@ export function EventWizard({
         <Stepper.Step label="Laji">
           <StepEventType
             value={state.eventType}
-            onChange={(type: EventType) => dispatch({ type: 'SET_EVENT_TYPE', payload: type })}
+            onChange={(type: EventType) => {
+              dispatch({ type: 'SET_EVENT_TYPE', payload: type });
+              setActive(1);
+            }}
           />
         </Stepper.Step>
 
