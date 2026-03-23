@@ -62,7 +62,6 @@ async function fetchAllUsers(token: string): Promise<Auth0User[]> {
   let page = 0;
   const perPage = 100;
 
-  // biome-ignore lint/performance/noAwaitInLoops: sequential pagination required by Auth0 API
   while (true) {
     const url = new URL(`https://${ENV.AUTH0_DOMAIN}/api/v2/users`);
     url.searchParams.set('page', String(page));
@@ -70,6 +69,7 @@ async function fetchAllUsers(token: string): Promise<Auth0User[]> {
     url.searchParams.set('fields', 'user_id,nickname,picture,created_at,updated_at');
     url.searchParams.set('include_fields', 'true');
 
+    // biome-ignore lint/performance/noAwaitInLoops: sequential pagination required by Auth0 API
     const response = await fetch(url.toString(), {
       headers: { authorization: `Bearer ${token}` },
     });
