@@ -11,7 +11,8 @@
     "lint": "biome lint",
     "format": "biome check --write",
     "ci:lint": "biome ci",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "sync:users": "varlock run -- tsx scripts/sync-auth0-users.ts"
   },
   "dependencies": {
     "@dt65/shared": "workspace:*",

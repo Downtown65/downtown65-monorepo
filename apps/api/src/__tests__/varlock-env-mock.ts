@@ -5,5 +5,7 @@ export const ENV = {
   AUTH0_AUDIENCE: 'https://test-audience',
   AUTH0_CLIENT_ID: 'test-client-id',
   AUTH0_CLIENT_SECRET: 'test-client-secret',
+  AUTH0_CLIENT_USER_MANAGEMENT_ID: 'test-mgmt-client-id',
+  AUTH0_CLIENT_USER_MANAGEMENT_SECRET: 'test-mgmt-client-secret',
   TEST_VALUE: 'test-value',
 };
