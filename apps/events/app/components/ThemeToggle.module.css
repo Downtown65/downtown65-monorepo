@@ -1,0 +1,15 @@
+.light {
+  display: none;
+}
+
+.dark {
+  display: none;
+}
+
+[data-mantine-color-scheme="light"] .dark {
+  display: block;
+}
+
+[data-mantine-color-scheme="dark"] .light {
+  display: block;
+}
