@@ -12,7 +12,7 @@ import {
 
 export const createEventRoute = createRoute({
   method: 'post',
-  path: '/api/events',
+  path: '/events',
   tags: ['Events'],
   summary: 'Create a new event',
   request: {
@@ -35,7 +35,7 @@ export const createEventRoute = createRoute({
 
 export const listEventsRoute = createRoute({
   method: 'get',
-  path: '/api/events',
+  path: '/events',
   tags: ['Events'],
   summary: 'List upcoming events',
   responses: {
@@ -48,7 +48,7 @@ export const listEventsRoute = createRoute({
 
 export const getEventRoute = createRoute({
   method: 'get',
-  path: '/api/events/{id}',
+  path: '/events/{id}',
   tags: ['Events (Public)'],
   summary: 'Get event details (public)',
   request: {
@@ -68,7 +68,7 @@ export const getEventRoute = createRoute({
 
 export const updateEventRoute = createRoute({
   method: 'put',
-  path: '/api/events/{id}',
+  path: '/events/{id}',
   tags: ['Events'],
   summary: 'Update an event (owner only)',
   request: {
@@ -96,7 +96,7 @@ export const updateEventRoute = createRoute({
 
 export const deleteEventRoute = createRoute({
   method: 'delete',
-  path: '/api/events/{id}',
+  path: '/events/{id}',
   tags: ['Events'],
   summary: 'Delete an event (owner only)',
   request: {
@@ -119,7 +119,7 @@ export const deleteEventRoute = createRoute({
 
 export const joinEventRoute = createRoute({
   method: 'post',
-  path: '/api/events/{id}/participants',
+  path: '/events/{id}/participants',
   tags: ['Participants'],
   summary: 'Join an event',
   request: {
@@ -143,7 +143,7 @@ export const joinEventRoute = createRoute({
 
 export const leaveEventRoute = createRoute({
   method: 'delete',
-  path: '/api/events/{id}/participants',
+  path: '/events/{id}/participants',
   tags: ['Participants'],
   summary: 'Leave an event',
   request: {

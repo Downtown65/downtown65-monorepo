@@ -17,7 +17,7 @@ export function createApiApp(authService: AuthenticationService) {
   app.notFound(notFoundHandler);
 
   // Routes
-  app.route('/', createEventsRouter(authService));
+  app.route('/api', createEventsRouter(authService));
 
   // OpenAPI security scheme
   app.openAPIRegistry.registerComponent('securitySchemes', 'apiKey', {
