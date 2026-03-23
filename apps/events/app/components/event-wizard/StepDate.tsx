@@ -7,23 +7,16 @@ interface StepDateProps {
 }
 
 export function StepDate({ value, onChange }: StepDateProps) {
-  const dateValue = value ? new Date(value) : null;
-
   return (
     <>
       <Title order={3} mb="md">
         Valitse päivä
       </Title>
       <DatePicker
-        value={dateValue}
+        value={value || null}
         onChange={(date) => {
-          if (date) {
-            const d = date as unknown as Date;
-            const iso = d.toISOString().split('T')[0];
-            if (iso) onChange(iso);
-          }
+          if (date) onChange(date as string);
         }}
-        minDate={new Date()}
         size="md"
       />
     </>

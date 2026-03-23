@@ -1,5 +1,9 @@
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
+import '@mantine/tiptap/styles.css';
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
+import { DatesProvider } from '@mantine/dates';
+import 'dayjs/locale/fi';
 import {
   isRouteErrorResponse,
   Links,
@@ -41,7 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="auto">
-          {children}
+          <DatesProvider settings={{ locale: 'fi', firstDayOfWeek: 1 }}>{children}</DatesProvider>
         </MantineProvider>
         <ScrollRestoration />
         <Scripts />
