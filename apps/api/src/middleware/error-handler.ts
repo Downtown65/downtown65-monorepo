@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import type { AppEnv } from '@/app';
 
 export const errorHandler: ErrorHandler<AppEnv> = (err, c) => {
+  console.error(err);
   if (err instanceof HTTPException) {
     return c.json(
       { error: { code: `HTTP_${String(err.status)}`, message: err.message } },

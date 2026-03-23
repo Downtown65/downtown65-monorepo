@@ -28,8 +28,8 @@ export function createEventsRouter(authService: AuthenticationService) {
   eventsRouter.openapi(getEventRoute, handleGetEvent);
 
   // Protected endpoints (require JWT)
-  eventsRouter.use('/api/events', jwtAuth(authService));
-  eventsRouter.use('/api/events/*', jwtAuth(authService));
+  eventsRouter.use('/events', jwtAuth(authService));
+  eventsRouter.use('/events/*', jwtAuth(authService));
 
   eventsRouter.openapi(createEventRoute, handleCreateEvent);
   eventsRouter.openapi(listEventsRoute, handleListEvents);
