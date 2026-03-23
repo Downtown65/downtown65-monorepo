@@ -4,8 +4,11 @@ export type Bindings = {
   DB: D1Database;
 };
 
+export type UserRole = 'admin' | 'board_member' | 'member';
+
 export type Variables = {
   userId: number;
+  userRole: UserRole;
 };
 
 export type AppEnv = { Bindings: Bindings; Variables: Variables };
