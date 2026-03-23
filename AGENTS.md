@@ -27,6 +27,17 @@ bd update <id> --claim  # Claim work
 bd close <id>         # Complete work
 ```
 
+### New Environment Setup
+
+When starting from a fresh environment (e.g., OpenClaw, new machine):
+
+```bash
+bd dolt pull          # Pull all issues and history from DoltHub remote
+bd ready              # Verify sync — check available work
+```
+
+Always `bd dolt pull` before starting work in a new environment to ensure you have the latest issue state.
+
 ### Rules
 
 - Use `bd` for ALL task tracking — do NOT use TodoWrite, TaskCreate, or markdown TODO lists
