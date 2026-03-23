@@ -36,7 +36,7 @@ export function createApiApp(authService: AuthenticationService) {
       type: 'oauth2',
       flows: {
         authorizationCode: {
-          authorizationUrl: `https://${ENV.AUTH0_DOMAIN}/authorize`,
+          authorizationUrl: `https://${ENV.AUTH0_DOMAIN}/authorize?audience=${ENV.AUTH0_AUDIENCE}`,
           tokenUrl: `https://${ENV.AUTH0_DOMAIN}/oauth/token`,
           scopes: {},
         },
@@ -58,7 +58,7 @@ export function createApiApp(authService: AuthenticationService) {
       authentication: {
         preferredSecurityScheme: isDev ? 'oauth2' : 'apiKey',
         securitySchemes: {
-          apiKey: { value: 'x-api-key-secret' },
+          apiKey: {},
           ...(isDev && {
             oauth2: {
               clientId: ENV.AUTH0_CLIENT_ID,
