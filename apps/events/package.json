@@ -15,7 +15,13 @@
   "dependencies": {
     "@dt65/shared": "workspace:*",
     "@mantine/core": "^8.3.18",
+    "@mantine/dates": "^8.3.18",
     "@mantine/hooks": "^8.3.18",
+    "@mantine/tiptap": "^8.3.18",
+    "@tiptap/extension-link": "^2.12.0",
+    "@tiptap/react": "^2.12.0",
+    "@tiptap/starter-kit": "^2.12.0",
+    "dayjs": "^1.11.13",
     "@tabler/icons-react": "catalog:",
     "@varlock/infisical-plugin": "^0.0.3",
     "@varlock/vite-integration": "^0.2.5",
