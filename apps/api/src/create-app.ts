@@ -58,7 +58,7 @@ export function createApiApp(authService: AuthenticationService) {
       authentication: {
         preferredSecurityScheme: isDev ? 'oauth2' : 'apiKey',
         securitySchemes: {
-          apiKey: {},
+          apiKey: { value: 'x-api-key-secret' },
           ...(isDev && {
             oauth2: {
               clientId: ENV.AUTH0_CLIENT_ID,
