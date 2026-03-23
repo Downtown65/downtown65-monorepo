@@ -25,6 +25,9 @@
         "recommended": true,
         "noNodejsModules": "off"
       },
+      "complexity": {
+        "noExcessiveLinesPerFunction": "off"
+      },
       "suspicious": {
         "recommended": true,
         "noConsole": "error"
@@ -33,7 +36,6 @@
         "recommended": true,
         "noDefaultExport": "off"
       },
-      "complexity": "warn",
       "performance": {
         "recommended": true,
         "useSolidForComponent": "off"
