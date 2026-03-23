@@ -50,6 +50,7 @@ function EditorInner({
   const editor = mod.useEditor({
     extensions: [mod.StarterKit, mod.TiptapLink],
     content: value,
+    autofocus: 'end',
     onUpdate: ({ editor: e }) => {
       onChange(e.getHTML());
     },
