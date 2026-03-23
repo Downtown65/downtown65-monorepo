@@ -6,6 +6,9 @@ import { logger } from '@/logger';
 
 export const errorHandler: ErrorHandler<AppEnv> = (err, c) => {
   if (err instanceof HTTPException) {
+    if (err.res) {
+      return err.res;
+    }
     return c.json(
       { error: { code: `HTTP_${String(err.status)}`, message: err.message } },
       err.status,
