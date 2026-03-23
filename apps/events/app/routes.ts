@@ -5,6 +5,7 @@ export default [
   route('events', 'routes/events.tsx'),
   route('events/new', 'routes/events.new.tsx'),
   route('events/:id', 'routes/events.$id.tsx'),
+  route('events/:id/edit', 'routes/events.$id.edit.tsx'),
   route('login', 'routes/login.ts'),
   route('logout', 'routes/logout.ts'),
   route('signup', 'routes/signup.tsx'),
