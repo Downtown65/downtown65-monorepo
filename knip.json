@@ -22,6 +22,10 @@
       "vite": false,
       "vitest": false
     },
+    "apps/admin": {
+      "entry": ["workers/app.ts", "app/**/*.{ts,tsx}"],
+      "ignoreDependencies": ["@varlock/vite-integration"]
+    },
     "apps/www": {
       "entry": ["src/pages/**/*.astro"],
       "ignoreDependencies": ["@vitest/coverage-v8", "wrangler"]
