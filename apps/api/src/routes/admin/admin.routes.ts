@@ -2,8 +2,13 @@ import { createRoute } from '@hono/zod-openapi';
 import {
   AdminUserSchema,
   ErrorSchema,
+  FeeStatusSchema,
+  PaginatedEventsSchema,
+  PaginationQuerySchema,
   UpdateBlockedSchema,
+  UpdateFeeSchema,
   UpdateRoleSchema,
+  UserFeeParamSchema,
   UserIdParamSchema,
 } from './admin.schemas';
 
@@ -88,6 +93,66 @@ export const updateUserBlockedRoute = createRoute({
     404: {
       content: { 'application/json': { schema: ErrorSchema } },
       description: 'User not found',
+    },
+  },
+});
+
+export const updateUserFeeRoute = createRoute({
+  method: 'put',
+  path: '/api/admin/users/{userId}/fees/{year}',
+  tags: ['Admin - Fees'],
+  summary: 'Set membership fee status for a year',
+  request: {
+    params: UserFeeParamSchema,
+    body: {
+      content: { 'application/json': { schema: UpdateFeeSchema } },
+      required: true,
+    },
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: FeeStatusSchema } },
+      description: 'Fee status updated',
+    },
+    404: {
+      content: { 'application/json': { schema: ErrorSchema } },
+      description: 'User not found',
+    },
+  },
+});
+
+export const getUserFeeRoute = createRoute({
+  method: 'get',
+  path: '/api/admin/users/{userId}/fees/{year}',
+  tags: ['Admin - Fees'],
+  summary: 'Get membership fee status for a year',
+  request: {
+    params: UserFeeParamSchema,
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: FeeStatusSchema } },
+      description: 'Fee status',
+    },
+    404: {
+      content: { 'application/json': { schema: ErrorSchema } },
+      description: 'User not found',
+    },
+  },
+});
+
+export const listAdminEventsRoute = createRoute({
+  method: 'get',
+  path: '/api/admin/events',
+  tags: ['Admin - Events'],
+  summary: 'List all events (paginated)',
+  request: {
+    query: PaginationQuerySchema,
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: PaginatedEventsSchema } },
+      description: 'Paginated list of all events',
     },
   },
 });

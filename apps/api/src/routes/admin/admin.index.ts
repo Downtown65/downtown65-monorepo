@@ -5,14 +5,20 @@ import type { ManagementService } from '@/services/auth0-management-service';
 import type { AuthenticationService } from '@/services/authentication-service';
 import {
   createHandleGetUser,
+  createHandleGetUserFee,
   createHandleListUsers,
   createHandleUpdateUserBlocked,
+  createHandleUpdateUserFee,
   createHandleUpdateUserRole,
+  handleListAdminEvents,
 } from './admin.handlers';
 import {
+  getUserFeeRoute,
   getUserRoute,
+  listAdminEventsRoute,
   listUsersRoute,
   updateUserBlockedRoute,
+  updateUserFeeRoute,
   updateUserRoleRoute,
 } from './admin.routes';
 
@@ -30,6 +36,9 @@ export function createAdminRouter(
   adminRouter.openapi(getUserRoute, createHandleGetUser(managementService));
   adminRouter.openapi(updateUserRoleRoute, createHandleUpdateUserRole(managementService));
   adminRouter.openapi(updateUserBlockedRoute, createHandleUpdateUserBlocked(managementService));
+  adminRouter.openapi(updateUserFeeRoute, createHandleUpdateUserFee(managementService));
+  adminRouter.openapi(getUserFeeRoute, createHandleGetUserFee(managementService));
+  adminRouter.openapi(listAdminEventsRoute, handleListAdminEvents);
 
   return adminRouter;
 }

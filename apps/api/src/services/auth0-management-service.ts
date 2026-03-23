@@ -34,6 +34,12 @@ export interface ManagementService {
   getUser(config: Auth0ManagementConfig, userId: string): Promise<Auth0User | null>;
   updateUserRole(config: Auth0ManagementConfig, userId: string, role: UserRole): Promise<void>;
   updateUserBlocked(config: Auth0ManagementConfig, userId: string, blocked: boolean): Promise<void>;
+  updateUserFees(
+    config: Auth0ManagementConfig,
+    userId: string,
+    year: string,
+    paid: boolean,
+  ): Promise<void>;
 }
 
 export class Auth0ManagementService implements ManagementService {
@@ -169,6 +175,39 @@ export class Auth0ManagementService implements ManagementService {
 
     if (!response.ok) {
       throw new Error(`Failed to update user blocked status: ${String(response.status)}`);
+    }
+  }
+
+  async updateUserFees(
+    config: Auth0ManagementConfig,
+    userId: string,
+    year: string,
+    paid: boolean,
+  ): Promise<void> {
+    const user = await this.getUser(config, userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const currentFees = user.app_metadata?.fees ?? {};
+    const updatedFees = { ...currentFees, [year]: paid };
+
+    const token = await this.getAccessToken(config);
+    const url = `https://${config.domain}/api/v2/users/${encodeURIComponent(userId)}`;
+
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        authorization: `Bearer ${token}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        app_metadata: { fees: updatedFees },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update user fees: ${String(response.status)}`);
     }
   }
 }

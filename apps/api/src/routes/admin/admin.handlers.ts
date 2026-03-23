@@ -1,14 +1,21 @@
+import type { EventType } from '@dt65/shared';
 import type { RouteHandler } from '@hono/zod-openapi';
+import { desc, eq, sql } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/d1';
 import type { AppEnv, UserRole } from '@/app';
+import { events, users } from '@/db/schema';
 import type {
   Auth0ManagementConfig,
   Auth0User,
   ManagementService,
 } from '@/services/auth0-management-service';
 import type {
+  getUserFeeRoute,
   getUserRoute,
+  listAdminEventsRoute,
   listUsersRoute,
   updateUserBlockedRoute,
+  updateUserFeeRoute,
   updateUserRoleRoute,
 } from './admin.routes';
 
@@ -133,3 +140,92 @@ export function createHandleUpdateUserBlocked(
     return c.json(toAdminUser(updatedUser), 200);
   };
 }
+
+export function createHandleUpdateUserFee(
+  managementService: ManagementService,
+): RouteHandler<typeof updateUserFeeRoute, AppEnv> {
+  return async (c) => {
+    const { userId, year } = c.req.valid('param');
+    const { paid } = c.req.valid('json');
+    const config = configFromEnv(c.env);
+
+    const user = await managementService.getUser(config, userId);
+    if (!user) {
+      return c.json({ error: { code: 'NOT_FOUND', message: 'User not found' } }, 404);
+    }
+
+    await managementService.updateUserFees(config, userId, year, paid);
+
+    return c.json({ userId, year, paid }, 200);
+  };
+}
+
+export function createHandleGetUserFee(
+  managementService: ManagementService,
+): RouteHandler<typeof getUserFeeRoute, AppEnv> {
+  return async (c) => {
+    const { userId, year } = c.req.valid('param');
+    const config = configFromEnv(c.env);
+
+    const user = await managementService.getUser(config, userId);
+    if (!user) {
+      return c.json({ error: { code: 'NOT_FOUND', message: 'User not found' } }, 404);
+    }
+
+    const paid = user.app_metadata?.fees?.[year] ?? false;
+
+    return c.json({ userId, year, paid }, 200);
+  };
+}
+
+export const handleListAdminEvents: RouteHandler<typeof listAdminEventsRoute, AppEnv> = async (
+  c,
+) => {
+  const { page: pageStr, perPage: perPageStr } = c.req.valid('query');
+  const page = Math.max(1, Number(pageStr));
+  const perPage = Math.min(100, Math.max(1, Number(perPageStr)));
+  const offset = (page - 1) * perPage;
+
+  const db = drizzle(c.env.DB);
+
+  const [countResult, rows] = await Promise.all([
+    db.select({ count: sql<number>`count(*)` }).from(events),
+    db
+      .select({
+        id: events.id,
+        title: events.title,
+        dateStart: events.dateStart,
+        timeStart: events.timeStart,
+        eventType: events.eventType,
+        location: events.location,
+        race: events.race,
+        creatorNickname: users.nickname,
+        createdAt: events.createdAt,
+        participantCount: sql<number>`(
+          SELECT count(*) FROM users_to_events
+          WHERE users_to_events.event_id = ${events.id}
+        )`,
+      })
+      .from(events)
+      .innerJoin(users, eq(events.creatorId, users.id))
+      .orderBy(desc(events.dateStart))
+      .limit(perPage)
+      .offset(offset),
+  ]);
+
+  const total = countResult[0]?.count ?? 0;
+
+  return c.json(
+    {
+      events: rows.map((row) => ({
+        ...row,
+        eventType: row.eventType as EventType,
+        race: row.race === 1,
+      })),
+      total,
+      page,
+      perPage,
+    },
+    200,
+  );
+};
