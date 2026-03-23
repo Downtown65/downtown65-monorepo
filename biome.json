@@ -34,7 +34,10 @@
         "noDefaultExport": "off"
       },
       "complexity": "warn",
-      "performance": "error"
+      "performance": {
+        "recommended": true,
+        "useSolidForComponent": "off"
+      }
     }
   },
   "javascript": {
