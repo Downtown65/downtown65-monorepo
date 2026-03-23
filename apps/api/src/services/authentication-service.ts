@@ -5,6 +5,7 @@ export type AuthConfig = {
 
 export type JwtPayload = {
   sub: string;
+  role: string | undefined;
 };
 
 export interface AuthenticationService {
@@ -80,7 +81,12 @@ export class Auth0Service implements AuthenticationService {
       throw new Error('Invalid token signature');
     }
 
-    return { sub: payload.sub };
+    const role = payload['https://dt65.club/role'];
+
+    return {
+      sub: payload.sub,
+      role: typeof role === 'string' ? role : undefined,
+    };
   }
 
   private async getSigningKey(kid: string, domain: string): Promise<CryptoKey> {
