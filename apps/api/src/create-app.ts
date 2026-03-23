@@ -5,7 +5,9 @@ import { createApp } from '@/app';
 import { apiKeyAuth } from '@/middleware/api-key';
 import { errorHandler, notFoundHandler } from '@/middleware/error-handler';
 import { requestLogger } from '@/middleware/request-logger';
+import { createAdminRouter } from '@/routes/admin/admin.index';
 import { createEventsRouter } from '@/routes/events/events.index';
+import type { ManagementService } from '@/services/auth0-management-service';
 import type { AuthenticationService } from '@/services/authentication-service';
 
 function registerSecuritySchemes(app: ReturnType<typeof createApp>) {
@@ -63,7 +65,10 @@ function registerDocs(app: ReturnType<typeof createApp>) {
   );
 }
 
-export function createApiApp(authService: AuthenticationService) {
+export function createApiApp(
+  authService: AuthenticationService,
+  managementService: ManagementService,
+) {
   const app = createApp();
 
   // Middleware stack
@@ -76,6 +81,7 @@ export function createApiApp(authService: AuthenticationService) {
 
   // Routes
   app.route('/api', createEventsRouter(authService));
+  app.route('/api', createAdminRouter(authService, managementService));
 
   // OpenAPI
   registerSecuritySchemes(app);
