@@ -17,9 +17,12 @@
     "@mantine/core": "^8.3.18",
     "@mantine/hooks": "^8.3.18",
     "@tabler/icons-react": "catalog:",
+    "@varlock/infisical-plugin": "^0.0.3",
+    "@varlock/vite-integration": "^0.2.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router": "catalog:"
+    "react-router": "catalog:",
+    "varlock": "^0.5.0"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.27.0",
