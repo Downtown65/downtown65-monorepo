@@ -29,5 +29,9 @@ catalog:
   typescript: 5.9.3
   vitest: 3.2.0
   loglayer: 9.1.0
+  react-router: 7.13.1
+  "@react-router/cloudflare": 7.13.1
+  "@react-router/dev": 7.13.1
+  "@tabler/icons-react": 3.40.0
   wrangler: 4.72.0
   zod: 4.3.5

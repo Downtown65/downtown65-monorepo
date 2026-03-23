@@ -1,9 +1,9 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "downtown65-events",
-  "main": "src/index.ts",
+  "main": "./workers/app.ts",
   "compatibility_date": "2026-02-01",
-  "compatibility_flags": ["nodejs_compat_v2"],
+  "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "enabled": true
   },
