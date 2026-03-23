@@ -1,10 +1,4 @@
-import {
-  AppShell,
-  Burger,
-  Group,
-  NavLink,
-  Title,
-} from '@mantine/core';
+import { AppShell, Burger, Group, NavLink, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconCalendarEvent, IconPlus } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router';
@@ -33,7 +27,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <Group h="100%" px="md" justify="space-between">
           <Group>
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-            <Title order={3} component={Link} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Title
+              order={3}
+              renderRoot={(props) => <Link to="/" {...props} />}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
               Downtown 65
             </Title>
           </Group>

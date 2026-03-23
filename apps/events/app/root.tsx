@@ -1,18 +1,13 @@
 import '@mantine/core/styles.css';
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
 import {
-  ColorSchemeScript,
-  MantineProvider,
-  mantineHtmlProps,
-} from '@mantine/core';
-import {
+  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  isRouteErrorResponse,
 } from 'react-router';
-import type { Route } from './+types/root';
 import { AppLayout } from '~/components/AppLayout';
 import { theme } from '~/theme';
 
@@ -45,7 +40,7 @@ export default function Root() {
   );
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export function ErrorBoundary({ error }: { error: unknown }) {
   if (isRouteErrorResponse(error)) {
     return (
       <div style={{ textAlign: 'center', padding: '4rem 1rem' }}>

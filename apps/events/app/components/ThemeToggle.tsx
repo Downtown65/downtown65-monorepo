@@ -1,8 +1,4 @@
-import {
-  ActionIcon,
-  useComputedColorScheme,
-  useMantineColorScheme,
-} from '@mantine/core';
+import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { IconMoon, IconSun } from '@tabler/icons-react';
 
 export function ThemeToggle() {
@@ -13,9 +9,7 @@ export function ThemeToggle() {
 
   return (
     <ActionIcon
-      onClick={() =>
-        setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')
-      }
+      onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
       variant="default"
       size="lg"
       aria-label="Vaihda teema"
