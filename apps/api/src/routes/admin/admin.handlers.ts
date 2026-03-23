@@ -50,8 +50,8 @@ function getManagementConfig(
 function configFromEnv(env: AppEnv['Bindings']): Auth0ManagementConfig {
   return getManagementConfig(
     env.AUTH0_DOMAIN,
-    env.AUTH0_MANAGEMENT_CLIENT_ID,
-    env.AUTH0_MANAGEMENT_CLIENT_SECRET,
+    env.AUTH0_CLIENT_USER_MANAGEMENT_ID,
+    env.AUTH0_CLIENT_USER_MANAGEMENT_SECRET,
   );
 }
 
