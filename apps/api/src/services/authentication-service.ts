@@ -81,7 +81,7 @@ export class Auth0Service implements AuthenticationService {
       throw new Error('Invalid token signature');
     }
 
-    const role = payload['https://dt65.club/role'];
+    const role = payload['https://downtown65.com/role'];
 
     return {
       sub: payload.sub,
