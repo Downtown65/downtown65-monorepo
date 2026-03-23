@@ -4,12 +4,14 @@ import {
   Container,
   Divider,
   Group,
+  Modal,
   Paper,
   Stack,
   Text,
   Title,
   TypographyStylesProvider,
 } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import {
   IconCalendarEvent,
   IconHandOff,
@@ -122,6 +124,7 @@ function ParticipantBadge({
 export default function EventDetailPage() {
   const { event, currentNickname } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
+  const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure();
 
   const isParticipant = event.participants.some((p) => p.nickname === currentNickname);
   const isSubmitting = fetcher.state !== 'idle';
@@ -232,24 +235,38 @@ export default function EventDetailPage() {
           >
             Muokkaa
           </Button>
-          <fetcher.Form method="post">
-            <Button
-              type="submit"
-              name="intent"
-              value="delete"
-              variant="subtle"
-              color="red"
-              leftSection={<IconTrash size={16} />}
-              loading={isSubmitting}
-            >
-              Poista
-            </Button>
-          </fetcher.Form>
+          <Button
+            variant="subtle"
+            color="red"
+            leftSection={<IconTrash size={16} />}
+            onClick={openDeleteModal}
+          >
+            Poista
+          </Button>
         </Group>
         <Text size="xs" c="dimmed" mt="xs">
           Vain tapahtuman luoja voi muokata tai poistaa tapahtuman.
         </Text>
       </Paper>
+
+      <Modal
+        opened={deleteModalOpened}
+        onClose={closeDeleteModal}
+        title="Poista tapahtuma"
+        centered
+      >
+        <Text mb="lg">Haluatko varmasti poistaa tapahtuman &quot;{event.title}&quot;?</Text>
+        <Group justify="flex-end">
+          <Button variant="default" onClick={closeDeleteModal}>
+            Peruuta
+          </Button>
+          <fetcher.Form method="post">
+            <Button type="submit" name="intent" value="delete" color="red" loading={isSubmitting}>
+              Poista
+            </Button>
+          </fetcher.Form>
+        </Group>
+      </Modal>
     </Container>
   );
 }
