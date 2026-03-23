@@ -43,4 +43,18 @@ export class MockManagementService implements ManagementService {
     }
     user.blocked = blocked;
   }
+
+  async updateUserFees(
+    _config: Auth0ManagementConfig,
+    userId: string,
+    year: string,
+    paid: boolean,
+  ): Promise<void> {
+    const user = this.users.get(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const currentFees = user.app_metadata?.fees ?? {};
+    user.app_metadata = { ...user.app_metadata, fees: { ...currentFees, [year]: paid } };
+  }
 }
