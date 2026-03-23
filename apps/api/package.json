@@ -21,6 +21,7 @@
     "@varlock/vite-integration": "^0.2.5",
     "drizzle-orm": "catalog:",
     "hono": "catalog:",
+    "loglayer": "catalog:",
     "varlock": "^0.5.0"
   },
   "devDependencies": {

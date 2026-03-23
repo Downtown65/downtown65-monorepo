@@ -2,6 +2,7 @@ import type { ErrorHandler, NotFoundHandler } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { ZodError } from 'zod';
 import type { AppEnv } from '@/app';
+import { logger } from '@/logger';
 
 export const errorHandler: ErrorHandler<AppEnv> = (err, c) => {
   if (err instanceof HTTPException) {
@@ -22,6 +23,8 @@ export const errorHandler: ErrorHandler<AppEnv> = (err, c) => {
       400,
     );
   }
+
+  logger.withError(err).error('Unhandled error');
 
   return c.json({ error: { code: 'INTERNAL_ERROR', message: 'Internal server error' } }, 500);
 };
