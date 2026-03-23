@@ -109,7 +109,6 @@ export async function exchangeCode(
     body: JSON.stringify({
       grant_type: 'authorization_code',
       client_id: ENV.AUTH0_CLIENT_ID,
-      client_secret: ENV.AUTH0_CLIENT_SECRET,
       code,
       redirect_uri: getCallbackUrl(request),
       code_verifier: codeVerifier,
@@ -134,7 +133,6 @@ export async function refreshAccessToken(refreshToken: string): Promise<TokenRes
     body: JSON.stringify({
       grant_type: 'refresh_token',
       client_id: ENV.AUTH0_CLIENT_ID,
-      client_secret: ENV.AUTH0_CLIENT_SECRET,
       refresh_token: refreshToken,
     }),
   });
