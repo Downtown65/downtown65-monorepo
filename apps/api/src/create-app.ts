@@ -10,21 +10,7 @@ import type { AuthenticationService } from '@/services/authentication-service';
 
 const isDev = ENV.APP_ENV === 'development';
 
-export function createApiApp(authService: AuthenticationService) {
-  const app = createApp();
-
-  // Middleware stack
-  app.use('/api/*', requestLogger);
-  app.use('/api/*', apiKeyAuth);
-
-  // Error handlers
-  app.onError(errorHandler);
-  app.notFound(notFoundHandler);
-
-  // Routes
-  app.route('/api', createEventsRouter(authService));
-
-  // OpenAPI security schemes
+function registerSecuritySchemes(app: ReturnType<typeof createApp>) {
   app.openAPIRegistry.registerComponent('securitySchemes', 'apiKey', {
     type: 'apiKey',
     in: 'header',
@@ -43,8 +29,9 @@ export function createApiApp(authService: AuthenticationService) {
       },
     });
   }
+}
 
-  // OpenAPI documentation
+function registerDocs(app: ReturnType<typeof createApp>) {
   app.doc31('/doc', {
     openapi: '3.1.0',
     info: { title: 'DT65 API', version: '1.0.0' },
@@ -58,23 +45,39 @@ export function createApiApp(authService: AuthenticationService) {
       authentication: {
         preferredSecurityScheme: isDev ? 'oauth2' : 'apiKey',
         securitySchemes: {
-          apiKey: {},
+          apiKey: { value: 'x-api-key-secret' },
           ...(isDev && {
             oauth2: {
-              clientId: ENV.AUTH0_CLIENT_ID,
-              scopes: [],
+              flows: {
+                authorizationCode: {
+                  'x-scalar-client-id': ENV.AUTH0_CLIENT_ID,
+                },
+              },
             },
           }),
         },
       },
-      ...(isDev && {
-        defaultHttpClient: {
-          targetKey: 'javascript',
-          clientKey: 'fetch',
-        },
-      }),
     }),
   );
+}
+
+export function createApiApp(authService: AuthenticationService) {
+  const app = createApp();
+
+  // Middleware stack
+  app.use('/api/*', requestLogger);
+  app.use('/api/*', apiKeyAuth);
+
+  // Error handlers
+  app.onError(errorHandler);
+  app.notFound(notFoundHandler);
+
+  // Routes
+  app.route('/api', createEventsRouter(authService));
+
+  // OpenAPI
+  registerSecuritySchemes(app);
+  registerDocs(app);
 
   // Health check (no auth required)
   app.get('/', (c) => {

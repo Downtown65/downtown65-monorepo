@@ -62,6 +62,7 @@ async function fetchAllUsers(token: string): Promise<Auth0User[]> {
   let page = 0;
   const perPage = 100;
 
+  // biome-ignore lint/performance/noAwaitInLoops: sequential pagination required by Auth0 API
   while (true) {
     const url = new URL(`https://${ENV.AUTH0_DOMAIN}/api/v2/users`);
     url.searchParams.set('page', String(page));
