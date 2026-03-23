@@ -3,6 +3,7 @@ import { ENV } from 'varlock/env';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { createApiApp } from '@/create-app';
 import { MockAuth0Service } from './mock-authentication-service';
+import { MockManagementService } from './mock-management-service';
 import { insertPastEvent, insertTestUser } from './test-helpers';
 
 const AUTH0_SUB_1 = 'auth0|test-user-1';
@@ -10,7 +11,7 @@ const AUTH0_SUB_2 = 'auth0|test-user-2';
 const API_KEY = ENV.X_API_KEY;
 
 const mockAuth = new MockAuth0Service();
-const app = createApiApp(mockAuth);
+const app = createApiApp(mockAuth, new MockManagementService());
 
 let userId1: number;
 

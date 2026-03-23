@@ -22,6 +22,9 @@ export default defineWorkersConfig(async () => {
           miniflare: {
             bindings: {
               TEST_MIGRATIONS: migrations,
+              AUTH0_DOMAIN: 'test.auth0.com',
+              AUTH0_MANAGEMENT_CLIENT_ID: 'test-mgmt-client-id',
+              AUTH0_MANAGEMENT_CLIENT_SECRET: 'test-mgmt-client-secret',
             },
           },
         },
