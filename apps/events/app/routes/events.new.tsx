@@ -1,5 +1,3 @@
-import '@mantine/dates/styles.css';
-import '@mantine/tiptap/styles.css';
 import { Container, Title } from '@mantine/core';
 import { redirect, useNavigation } from 'react-router';
 import { EventWizard } from '~/components/event-wizard/EventWizard';
