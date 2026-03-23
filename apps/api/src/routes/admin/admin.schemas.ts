@@ -1,7 +1,7 @@
 import { EVENT_TYPES } from '@dt65/shared';
 import { z } from '@hono/zod-openapi';
 
-export const UserRoleSchema = z.enum(['admin', 'board_member', 'member']);
+const UserRoleSchema = z.enum(['admin', 'board_member', 'member']);
 
 export const AdminUserSchema = z
   .object({
@@ -52,7 +52,7 @@ export const UserFeeParamSchema = z.object({
   year: z.string().openapi({ param: { name: 'year', in: 'path' }, example: '2026' }),
 });
 
-export const AdminEventSchema = z
+const AdminEventSchema = z
   .object({
     id: z.number(),
     title: z.string(),
