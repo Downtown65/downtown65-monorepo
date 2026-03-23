@@ -6,6 +6,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
+    "typegen": "varlock typegen",
     "test": "vitest run --passWithNoTests",
     "lint": "biome lint",
     "format": "biome check --write",
