@@ -2,11 +2,14 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "~/*": ["./app/*"]
+    },
+    "types": ["vite/client"]
   },
-  "include": ["src"],
+  "include": ["app", "workers", "react-router.config.ts", "vite.config.ts"],
   "references": [{ "path": "../../packages/shared" }]
 }
