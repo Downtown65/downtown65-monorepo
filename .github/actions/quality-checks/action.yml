@@ -12,8 +12,7 @@ runs:
 
     - name: Typecheck
       run: |
-        pnpm run --filter="@dt65/api" typegen
-        pnpm run --filter="@dt65/events" typegen
+        pnpm typegen
         pnpm typecheck
       shell: bash
 
