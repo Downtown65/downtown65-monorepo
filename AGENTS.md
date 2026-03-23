@@ -1,40 +1,17 @@
-# Agent Instructions
+# Downtown 65 Ecosystem
 
-This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
+DT65 sports club ecosystem -- 3 Cloudflare Workers apps + shared package in a pnpm monorepo.
 
-## Quick Reference
+## Documentation
 
-```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --claim  # Claim work atomically
-bd close <id>         # Complete work
-bd dolt push          # Push beads data to remote
-```
-
-## Non-Interactive Shell Commands
-
-**ALWAYS use non-interactive flags** with file operations to avoid hanging on confirmation prompts.
-
-Shell commands like `cp`, `mv`, and `rm` may be aliased to include `-i` (interactive) mode on some systems, causing the agent to hang indefinitely waiting for y/n input.
-
-**Use these forms instead:**
-```bash
-# Force overwrite without prompting
-cp -f source dest           # NOT: cp source dest
-mv -f source dest           # NOT: mv source dest
-rm -f file                  # NOT: rm file
-
-# For recursive operations
-rm -rf directory            # NOT: rm -r directory
-cp -rf source dest          # NOT: cp -r source dest
-```
-
-**Other commands that may prompt:**
-- `scp` - use `-o BatchMode=yes` for non-interactive
-- `ssh` - use `-o BatchMode=yes` to fail instead of prompting
-- `apt-get` - use `-y` flag
-- `brew` - use `HOMEBREW_NO_AUTO_UPDATE=1` env var
+| Topic | File |
+|-------|------|
+| Architecture, tech stack, workspace structure | [doc/architecture.md](doc/architecture.md) |
+| Commands & local development | [doc/commands.md](doc/commands.md) |
+| Environment variables (VarLock) | [doc/environment.md](doc/environment.md) |
+| Coding conventions (commits, naming, patterns, TS, deps) | [doc/conventions.md](doc/conventions.md) |
+| CI, pre-push hooks, project references | [doc/ci.md](doc/ci.md) |
+| Non-interactive shell commands (agent safety) | [doc/agent-shell.md](doc/agent-shell.md) |
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
 ## Beads Issue Tracker
