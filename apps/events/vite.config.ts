@@ -4,10 +4,7 @@ import { reactRouter } from '@react-router/dev/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [
-    cloudflare({ viteEnvironment: { name: 'ssr' } }),
-    reactRouter(),
-  ],
+  plugins: [cloudflare({ viteEnvironment: { name: 'ssr' } }), reactRouter()],
   resolve: {
     alias: {
       '~': path.resolve(import.meta.dirname, 'app'),

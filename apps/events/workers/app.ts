@@ -1,5 +1,14 @@
 import { createRequestHandler } from 'react-router';
 
+interface ExecutionContext {
+  waitUntil(promise: Promise<unknown>): void;
+  passThroughOnException(): void;
+}
+
+interface ExportedHandler<E = unknown> {
+  fetch?: (request: Request, env: E, ctx: ExecutionContext) => Response | Promise<Response>;
+}
+
 declare module 'react-router' {
   interface AppLoadContext {
     cloudflare: {

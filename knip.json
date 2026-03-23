@@ -16,7 +16,7 @@
       "vitest": false
     },
     "apps/events": {
-      "entry": "src/index.ts",
+      "entry": ["app/routes/**/*.tsx", "workers/app.ts"],
       "ignoreDependencies": ["@dt65/shared", "@vitest/coverage-v8"]
     },
     "apps/www": {

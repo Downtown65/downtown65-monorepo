@@ -17,15 +17,12 @@
     "@mantine/core": "^8.3.18",
     "@mantine/hooks": "^8.3.18",
     "@tabler/icons-react": "catalog:",
-    "clsx": "^2.1.1",
-    "isbot": "^5.1.27",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "catalog:"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.27.0",
-    "@react-router/cloudflare": "catalog:",
     "@react-router/dev": "catalog:",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.6",
