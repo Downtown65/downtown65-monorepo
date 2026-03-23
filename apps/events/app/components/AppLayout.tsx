@@ -1,17 +1,36 @@
-import { AppShell, Burger, Group, NavLink, Title } from '@mantine/core';
+import { AppShell, Burger, Group, Menu, NavLink, Title, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconCalendarEvent, IconPlus } from '@tabler/icons-react';
+import {
+  IconCalendarEvent,
+  IconLogin,
+  IconLogout,
+  IconPlus,
+  IconUser,
+  IconUserPlus,
+} from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router';
 import { ThemeToggle } from './ThemeToggle';
 
-export function AppLayout({ children }: { children: React.ReactNode }) {
+interface AppLayoutProps {
+  children: React.ReactNode;
+  user?: { nickname: string; email?: string | undefined } | null;
+}
+
+export function AppLayout({ children, user }: AppLayoutProps) {
   const [opened, { toggle, close }] = useDisclosure();
   const location = useLocation();
 
-  const navLinks = [
+  const authenticatedLinks = [
     { to: '/events', label: 'Tapahtumat', icon: IconCalendarEvent },
     { to: '/events/new', label: 'Luo uusi', icon: IconPlus },
   ];
+
+  const unauthenticatedLinks = [
+    { to: '/login', label: 'Kirjaudu', icon: IconLogin },
+    { to: '/signup', label: 'Rekisteröidy', icon: IconUserPlus },
+  ];
+
+  const navLinks = user ? authenticatedLinks : unauthenticatedLinks;
 
   return (
     <AppShell
@@ -47,6 +66,21 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 style={{ borderRadius: 'var(--mantine-radius-sm)', width: 'auto' }}
               />
             ))}
+            {user && (
+              <Menu shadow="md" width={200}>
+                <Menu.Target>
+                  <UnstyledButton>
+                    <IconUser size={20} />
+                  </UnstyledButton>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Label>{user.nickname}</Menu.Label>
+                  <Menu.Item component={Link} to="/logout" leftSection={<IconLogout size={14} />}>
+                    Kirjaudu ulos
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            )}
             <ThemeToggle />
           </Group>
         </Group>
@@ -64,6 +98,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             onClick={close}
           />
         ))}
+        {user && (
+          <NavLink
+            component={Link}
+            to="/logout"
+            label="Kirjaudu ulos"
+            leftSection={<IconLogout size={16} />}
+            onClick={close}
+          />
+        )}
         <Group mt="md" px="sm">
           <ThemeToggle />
         </Group>

@@ -10,6 +10,6 @@
     },
     "types": ["vite/client"]
   },
-  "include": ["app", "workers", "react-router.config.ts", "vite.config.ts"],
+  "include": ["app", "workers", "env.d.ts", "react-router.config.ts", "vite.config.ts"],
   "references": [{ "path": "../../packages/shared" }]
 }
