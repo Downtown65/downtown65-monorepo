@@ -4,6 +4,7 @@ import { ENV } from 'varlock/env';
 import { createApp } from '@/app';
 import { apiKeyAuth } from '@/middleware/api-key';
 import { errorHandler, notFoundHandler } from '@/middleware/error-handler';
+import { requestLogger } from '@/middleware/request-logger';
 import { createEventsRouter } from '@/routes/events/events.index';
 import type { AuthenticationService } from '@/services/authentication-service';
 
@@ -13,6 +14,7 @@ export function createApiApp(authService: AuthenticationService) {
   const app = createApp();
 
   // Middleware stack
+  app.use('/api/*', requestLogger);
   app.use('/api/*', apiKeyAuth);
 
   // Error handlers
