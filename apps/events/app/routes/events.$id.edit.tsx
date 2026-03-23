@@ -55,7 +55,7 @@ export async function action({ request, params }: { request: Request; params: { 
 }
 
 export default function EditEvent() {
-  const { eventId, formData } = useLoaderData<typeof loader>();
+  const { formData } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
 
   function handleSubmit(data: EventFormData) {
