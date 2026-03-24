@@ -29,8 +29,8 @@ export function createAdminRouter(
   const adminRouter = new OpenAPIHono<AppEnv>();
 
   // All admin routes require JWT + admin or board_member role
-  adminRouter.use('/api/admin/*', jwtAuth(authService));
-  adminRouter.use('/api/admin/*', requireRole('admin', 'board_member'));
+  adminRouter.use('/admin/*', jwtAuth(authService));
+  adminRouter.use('/admin/*', requireRole('admin', 'board_member'));
 
   adminRouter.openapi(listUsersRoute, createHandleListUsers(managementService));
   adminRouter.openapi(getUserRoute, createHandleGetUser(managementService));

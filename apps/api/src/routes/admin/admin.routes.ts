@@ -14,7 +14,7 @@ import {
 
 export const listUsersRoute = createRoute({
   method: 'get',
-  path: '/api/admin/users',
+  path: '/admin/users',
   tags: ['Admin'],
   summary: 'List all users',
   responses: {
@@ -27,7 +27,7 @@ export const listUsersRoute = createRoute({
 
 export const getUserRoute = createRoute({
   method: 'get',
-  path: '/api/admin/users/{userId}',
+  path: '/admin/users/{userId}',
   tags: ['Admin'],
   summary: 'Get user details',
   request: {
@@ -47,7 +47,7 @@ export const getUserRoute = createRoute({
 
 export const updateUserRoleRoute = createRoute({
   method: 'patch',
-  path: '/api/admin/users/{userId}/role',
+  path: '/admin/users/{userId}/role',
   tags: ['Admin'],
   summary: 'Change user role',
   request: {
@@ -75,7 +75,7 @@ export const updateUserRoleRoute = createRoute({
 
 export const updateUserBlockedRoute = createRoute({
   method: 'patch',
-  path: '/api/admin/users/{userId}/blocked',
+  path: '/admin/users/{userId}/blocked',
   tags: ['Admin'],
   summary: 'Activate or deactivate user',
   request: {
@@ -99,7 +99,7 @@ export const updateUserBlockedRoute = createRoute({
 
 export const updateUserFeeRoute = createRoute({
   method: 'put',
-  path: '/api/admin/users/{userId}/fees/{year}',
+  path: '/admin/users/{userId}/fees/{year}',
   tags: ['Admin - Fees'],
   summary: 'Set membership fee status for a year',
   request: {
@@ -123,7 +123,7 @@ export const updateUserFeeRoute = createRoute({
 
 export const getUserFeeRoute = createRoute({
   method: 'get',
-  path: '/api/admin/users/{userId}/fees/{year}',
+  path: '/admin/users/{userId}/fees/{year}',
   tags: ['Admin - Fees'],
   summary: 'Get membership fee status for a year',
   request: {
@@ -143,7 +143,7 @@ export const getUserFeeRoute = createRoute({
 
 export const listAdminEventsRoute = createRoute({
   method: 'get',
-  path: '/api/admin/events',
+  path: '/admin/events',
   tags: ['Admin - Events'],
   summary: 'List all events (paginated)',
   request: {
