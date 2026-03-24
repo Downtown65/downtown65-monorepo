@@ -95,6 +95,8 @@ jobs:
     needs: quality
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    env:
+      API_BASE_URL: https://downtown65-api-pr-${{ github.event.pull_request.number }}.dt65.workers.dev
     steps:
       - uses: actions/checkout@v6
 
@@ -107,8 +109,6 @@ jobs:
 
       - name: Build Events (Vite bundles with varlock env injected)
         working-directory: apps/events
-        env:
-          API_BASE_URL: https://downtown65-api-pr-${{ env.PR_NUM }}.dt65.workers.dev
         run: pnpm run build
 
       - name: Patch Vite build config for PR deploy
