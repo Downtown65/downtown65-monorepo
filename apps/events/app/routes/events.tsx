@@ -22,8 +22,7 @@ function formatDate(dateStr: string): string {
   });
 }
 
-function formatTime(timeStr: string | null): string | null {
-  if (!timeStr) return null;
+function formatTime(timeStr: string): string {
   return `klo ${timeStr.slice(0, 5)}`;
 }
 
@@ -56,10 +55,7 @@ function EventCard({ event }: { event: EventSummary }) {
         <IconCalendarEvent size={14} />
         <Text size="sm" c="dimmed">
           {formatDate(event.dateStart)}
-          {(() => {
-            const time = formatTime(event.timeStart);
-            return time ? ` ${time}` : '';
-          })()}
+          {event.timeStart ? ` ${formatTime(event.timeStart)}` : ''}
         </Text>
       </Group>
 
