@@ -144,10 +144,7 @@ export default function EventDetailPage({ loaderData }: Route.ComponentProps) {
             <IconCalendarEvent size={16} />
             <Text>
               {formatDate(event.dateStart)}
-              {(() => {
-                const time = formatTime(event.timeStart);
-                return time ? ` ${time}` : '';
-              })()}
+              {event.timeStart ? ` ${formatTime(event.timeStart)}` : ''}
             </Text>
           </Group>
 
