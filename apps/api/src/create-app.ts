@@ -8,9 +8,9 @@ import { requestLogger } from '@/middleware/request-logger';
 import { createEventsRouter } from '@/routes/events/events.index';
 import type { AuthenticationService } from '@/services/authentication-service';
 
-const isDev = ENV.APP_ENV === 'development';
-
 function registerSecuritySchemes(app: ReturnType<typeof createApp>) {
+  const isDev = ENV.APP_ENV === 'development';
+
   app.openAPIRegistry.registerComponent('securitySchemes', 'apiKey', {
     type: 'apiKey',
     in: 'header',
@@ -32,6 +32,8 @@ function registerSecuritySchemes(app: ReturnType<typeof createApp>) {
 }
 
 function registerDocs(app: ReturnType<typeof createApp>) {
+  const isDev = ENV.APP_ENV === 'development';
+
   app.doc31('/doc', {
     openapi: '3.1.0',
     info: { title: 'DT65 API', version: '1.0.0' },
