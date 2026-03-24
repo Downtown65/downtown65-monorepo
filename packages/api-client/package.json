@@ -1,0 +1,27 @@
+{
+  "name": "@dt65/api-client",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "openapi-ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint",
+    "format": "biome check --write",
+    "ci:lint": "biome ci",
+    "clean": "rimraf src/generated"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@hey-api/client-fetch": "^0.9.0"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "^0.82.0",
+    "rimraf": "catalog:",
+    "typescript": "catalog:"
+  }
+}
