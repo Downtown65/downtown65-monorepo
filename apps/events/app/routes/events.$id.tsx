@@ -126,8 +126,7 @@ export default function EventDetailPage() {
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure();
 
   const isParticipant = event.participants.some((p) => p.nickname === currentNickname);
-  const currentUser = event.participants.find((p) => p.nickname === currentNickname);
-  const isOwner = currentUser ? currentUser.userId === event.creatorId : false;
+  const isLoggedIn = currentNickname !== null;
   const isSubmitting = fetcher.state !== 'idle';
 
   return (
@@ -228,7 +227,7 @@ export default function EventDetailPage() {
           )}
         </fetcher.Form>
 
-        {isOwner && (
+        {isLoggedIn && (
           <>
             <Divider my="md" />
 
