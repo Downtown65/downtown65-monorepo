@@ -9,7 +9,8 @@
       "!**/.astro",
       "!**/.react-router",
       "!**/*.astro",
-      "!**/worker-configuration.d.ts"
+      "!**/worker-configuration.d.ts",
+      "!**/generated"
     ]
   },
   "formatter": {
