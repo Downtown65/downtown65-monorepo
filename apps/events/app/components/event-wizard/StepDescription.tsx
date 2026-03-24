@@ -13,6 +13,7 @@ function ClientOnlyEditor({ value, onChange }: StepDescriptionProps) {
     StarterKit: typeof import('@tiptap/starter-kit').default;
     TiptapLink: typeof import('@tiptap/extension-link').default;
   } | null>(null);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -29,9 +30,11 @@ function ClientOnlyEditor({ value, onChange }: StepDescriptionProps) {
           TiptapLink: link.default,
         });
       })
-      .catch(() => {});
+      .catch(() => setLoadError(true));
   }, []);
 
+  if (loadError)
+    return <Text c="red">Editorin lataus epäonnistui. Yritä ladata sivu uudelleen.</Text>;
   if (!mod) return <Text c="dimmed">Ladataan editoria...</Text>;
 
   return <EditorInner value={value} onChange={onChange} mod={mod} />;
