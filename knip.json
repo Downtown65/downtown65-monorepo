@@ -16,10 +16,9 @@
       "vitest": false
     },
     "apps/events": {
-      "entry": ["app/routes/**/*.{ts,tsx}", "app/lib/*.ts", "workers/app.ts", "vite.config.ts"],
+      "entry": ["app/routes/**/*.{ts,tsx}", "app/lib/*.ts", "workers/app.ts"],
       "project": ["app/**/*.{ts,tsx}", "workers/**/*.ts"],
-      "ignoreDependencies": ["@dt65/shared", "@varlock/infisical-plugin", "@vitest/coverage-v8"],
-      "ignoreBinaries": ["biome"],
+      "ignoreDependencies": ["@varlock/infisical-plugin", "@vitest/coverage-v8"],
       "vite": false,
       "vitest": false
     },
