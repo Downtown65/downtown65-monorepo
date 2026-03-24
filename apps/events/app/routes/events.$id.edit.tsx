@@ -1,25 +1,18 @@
+import { getApiEventsById, putApiEventsById } from '@dt65/api-client';
 import { Container, Title } from '@mantine/core';
 import { redirect, useLoaderData, useNavigation } from 'react-router';
 import { EventWizard } from '~/components/event-wizard/EventWizard';
 import type { EventFormData } from '~/components/event-wizard/types';
-import { apiGet, apiPut, requireAuth } from '~/lib/api.server';
-
-interface EventDetail {
-  id: number;
-  type: string;
-  title: string;
-  dateStart: string;
-  timeStart: string | null;
-  location: string | null;
-  subtitle: string | null;
-  description: string | null;
-  race: boolean;
-}
+import { createAuthClient, requireAuth } from '~/lib/api.server';
 
 export async function loader({ request, params }: { request: Request; params: { id: string } }) {
   const session = await requireAuth(request);
-  const { data } = await apiGet(session, `/events/${params.id}`);
-  const event = data as EventDetail;
+  const { apiClient } = await createAuthClient(session);
+  const { data: event } = await getApiEventsById({ client: apiClient, path: { id: params.id } });
+
+  if (!event) {
+    throw new Response('Not found', { status: 404 });
+  }
 
   const formData: EventFormData = {
     eventType: event.type as EventFormData['eventType'],
@@ -37,18 +30,23 @@ export async function loader({ request, params }: { request: Request; params: { 
 
 export async function action({ request, params }: { request: Request; params: { id: string } }) {
   const session = await requireAuth(request);
+  const { apiClient } = await createAuthClient(session);
   const formData = await request.formData();
   const data = JSON.parse(formData.get('data') as string) as EventFormData;
 
-  await apiPut(session, `/events/${params.id}`, {
-    type: data.eventType,
-    title: data.title.trim(),
-    dateStart: data.dateStart,
-    timeStart: data.timeStart ?? undefined,
-    location: data.location || undefined,
-    subtitle: data.subtitle || undefined,
-    description: data.description || undefined,
-    race: data.race,
+  await putApiEventsById({
+    client: apiClient,
+    path: { id: params.id },
+    body: {
+      type: data.eventType!,
+      title: data.title.trim(),
+      dateStart: data.dateStart,
+      timeStart: data.timeStart ?? undefined,
+      location: data.location || undefined,
+      subtitle: data.subtitle || undefined,
+      description: data.description || undefined,
+      race: data.race,
+    },
   });
 
   return redirect(`/events/${params.id}`);

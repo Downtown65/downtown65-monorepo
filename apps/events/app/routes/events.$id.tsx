@@ -1,3 +1,10 @@
+import type { EventDetail, Participant } from '@dt65/api-client';
+import {
+  deleteApiEventsById,
+  deleteApiEventsByIdParticipants,
+  getApiEventsById,
+  postApiEventsByIdParticipants,
+} from '@dt65/api-client';
 import {
   Badge,
   Button,
@@ -23,30 +30,8 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import { Link, redirect, useFetcher, useLoaderData } from 'react-router';
-import { apiDelete, apiGet, apiPost, requireAuth } from '~/lib/api.server';
+import { createAuthClient, requireAuth } from '~/lib/api.server';
 import { getSession } from '~/lib/session.server';
-
-interface Participant {
-  userId: number;
-  nickname: string;
-  joinedAt: string;
-}
-
-interface EventDetail {
-  id: number;
-  type: string;
-  title: string;
-  dateStart: string;
-  timeStart: string | null;
-  location: string | null;
-  subtitle: string | null;
-  description: string | null;
-  race: boolean;
-  creatorId: number;
-  createdAt: string;
-  updatedAt: string;
-  participants: Participant[];
-}
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
@@ -72,13 +57,14 @@ function formatEventType(type: string): string {
 
 export async function loader({ request, params }: { request: Request; params: { id: string } }) {
   const session = await getSession(request);
-  const { data } = await apiGet(
-    session ? { ...session } : await requireAuth(request),
-    `/events/${params.id}`,
-  );
-  const event = data as EventDetail;
+  const authSession = session ? { ...session } : await requireAuth(request);
+  const { apiClient } = await createAuthClient(authSession);
+  const { data: event } = await getApiEventsById({ client: apiClient, path: { id: params.id } });
 
-  // Determine current user's nickname from session to check participation
+  if (!event) {
+    throw new Response('Not found', { status: 404 });
+  }
+
   const currentNickname = session?.user.nickname ?? null;
 
   return { event, currentNickname };
@@ -86,15 +72,16 @@ export async function loader({ request, params }: { request: Request; params: { 
 
 export async function action({ request, params }: { request: Request; params: { id: string } }) {
   const session = await requireAuth(request);
+  const { apiClient } = await createAuthClient(session);
   const formData = await request.formData();
   const intent = formData.get('intent') as string;
 
   if (intent === 'join') {
-    await apiPost(session, `/events/${params.id}/participants`, {});
+    await postApiEventsByIdParticipants({ client: apiClient, path: { id: params.id } });
   } else if (intent === 'leave') {
-    await apiDelete(session, `/events/${params.id}/participants`);
+    await deleteApiEventsByIdParticipants({ client: apiClient, path: { id: params.id } });
   } else if (intent === 'delete') {
-    await apiDelete(session, `/events/${params.id}`);
+    await deleteApiEventsById({ client: apiClient, path: { id: params.id } });
     return redirect('/events');
   }
 
