@@ -76,7 +76,6 @@ export class Auth0ManagementService implements ManagementService {
         'user_id,email,name,nickname,picture,blocked,last_login,created_at,app_metadata',
       );
 
-      // biome-ignore lint/performance/noAwaitInLoops: pagination requires sequential fetches
       const response = await fetch(url.toString(), {
         headers: { authorization: `Bearer ${token}` },
       });
