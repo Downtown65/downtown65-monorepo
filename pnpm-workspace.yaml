@@ -33,5 +33,5 @@ catalog:
   "@react-router/cloudflare": 7.13.1
   "@react-router/dev": 7.13.1
   "@tabler/icons-react": 3.40.0
-  wrangler: 4.72.0
+  wrangler: 4.77.0
   zod: 4.3.5
