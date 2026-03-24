@@ -24,15 +24,15 @@
     ]
   },
   "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@commitlint/cli": "catalog:",
-    "@commitlint/config-conventional": "catalog:",
-    "@types/node": "catalog:",
-    "knip": "catalog:",
+    "@biomejs/biome": "^2.3.14",
+    "@commitlint/cli": "^20.4.4",
+    "@commitlint/config-conventional": "^20.4.4",
+    "@types/node": "^25.0.3",
+    "knip": "^5.83.0",
     "lefthook": "latest",
     "rimraf": "catalog:",
-    "sherif": "catalog:",
-    "tsx": "catalog:",
+    "sherif": "^1.10.0",
+    "tsx": "^4.21.0",
     "typescript": "catalog:"
   }
 }
