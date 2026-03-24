@@ -39,14 +39,19 @@ async function apiRequest(
     }
   }
 
+  const method = (options.method ?? 'GET').toUpperCase();
+  const headers: Record<string, string> = {
+    ...(options.headers as Record<string, string>),
+    'x-api-key': ENV.X_API_KEY,
+    authorization: `Bearer ${accessToken}`,
+  };
+  if (method !== 'GET' && method !== 'DELETE') {
+    headers['content-type'] = 'application/json';
+  }
+
   const response = await fetch(`${getApiBase()}/api${path}`, {
     ...options,
-    headers: {
-      ...options.headers,
-      'x-api-key': ENV.X_API_KEY,
-      authorization: `Bearer ${accessToken}`,
-      'content-type': 'application/json',
-    },
+    headers,
   });
 
   return { response, sessionCookie };

@@ -51,6 +51,7 @@ export function EventWizard({
   }
 
   function handleSubmit() {
+    if (!state.eventType) return;
     onSubmit(state);
   }
 

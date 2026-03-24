@@ -20,14 +20,16 @@ function ClientOnlyEditor({ value, onChange }: StepDescriptionProps) {
       import('@tiptap/react'),
       import('@tiptap/starter-kit'),
       import('@tiptap/extension-link'),
-    ]).then(([tiptapMantine, tiptapReact, starterKit, link]) => {
-      setMod({
-        RichTextEditor: tiptapMantine.RichTextEditor,
-        useEditor: tiptapReact.useEditor,
-        StarterKit: starterKit.default,
-        TiptapLink: link.default,
-      });
-    });
+    ])
+      .then(([tiptapMantine, tiptapReact, starterKit, link]) => {
+        setMod({
+          RichTextEditor: tiptapMantine.RichTextEditor,
+          useEditor: tiptapReact.useEditor,
+          StarterKit: starterKit.default,
+          TiptapLink: link.default,
+        });
+      })
+      .catch(() => {});
   }, []);
 
   if (!mod) return <Text c="dimmed">Ladataan editoria...</Text>;

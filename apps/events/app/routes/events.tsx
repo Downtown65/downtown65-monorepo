@@ -64,7 +64,10 @@ function EventCard({ event }: { event: EventSummary }) {
         <IconCalendarEvent size={14} />
         <Text size="sm" c="dimmed">
           {formatDate(event.dateStart)}
-          {formatTime(event.timeStart) ? ` ${formatTime(event.timeStart)}` : ''}
+          {(() => {
+            const time = formatTime(event.timeStart);
+            return time ? ` ${time}` : '';
+          })()}
         </Text>
       </Group>
 
