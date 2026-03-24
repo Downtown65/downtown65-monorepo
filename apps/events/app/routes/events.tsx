@@ -1,24 +1,15 @@
+import type { EventSummary } from '@dt65/api-client';
+import { getApiEvents } from '@dt65/api-client';
 import { Badge, Button, Card, Container, Group, SimpleGrid, Text, Title } from '@mantine/core';
 import { IconCalendarEvent, IconMapPin, IconTrophy, IconUsers } from '@tabler/icons-react';
 import { Link, useLoaderData } from 'react-router';
-import { apiGet, requireAuth } from '~/lib/api.server';
-
-interface EventSummary {
-  id: number;
-  title: string;
-  dateStart: string;
-  timeStart: string | null;
-  type: string;
-  location: string | null;
-  race: boolean;
-  participantCount: number;
-  creatorId: number;
-}
+import { createAuthClient, requireAuth } from '~/lib/api.server';
 
 export async function loader({ request }: { request: Request }) {
   const session = await requireAuth(request);
-  const { data } = await apiGet(session, '/events');
-  return { events: data as EventSummary[] };
+  const { apiClient } = await createAuthClient(session);
+  const { data } = await getApiEvents({ client: apiClient });
+  return { events: data ?? [] };
 }
 
 function formatDate(dateStr: string): string {
