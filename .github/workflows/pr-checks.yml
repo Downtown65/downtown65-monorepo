@@ -43,6 +43,10 @@ jobs:
         with:
           working-directory: apps/api
 
+      - name: Build API (Vite bundles with varlock env injected)
+        working-directory: apps/api
+        run: pnpm run build
+
       - name: Create per-PR D1 database
         run: |
           DB_NAME="downtown65-pr-${PR_NUM}"
@@ -56,45 +60,34 @@ jobs:
           echo "D1_DB_ID=$DB_ID" >> $GITHUB_ENV
           echo "Created/found D1 database: $DB_NAME ($DB_ID)"
 
-      - name: Generate PR wrangler config
+      - name: Patch Vite build config for PR deploy
+        working-directory: apps/api/dist/downtown65_api
         run: |
-          cat > apps/api/wrangler.pr.jsonc <<EOF
-          {
-            "\$schema": "./node_modules/wrangler/config-schema.json",
-            "account_id": "${CLOUDFLARE_ACCOUNT_ID}",
-            "name": "downtown65-api-pr-${PR_NUM}",
-            "main": "src/index.ts",
-            "compatibility_date": "2026-02-01",
-            "compatibility_flags": ["nodejs_compat_v2"],
-            "observability": { "enabled": true },
-            "workers_dev": true,
-            "d1_databases": [
-              {
-                "binding": "DB",
-                "database_name": "dt65-pr-${PR_NUM}",
-                "database_id": "${D1_DB_ID}",
-                "migrations_dir": "drizzle"
-              }
-            ]
-          }
-          EOF
+          # Patch the Vite-generated wrangler.json with PR-specific settings
+          # Use absolute migrations_dir since config lives in dist/, not apps/api/
+          jq --arg name "downtown65-api-pr-${PR_NUM}" \
+             --arg db_name "dt65-pr-${PR_NUM}" \
+             --arg db_id "$D1_DB_ID" \
+             --arg account_id "$CLOUDFLARE_ACCOUNT_ID" \
+             --arg migrations_dir "${{ github.workspace }}/apps/api/drizzle" \
+             '.name = $name | .account_id = $account_id | .workers_dev = true | .d1_databases[0].database_name = $db_name | .d1_databases[0].database_id = $db_id | .d1_databases[0].migrations_dir = $migrations_dir' \
+             wrangler.json > wrangler.pr.json
 
       - name: Apply D1 migrations
         working-directory: apps/api
-        run: npx wrangler d1 migrations apply dt65-pr-${PR_NUM} --remote --config wrangler.pr.jsonc
+        run: npx wrangler d1 migrations apply dt65-pr-${PR_NUM} --remote --config dist/downtown65_api/wrangler.pr.json
 
       - name: Sync Auth0 users to D1
         working-directory: apps/api
         run: |
           npx varlock run -- tsx scripts/sync-auth0-users.ts
-          npx wrangler d1 execute dt65-pr-${PR_NUM} --remote --file data/seed-users.sql --config wrangler.pr.jsonc
+          npx wrangler d1 execute dt65-pr-${PR_NUM} --remote --file data/seed-users.sql --config dist/downtown65_api/wrangler.pr.json
 
       - name: Deploy API preview
         uses: cloudflare/wrangler-action@v3
         with:
-          workingDirectory: apps/api
-          preCommands: pnpm run build
-          command: deploy --config wrangler.pr.jsonc
+          workingDirectory: apps/api/dist/downtown65_api
+          command: deploy --config wrangler.pr.json
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
