@@ -396,6 +396,196 @@
           }
         },
         "required": ["message"]
+      },
+      "AdminUser": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "picture": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "board_member", "member"]
+          },
+          "blocked": {
+            "type": "boolean"
+          },
+          "lastLogin": {
+            "type": ["string", "null"]
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "email",
+          "name",
+          "nickname",
+          "picture",
+          "role",
+          "blocked",
+          "lastLogin",
+          "createdAt"
+        ]
+      },
+      "AdminError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": ["code", "message"]
+          }
+        },
+        "required": ["error"]
+      },
+      "UpdateRole": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": ["admin", "board_member", "member"]
+          }
+        },
+        "required": ["role"]
+      },
+      "UpdateBlocked": {
+        "type": "object",
+        "properties": {
+          "blocked": {
+            "type": "boolean"
+          }
+        },
+        "required": ["blocked"]
+      },
+      "FeeStatus": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          },
+          "paid": {
+            "type": "boolean"
+          }
+        },
+        "required": ["userId", "year", "paid"]
+      },
+      "UpdateFee": {
+        "type": "object",
+        "properties": {
+          "paid": {
+            "type": "boolean"
+          }
+        },
+        "required": ["paid"]
+      },
+      "PaginatedEvents": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminEvent"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "perPage": {
+            "type": "number"
+          }
+        },
+        "required": ["events", "total", "page", "perPage"]
+      },
+      "AdminEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "dateStart": {
+            "type": "string"
+          },
+          "timeStart": {
+            "type": ["string", "null"]
+          },
+          "eventType": {
+            "type": "string",
+            "enum": [
+              "CYCLING",
+              "KARONKKA",
+              "MEETING",
+              "NORDIC_WALKING",
+              "ICE_HOCKEY",
+              "ORIENTEERING",
+              "OTHER",
+              "RUNNING",
+              "SKIING",
+              "SPINNING",
+              "SWIMMING",
+              "TRACK_RUNNING",
+              "TRAIL_RUNNING",
+              "TRIATHLON",
+              "ULTRAS"
+            ]
+          },
+          "location": {
+            "type": ["string", "null"]
+          },
+          "race": {
+            "type": "boolean"
+          },
+          "creatorNickname": {
+            "type": "string"
+          },
+          "participantCount": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "dateStart",
+          "timeStart",
+          "eventType",
+          "location",
+          "race",
+          "creatorNickname",
+          "participantCount",
+          "createdAt"
+        ]
       }
     },
     "parameters": {}
@@ -683,6 +873,316 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/users": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "List all users",
+        "responses": {
+          "200": {
+            "description": "List of all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdminUser"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/users/{userId}": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get user details",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "auth0|123"
+            },
+            "required": true,
+            "name": "userId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/users/{userId}/role": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "Change user role",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "auth0|123"
+            },
+            "required": true,
+            "name": "userId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRole"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Role updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cannot remove last admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/users/{userId}/blocked": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "Activate or deactivate user",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "auth0|123"
+            },
+            "required": true,
+            "name": "userId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBlocked"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Blocked status updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/users/{userId}/fees/{year}": {
+      "put": {
+        "tags": ["Admin - Fees"],
+        "summary": "Set membership fee status for a year",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "auth0|123"
+            },
+            "required": true,
+            "name": "userId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "2026"
+            },
+            "required": true,
+            "name": "year",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFee"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fee status updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStatus"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Admin - Fees"],
+        "summary": "Get membership fee status for a year",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "auth0|123"
+            },
+            "required": true,
+            "name": "userId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "2026"
+            },
+            "required": true,
+            "name": "year",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fee status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStatus"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/events": {
+      "get": {
+        "tags": ["Admin - Events"],
+        "summary": "List all events (paginated)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "1"
+            },
+            "required": false,
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "default": "50"
+            },
+            "required": false,
+            "name": "perPage",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of all events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedEvents"
                 }
               }
             }

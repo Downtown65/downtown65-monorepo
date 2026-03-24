@@ -49,7 +49,7 @@ function registerDocs(app: ReturnType<typeof createApp>) {
       authentication: {
         preferredSecurityScheme: isDev ? 'oauth2' : 'apiKey',
         securitySchemes: {
-          apiKey: { value: 'x-api-key-secret' },
+          apiKey: {},
           ...(isDev && {
             oauth2: {
               flows: {
