@@ -107,6 +107,8 @@ jobs:
 
       - name: Build Events (Vite bundles with varlock env injected)
         working-directory: apps/events
+        env:
+          API_BASE_URL: https://downtown65-api-pr-${{ env.PR_NUM }}.dt65.workers.dev
         run: pnpm run build
 
       - name: Patch Vite build config for PR deploy
