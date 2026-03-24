@@ -21,7 +21,13 @@ async function loadVarlockPlugins(): Promise<Plugin[]> {
         if (!id.includes('workers/app.ts')) return null;
 
         const loadedEnv = process.env.__VARLOCK_ENV;
-        if (!loadedEnv) return null;
+        if (!loadedEnv) {
+          // biome-ignore lint/suspicious/noConsole: build-time diagnostic
+          console.warn(
+            '[varlock] __VARLOCK_ENV is empty — skipping env injection into worker entry',
+          );
+          return null;
+        }
 
         const initCode = [
           '// INJECTED BY varlock-worker-entry-patch',
@@ -36,8 +42,11 @@ async function loadVarlockPlugins(): Promise<Plugin[]> {
     };
 
     return [plugin, workerEntryPatch];
-  } catch {
-    // Varlock requires credentials to initialize. Skip in CI/knip.
+  } catch (error) {
+    // biome-ignore lint/suspicious/noConsole: build-time diagnostic
+    console.warn('[varlock] Plugin failed to initialize, env will NOT be injected into bundle');
+    // biome-ignore lint/suspicious/noConsole: build-time diagnostic
+    console.warn('[varlock]', error instanceof Error ? error.message : error);
     return [];
   }
 }
