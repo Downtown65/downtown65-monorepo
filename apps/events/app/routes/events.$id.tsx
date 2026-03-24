@@ -1,4 +1,4 @@
-import type { EventDetail, Participant } from '@dt65/api-client';
+import type { Participant } from '@dt65/api-client';
 import {
   deleteApiEventsById,
   deleteApiEventsByIdParticipants,
@@ -16,7 +16,7 @@ import {
   Stack,
   Text,
   Title,
-  TypographyStylesProvider,
+  Typography,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
@@ -161,10 +161,9 @@ export default function EventDetailPage() {
         {event.description && (
           <>
             <Divider my="md" />
-            <TypographyStylesProvider>
-              {/* biome-ignore lint/security/noDangerouslySetInnerHtml: event descriptions are HTML from tiptap editor */}
+            <Typography>
               <div dangerouslySetInnerHTML={{ __html: event.description }} />
-            </TypographyStylesProvider>
+            </Typography>
           </>
         )}
 
