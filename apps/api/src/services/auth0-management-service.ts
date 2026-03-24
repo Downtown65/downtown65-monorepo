@@ -1,27 +1,12 @@
+import {
+  type Auth0ManagementUser,
+  Auth0ManagementUserSchema,
+  Auth0UserListResponseSchema,
+  ManagementTokenResponseSchema,
+} from '@dt65/shared';
 import type { UserRole } from '@/app';
 
-export type Auth0User = {
-  user_id: string;
-  email: string;
-  name: string;
-  nickname: string;
-  picture: string;
-  blocked: boolean;
-  last_login: string | null;
-  created_at: string;
-  app_metadata?: {
-    role?: string;
-    fees?: Record<string, boolean>;
-  };
-};
-
-type Auth0UserListResponse = Auth0User[];
-
-type TokenResponse = {
-  access_token: string;
-  expires_in: number;
-  token_type: string;
-};
+export type { Auth0ManagementUser };
 
 export type Auth0ManagementConfig = {
   domain: string;
@@ -30,8 +15,8 @@ export type Auth0ManagementConfig = {
 };
 
 export interface ManagementService {
-  listUsers(config: Auth0ManagementConfig): Promise<Auth0User[]>;
-  getUser(config: Auth0ManagementConfig, userId: string): Promise<Auth0User | null>;
+  listUsers(config: Auth0ManagementConfig): Promise<Auth0ManagementUser[]>;
+  getUser(config: Auth0ManagementConfig, userId: string): Promise<Auth0ManagementUser | null>;
   updateUserRole(config: Auth0ManagementConfig, userId: string, role: UserRole): Promise<void>;
   updateUserBlocked(config: Auth0ManagementConfig, userId: string, blocked: boolean): Promise<void>;
   updateUserFees(
@@ -65,7 +50,7 @@ export class Auth0ManagementService implements ManagementService {
       throw new Error(`Failed to get management token: ${String(response.status)}`);
     }
 
-    const data = (await response.json()) as TokenResponse;
+    const data = ManagementTokenResponseSchema.parse(await response.json());
 
     this.tokenCache = {
       token: data.access_token,
@@ -75,9 +60,9 @@ export class Auth0ManagementService implements ManagementService {
     return data.access_token;
   }
 
-  async listUsers(config: Auth0ManagementConfig): Promise<Auth0User[]> {
+  async listUsers(config: Auth0ManagementConfig): Promise<Auth0ManagementUser[]> {
     const token = await this.getAccessToken(config);
-    const allUsers: Auth0User[] = [];
+    const allUsers: Auth0ManagementUser[] = [];
     let page = 0;
     const perPage = 50;
 
@@ -100,7 +85,7 @@ export class Auth0ManagementService implements ManagementService {
         throw new Error(`Failed to list users: ${String(response.status)}`);
       }
 
-      const data = (await response.json()) as { users: Auth0UserListResponse; total: number };
+      const data = Auth0UserListResponseSchema.parse(await response.json());
       allUsers.push(...data.users);
 
       if (allUsers.length >= data.total) {
@@ -113,7 +98,10 @@ export class Auth0ManagementService implements ManagementService {
     return allUsers;
   }
 
-  async getUser(config: Auth0ManagementConfig, userId: string): Promise<Auth0User | null> {
+  async getUser(
+    config: Auth0ManagementConfig,
+    userId: string,
+  ): Promise<Auth0ManagementUser | null> {
     const token = await this.getAccessToken(config);
     const url = `https://${config.domain}/api/v2/users/${encodeURIComponent(userId)}`;
 
@@ -129,7 +117,7 @@ export class Auth0ManagementService implements ManagementService {
       throw new Error(`Failed to get user: ${String(response.status)}`);
     }
 
-    return (await response.json()) as Auth0User;
+    return Auth0ManagementUserSchema.parse(await response.json());
   }
 
   async updateUserRole(

@@ -1,3 +1,4 @@
+import { Auth0UserInfoSchema, type TokenResponse, TokenResponseSchema } from '@dt65/shared';
 import { ENV } from 'varlock/env';
 
 const CALLBACK_PATH = '/auth/callback';
@@ -6,23 +7,6 @@ const ALLOWED_ROLES = new Set(['admin', 'board_member']);
 const PLUS_RE = /\+/g;
 const SLASH_RE = /\//g;
 const TRAILING_EQUALS_RE = /=+$/;
-
-interface TokenResponse {
-  access_token: string;
-  refresh_token?: string;
-  id_token?: string;
-  token_type: string;
-  expires_in: number;
-}
-
-interface Auth0User {
-  sub: string;
-  nickname?: string;
-  name?: string;
-  email?: string;
-  picture?: string;
-  [key: string]: unknown;
-}
 
 export interface SessionData {
   accessToken: string;
@@ -95,6 +79,7 @@ export async function exchangeCode(
     body: JSON.stringify({
       grant_type: 'authorization_code',
       client_id: ENV.AUTH0_CLIENT_ID,
+      client_secret: ENV.AUTH0_CLIENT_SECRET,
       code,
       redirect_uri: getCallbackUrl(request),
       code_verifier: codeVerifier,
@@ -106,7 +91,7 @@ export async function exchangeCode(
     throw new Error(`Token exchange failed: ${response.status} ${text}`);
   }
 
-  return (await response.json()) as TokenResponse;
+  return TokenResponseSchema.parse(await response.json());
 }
 
 export async function refreshAccessToken(refreshToken: string): Promise<TokenResponse> {
@@ -116,6 +101,7 @@ export async function refreshAccessToken(refreshToken: string): Promise<TokenRes
     body: JSON.stringify({
       grant_type: 'refresh_token',
       client_id: ENV.AUTH0_CLIENT_ID,
+      client_secret: ENV.AUTH0_CLIENT_SECRET,
       refresh_token: refreshToken,
     }),
   });
@@ -124,10 +110,10 @@ export async function refreshAccessToken(refreshToken: string): Promise<TokenRes
     throw new Error(`Token refresh failed: ${response.status}`);
   }
 
-  return (await response.json()) as TokenResponse;
+  return TokenResponseSchema.parse(await response.json());
 }
 
-export async function getUserInfo(accessToken: string): Promise<Auth0User> {
+export async function getUserInfo(accessToken: string) {
   const response = await fetch(`https://${ENV.AUTH0_DOMAIN}/userinfo`, {
     headers: { authorization: `Bearer ${accessToken}` },
   });
@@ -136,12 +122,9 @@ export async function getUserInfo(accessToken: string): Promise<Auth0User> {
     throw new Error(`Failed to fetch user info: ${response.status}`);
   }
 
-  return (await response.json()) as Auth0User;
+  return Auth0UserInfoSchema.parse(await response.json());
 }
 
-/**
- * Extract role from access token JWT claims (without full verification — the API verifies).
- */
 export function extractRoleFromToken(accessToken: string): string {
   try {
     const parts = accessToken.split('.');
