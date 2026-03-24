@@ -39,7 +39,9 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Load environment variables
-        run: pnpm --filter @dt65/api exec varlock load
+        uses: dmno-dev/varlock-action@v1.0.1
+        with:
+          working-directory: apps/api
 
       - name: Create per-PR D1 database
         run: |
