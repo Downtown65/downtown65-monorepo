@@ -6,7 +6,7 @@ import type { AppEnv, UserRole } from '@/app';
 import { events, users } from '@/db/schema';
 import type {
   Auth0ManagementConfig,
-  Auth0User,
+  Auth0ManagementUser,
   ManagementService,
 } from '@/services/auth0-management-service';
 import type {
@@ -21,7 +21,7 @@ import type {
 
 const VALID_ROLES = new Set<string>(['admin', 'board_member', 'member']);
 
-function toAdminUser(user: Auth0User) {
+function toAdminUser(user: Auth0ManagementUser) {
   const rawRole = user.app_metadata?.role;
   const role: UserRole =
     typeof rawRole === 'string' && VALID_ROLES.has(rawRole) ? (rawRole as UserRole) : 'member';

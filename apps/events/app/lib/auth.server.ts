@@ -1,28 +1,18 @@
+import {
+  type Auth0UserInfo,
+  Auth0UserInfoSchema,
+  type TokenResponse,
+  TokenResponseSchema,
+} from '@dt65/shared';
 import { ENV } from 'varlock/env';
 
 const CALLBACK_PATH = '/auth/callback';
-
-interface TokenResponse {
-  access_token: string;
-  refresh_token?: string;
-  id_token?: string;
-  token_type: string;
-  expires_in: number;
-}
-
-interface Auth0User {
-  sub: string;
-  nickname?: string;
-  name?: string;
-  email?: string;
-  picture?: string;
-}
 
 export interface SessionData {
   accessToken: string;
   refreshToken?: string | undefined;
   expiresAt: number;
-  user: Auth0User;
+  user: Auth0UserInfo;
 }
 
 function getCallbackUrl(request: Request): string {
@@ -30,9 +20,6 @@ function getCallbackUrl(request: Request): string {
   return `${url.origin}${CALLBACK_PATH}`;
 }
 
-/**
- * Generate a random string for PKCE code verifier and state
- */
 function generateRandomString(length: number): string {
   const array = new Uint8Array(length);
   crypto.getRandomValues(array);
@@ -41,9 +28,6 @@ function generateRandomString(length: number): string {
     .slice(0, length);
 }
 
-/**
- * Generate PKCE code challenge from verifier
- */
 async function generateCodeChallenge(verifier: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(verifier);
@@ -54,9 +38,6 @@ async function generateCodeChallenge(verifier: string): Promise<string> {
     .replace(/=+$/, '');
 }
 
-/**
- * Build Auth0 authorization URL for login
- */
 export async function getLoginUrl(
   request: Request,
 ): Promise<{ url: string; codeVerifier: string; state: string }> {
@@ -82,9 +63,6 @@ export async function getLoginUrl(
   };
 }
 
-/**
- * Build Auth0 authorization URL for signup
- */
 export async function getSignupUrl(
   request: Request,
 ): Promise<{ url: string; codeVerifier: string; state: string }> {
@@ -95,9 +73,6 @@ export async function getSignupUrl(
   };
 }
 
-/**
- * Exchange authorization code for tokens
- */
 export async function exchangeCode(
   request: Request,
   code: string,
@@ -120,12 +95,9 @@ export async function exchangeCode(
     throw new Error(`Token exchange failed: ${response.status} ${text}`);
   }
 
-  return (await response.json()) as TokenResponse;
+  return TokenResponseSchema.parse(await response.json());
 }
 
-/**
- * Refresh an access token using a refresh token
- */
 export async function refreshAccessToken(refreshToken: string): Promise<TokenResponse> {
   const response = await fetch(`https://${ENV.AUTH0_DOMAIN}/oauth/token`, {
     method: 'POST',
@@ -141,13 +113,10 @@ export async function refreshAccessToken(refreshToken: string): Promise<TokenRes
     throw new Error(`Token refresh failed: ${response.status}`);
   }
 
-  return (await response.json()) as TokenResponse;
+  return TokenResponseSchema.parse(await response.json());
 }
 
-/**
- * Fetch user info from Auth0
- */
-export async function getUserInfo(accessToken: string): Promise<Auth0User> {
+export async function getUserInfo(accessToken: string): Promise<Auth0UserInfo> {
   const response = await fetch(`https://${ENV.AUTH0_DOMAIN}/userinfo`, {
     headers: { authorization: `Bearer ${accessToken}` },
   });
@@ -156,12 +125,9 @@ export async function getUserInfo(accessToken: string): Promise<Auth0User> {
     throw new Error(`Failed to fetch user info: ${response.status}`);
   }
 
-  return (await response.json()) as Auth0User;
+  return Auth0UserInfoSchema.parse(await response.json());
 }
 
-/**
- * Build Auth0 logout URL
- */
 export function getLogoutUrl(request: Request): string {
   const url = new URL(request.url);
   const params = new URLSearchParams({
@@ -172,16 +138,12 @@ export function getLogoutUrl(request: Request): string {
   return `https://${ENV.AUTH0_DOMAIN}/v2/logout?${params.toString()}`;
 }
 
-/**
- * Create an Auth0 user via Management API (for signup with registerSecret)
- */
 export async function createAuth0User(options: {
   email: string;
   password: string;
   name: string;
   nickname: string;
-}): Promise<Auth0User> {
-  // Get M2M token
+}): Promise<Auth0UserInfo> {
   const tokenResponse = await fetch(`https://${ENV.AUTH0_DOMAIN}/oauth/token`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -198,9 +160,8 @@ export async function createAuth0User(options: {
     throw new Error(`Failed to get management token: ${tokenResponse.status} ${text}`);
   }
 
-  const { access_token } = (await tokenResponse.json()) as { access_token: string };
+  const { access_token } = TokenResponseSchema.parse(await tokenResponse.json());
 
-  // Create user
   const createResponse = await fetch(`https://${ENV.AUTH0_DOMAIN}/api/v2/users`, {
     method: 'POST',
     headers: {
@@ -221,5 +182,5 @@ export async function createAuth0User(options: {
     throw new Error(`Failed to create user: ${createResponse.status} ${text}`);
   }
 
-  return (await createResponse.json()) as Auth0User;
+  return Auth0UserInfoSchema.parse(await createResponse.json());
 }

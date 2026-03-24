@@ -1,22 +1,25 @@
 import type { UserRole } from '@/app';
 import type {
   Auth0ManagementConfig,
-  Auth0User,
+  Auth0ManagementUser,
   ManagementService,
 } from '@/services/auth0-management-service';
 
 export class MockManagementService implements ManagementService {
-  private users: Map<string, Auth0User> = new Map();
+  private users: Map<string, Auth0ManagementUser> = new Map();
 
-  addUser(user: Auth0User): void {
+  addUser(user: Auth0ManagementUser): void {
     this.users.set(user.user_id, user);
   }
 
-  async listUsers(_config: Auth0ManagementConfig): Promise<Auth0User[]> {
+  async listUsers(_config: Auth0ManagementConfig): Promise<Auth0ManagementUser[]> {
     return [...this.users.values()];
   }
 
-  async getUser(_config: Auth0ManagementConfig, userId: string): Promise<Auth0User | null> {
+  async getUser(
+    _config: Auth0ManagementConfig,
+    userId: string,
+  ): Promise<Auth0ManagementUser | null> {
     return this.users.get(userId) ?? null;
   }
 

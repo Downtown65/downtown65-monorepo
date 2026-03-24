@@ -18,6 +18,9 @@
     "ci:lint": "biome ci",
     "clean": "rimraf dist"
   },
+  "dependencies": {
+    "zod": "catalog:"
+  },
   "devDependencies": {
     "rimraf": "catalog:",
     "typescript": "catalog:",
