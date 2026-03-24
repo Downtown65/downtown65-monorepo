@@ -1,6 +1,6 @@
 import { Container, Text, Title } from '@mantine/core';
-import { useLoaderData } from 'react-router';
 import { apiGet, requireAdmin } from '~/lib/api.server';
+import type { Route } from './+types/events';
 
 interface PaginatedEvents {
   events: Array<{
@@ -28,8 +28,8 @@ export async function loader({ request }: { request: Request }) {
   return data as PaginatedEvents;
 }
 
-export default function Events() {
-  const { events, total } = useLoaderData<typeof loader>();
+export default function Events({ loaderData }: Route.ComponentProps) {
+  const { events, total } = loaderData;
 
   return (
     <Container size="lg">

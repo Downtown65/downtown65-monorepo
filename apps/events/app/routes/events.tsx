@@ -2,8 +2,9 @@ import type { EventSummary } from '@dt65/api-client';
 import { getApiEvents } from '@dt65/api-client';
 import { Badge, Button, Card, Container, Group, SimpleGrid, Text, Title } from '@mantine/core';
 import { IconCalendarEvent, IconMapPin, IconTrophy, IconUsers } from '@tabler/icons-react';
-import { Link, useLoaderData } from 'react-router';
+import { Link } from 'react-router';
 import { createAuthClient, requireAuth } from '~/lib/api.server';
+import type { Route } from './+types/events';
 
 export async function loader({ request }: { request: Request }) {
   const session = await requireAuth(request);
@@ -91,8 +92,8 @@ function EventCard({ event }: { event: EventSummary }) {
   );
 }
 
-export default function Events() {
-  const { events } = useLoaderData<typeof loader>();
+export default function Events({ loaderData }: Route.ComponentProps) {
+  const { events } = loaderData;
 
   return (
     <Container size="lg">

@@ -7,17 +7,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
 } from 'react-router';
 import { AdminLayout } from '~/components/AdminLayout';
 import { getSession } from '~/lib/session.server';
 import { theme } from '~/theme';
+import type { Route } from './+types/root';
 
-export interface RootLoaderData {
-  user: { nickname: string; role: string } | null;
-}
-
-export async function loader({ request }: { request: Request }): Promise<RootLoaderData> {
+export async function loader({ request }: { request: Request }) {
   const session = await getSession(request);
   if (!session) return { user: null };
 
@@ -50,8 +46,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function Root() {
-  const { user } = useLoaderData<RootLoaderData>();
+export default function Root({ loaderData }: Route.ComponentProps) {
+  const { user } = loaderData;
 
   return (
     <AdminLayout user={user}>

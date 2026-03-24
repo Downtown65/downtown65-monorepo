@@ -1,6 +1,6 @@
 import { Container, Text, Title } from '@mantine/core';
-import { useLoaderData } from 'react-router';
 import { apiGet, requireAdmin } from '~/lib/api.server';
+import type { Route } from './+types/users';
 
 interface AdminUser {
   userId: string;
@@ -20,8 +20,8 @@ export async function loader({ request }: { request: Request }) {
   return { users: data as AdminUser[] };
 }
 
-export default function Users() {
-  const { users } = useLoaderData<typeof loader>();
+export default function Users({ loaderData }: Route.ComponentProps) {
+  const { users } = loaderData;
 
   return (
     <Container size="lg">
