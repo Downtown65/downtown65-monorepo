@@ -54,14 +54,18 @@ jobs:
           echo "D1_DB_ID=$DB_ID" >> $GITHUB_ENV
           echo "Created/found D1 database: $DB_NAME ($DB_ID)"
 
-      - name: Generate PR wrangler config
+      - name: Build API
+        working-directory: apps/api
+        run: pnpm run build
+
+      - name: Patch API build for PR deployment
         run: |
-          cat > apps/api/wrangler.pr.jsonc <<EOF
+          cd apps/api/dist/downtown65_api
+          # Override wrangler config with PR-specific settings
+          cat > wrangler.json <<WRANGLER_EOF
           {
-            "\$schema": "./node_modules/wrangler/config-schema.json",
-            "account_id": "${CLOUDFLARE_ACCOUNT_ID}",
             "name": "downtown65-api-pr-${PR_NUM}",
-            "main": "src/index.ts",
+            "main": "index.js",
             "compatibility_date": "2026-02-01",
             "compatibility_flags": ["nodejs_compat_v2"],
             "observability": { "enabled": true },
@@ -75,24 +79,24 @@ jobs:
               }
             ]
           }
-          EOF
+          WRANGLER_EOF
 
       - name: Apply D1 migrations
         working-directory: apps/api
-        run: npx wrangler d1 migrations apply dt65-pr-${PR_NUM} --remote --config wrangler.pr.jsonc
+        run: |
+          npx wrangler d1 migrations apply downtown65-db --remote --database-id "$D1_DB_ID"
 
       - name: Sync Auth0 users to D1
         working-directory: apps/api
         run: |
           npx varlock run -- tsx scripts/sync-auth0-users.ts
-          npx wrangler d1 execute dt65-pr-${PR_NUM} --remote --file data/seed-users.sql --config wrangler.pr.jsonc
+          npx wrangler d1 execute downtown65-db --remote --database-id "$D1_DB_ID" --file data/seed-users.sql
 
       - name: Deploy API preview
         uses: cloudflare/wrangler-action@v3
         with:
-          workingDirectory: apps/api
-          preCommands: pnpm run build
-          command: deploy --config wrangler.pr.jsonc
+          workingDirectory: apps/api/dist/downtown65_api
+          command: deploy
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
