@@ -14,7 +14,7 @@ export async function action({ request }: { request: Request }) {
   await postApiEvents({
     client: apiClient,
     body: {
-      type: data.eventType!,
+      type: data.eventType as NonNullable<typeof data.eventType>,
       title: data.title.trim(),
       dateStart: data.dateStart,
       timeStart: data.timeStart ?? undefined,

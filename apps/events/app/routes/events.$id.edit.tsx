@@ -38,7 +38,7 @@ export async function action({ request, params }: { request: Request; params: { 
     client: apiClient,
     path: { id: params.id },
     body: {
-      type: data.eventType!,
+      type: data.eventType as NonNullable<typeof data.eventType>,
       title: data.title.trim(),
       dateStart: data.dateStart,
       timeStart: data.timeStart ?? undefined,

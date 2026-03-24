@@ -74,7 +74,6 @@ export function StepPreview({ data }: StepPreviewProps) {
 
         {data.description && data.description !== '<p></p>' && (
           <TypographyStylesProvider>
-            {/* biome-ignore lint/security/noDangerouslySetInnerHtml: preview of tiptap editor content */}
             <div dangerouslySetInnerHTML={{ __html: data.description }} />
           </TypographyStylesProvider>
         )}

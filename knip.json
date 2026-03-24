@@ -24,11 +24,16 @@
     },
     "apps/admin": {
       "entry": ["workers/app.ts", "app/**/*.{ts,tsx}"],
-      "ignoreDependencies": ["@varlock/vite-integration"]
+      "ignoreDependencies": ["@varlock/infisical-plugin"]
     },
     "apps/www": {
       "entry": ["src/pages/**/*.astro"],
       "ignoreDependencies": ["@vitest/coverage-v8", "wrangler"]
+    },
+    "packages/api-client": {
+      "entry": ["openapi-ts.config.ts"],
+      "ignore": ["src/generated/**"],
+      "ignoreDependencies": ["@hey-api/client-fetch"]
     },
     "packages/shared": {}
   }
