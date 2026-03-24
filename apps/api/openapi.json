@@ -1,0 +1,695 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "DT65 API",
+    "version": "1.0.0"
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      },
+      "oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://dev-dt65.eu.auth0.com/authorize?audience=https://api.staging.downtown65.com",
+            "tokenUrl": "https://dev-dt65.eu.auth0.com/oauth/token",
+            "scopes": {}
+          }
+        }
+      }
+    },
+    "schemas": {
+      "EventDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "CYCLING",
+              "KARONKKA",
+              "MEETING",
+              "NORDIC_WALKING",
+              "ICE_HOCKEY",
+              "ORIENTEERING",
+              "OTHER",
+              "RUNNING",
+              "SKIING",
+              "SPINNING",
+              "SWIMMING",
+              "TRACK_RUNNING",
+              "TRAIL_RUNNING",
+              "TRIATHLON",
+              "ULTRAS"
+            ],
+            "example": "RUNNING"
+          },
+          "title": {
+            "type": "string"
+          },
+          "dateStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "timeStart": {
+            "type": ["string", "null"]
+          },
+          "location": {
+            "type": ["string", "null"]
+          },
+          "subtitle": {
+            "type": ["string", "null"]
+          },
+          "description": {
+            "type": ["string", "null"]
+          },
+          "race": {
+            "type": "boolean"
+          },
+          "creatorId": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "participants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Participant"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "title",
+          "dateStart",
+          "timeStart",
+          "location",
+          "subtitle",
+          "description",
+          "race",
+          "creatorId",
+          "createdAt",
+          "updatedAt",
+          "participants"
+        ]
+      },
+      "Participant": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "number"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "joinedAt": {
+            "type": "string"
+          }
+        },
+        "required": ["userId", "nickname", "joinedAt"]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": ["code", "message"]
+          }
+        },
+        "required": ["error"]
+      },
+      "Event": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "CYCLING",
+              "KARONKKA",
+              "MEETING",
+              "NORDIC_WALKING",
+              "ICE_HOCKEY",
+              "ORIENTEERING",
+              "OTHER",
+              "RUNNING",
+              "SKIING",
+              "SPINNING",
+              "SWIMMING",
+              "TRACK_RUNNING",
+              "TRAIL_RUNNING",
+              "TRIATHLON",
+              "ULTRAS"
+            ],
+            "example": "RUNNING"
+          },
+          "title": {
+            "type": "string"
+          },
+          "dateStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "timeStart": {
+            "type": ["string", "null"]
+          },
+          "location": {
+            "type": ["string", "null"]
+          },
+          "subtitle": {
+            "type": ["string", "null"]
+          },
+          "description": {
+            "type": ["string", "null"]
+          },
+          "race": {
+            "type": "boolean"
+          },
+          "creatorId": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "participantCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "title",
+          "dateStart",
+          "timeStart",
+          "location",
+          "subtitle",
+          "description",
+          "race",
+          "creatorId",
+          "createdAt",
+          "updatedAt",
+          "participantCount"
+        ]
+      },
+      "CreateEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "CYCLING",
+              "KARONKKA",
+              "MEETING",
+              "NORDIC_WALKING",
+              "ICE_HOCKEY",
+              "ORIENTEERING",
+              "OTHER",
+              "RUNNING",
+              "SKIING",
+              "SPINNING",
+              "SWIMMING",
+              "TRACK_RUNNING",
+              "TRAIL_RUNNING",
+              "TRIATHLON",
+              "ULTRAS"
+            ],
+            "example": "RUNNING"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "dateStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "timeStart": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "subtitle": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string"
+          },
+          "race": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": ["type", "title", "dateStart"]
+      },
+      "EventSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "dateStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "timeStart": {
+            "type": ["string", "null"]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "CYCLING",
+              "KARONKKA",
+              "MEETING",
+              "NORDIC_WALKING",
+              "ICE_HOCKEY",
+              "ORIENTEERING",
+              "OTHER",
+              "RUNNING",
+              "SKIING",
+              "SPINNING",
+              "SWIMMING",
+              "TRACK_RUNNING",
+              "TRAIL_RUNNING",
+              "TRIATHLON",
+              "ULTRAS"
+            ],
+            "example": "RUNNING"
+          },
+          "location": {
+            "type": ["string", "null"]
+          },
+          "race": {
+            "type": "boolean"
+          },
+          "participantCount": {
+            "type": "number"
+          },
+          "creatorId": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "dateStart",
+          "timeStart",
+          "type",
+          "location",
+          "race",
+          "participantCount",
+          "creatorId"
+        ]
+      },
+      "UpdateEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "CYCLING",
+              "KARONKKA",
+              "MEETING",
+              "NORDIC_WALKING",
+              "ICE_HOCKEY",
+              "ORIENTEERING",
+              "OTHER",
+              "RUNNING",
+              "SKIING",
+              "SPINNING",
+              "SWIMMING",
+              "TRACK_RUNNING",
+              "TRAIL_RUNNING",
+              "TRIATHLON",
+              "ULTRAS"
+            ],
+            "example": "RUNNING"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "dateStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "timeStart": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "subtitle": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string"
+          },
+          "race": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SuccessMessage": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": ["message"]
+      }
+    },
+    "parameters": {}
+  },
+  "paths": {
+    "/api/events/{id}": {
+      "get": {
+        "tags": ["Events (Public)"],
+        "summary": "Get event details (public)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "42"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event details with participants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Events"],
+        "summary": "Update an event (owner only)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "42"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEvent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not the event owner",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Events"],
+        "summary": "Delete an event (owner only)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "42"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Event deleted"
+          },
+          "403": {
+            "description": "Not the event owner",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/events": {
+      "post": {
+        "tags": ["Events"],
+        "summary": "Create a new event",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEvent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Events"],
+        "summary": "List upcoming events",
+        "responses": {
+          "200": {
+            "description": "List of upcoming events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventSummary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/events/{id}/participants": {
+      "post": {
+        "tags": ["Participants"],
+        "summary": "Join an event",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "42"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully joined event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cannot join past event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Participants"],
+        "summary": "Leave an event",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "42"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully left event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cannot leave past event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "webhooks": {}
+}
