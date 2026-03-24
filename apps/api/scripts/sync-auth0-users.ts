@@ -99,7 +99,7 @@ async function fetchAllUsers(token: string): Promise<Auth0User[]> {
 }
 
 function escapeSQL(value: string): string {
-  return value.replace(/'/g, "''");
+  return value.replace(/\\/g, '\\\\').replace(/\0/g, '').replace(/'/g, "''");
 }
 
 function generateSQL(users: Auth0User[]): string {

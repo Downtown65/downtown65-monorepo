@@ -22,7 +22,7 @@ import {
   IconTrophy,
   IconUser,
 } from '@tabler/icons-react';
-import { Link, useFetcher, useLoaderData } from 'react-router';
+import { Link, redirect, useFetcher, useLoaderData } from 'react-router';
 import { apiDelete, apiGet, apiPost, requireAuth } from '~/lib/api.server';
 import { getSession } from '~/lib/session.server';
 
@@ -95,7 +95,6 @@ export async function action({ request, params }: { request: Request; params: { 
     await apiDelete(session, `/events/${params.id}/participants`);
   } else if (intent === 'delete') {
     await apiDelete(session, `/events/${params.id}`);
-    const { redirect } = await import('react-router');
     return redirect('/events');
   }
 
@@ -127,6 +126,8 @@ export default function EventDetailPage() {
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure();
 
   const isParticipant = event.participants.some((p) => p.nickname === currentNickname);
+  const currentUser = event.participants.find((p) => p.nickname === currentNickname);
+  const isOwner = currentUser ? currentUser.userId === event.creatorId : false;
   const isSubmitting = fetcher.state !== 'idle';
 
   return (
@@ -156,7 +157,10 @@ export default function EventDetailPage() {
             <IconCalendarEvent size={16} />
             <Text>
               {formatDate(event.dateStart)}
-              {formatTime(event.timeStart) ? ` ${formatTime(event.timeStart)}` : ''}
+              {(() => {
+                const time = formatTime(event.timeStart);
+                return time ? ` ${time}` : '';
+              })()}
             </Text>
           </Group>
 
@@ -224,29 +228,30 @@ export default function EventDetailPage() {
           )}
         </fetcher.Form>
 
-        <Divider my="md" />
+        {isOwner && (
+          <>
+            <Divider my="md" />
 
-        <Group>
-          <Button
-            component={Link}
-            to={`/events/${String(event.id)}/edit`}
-            variant="subtle"
-            leftSection={<IconPencil size={16} />}
-          >
-            Muokkaa
-          </Button>
-          <Button
-            variant="subtle"
-            color="red"
-            leftSection={<IconTrash size={16} />}
-            onClick={openDeleteModal}
-          >
-            Poista
-          </Button>
-        </Group>
-        <Text size="xs" c="dimmed" mt="xs">
-          Vain tapahtuman luoja voi muokata tai poistaa tapahtuman.
-        </Text>
+            <Group>
+              <Button
+                component={Link}
+                to={`/events/${String(event.id)}/edit`}
+                variant="subtle"
+                leftSection={<IconPencil size={16} />}
+              >
+                Muokkaa
+              </Button>
+              <Button
+                variant="subtle"
+                color="red"
+                leftSection={<IconTrash size={16} />}
+                onClick={openDeleteModal}
+              >
+                Poista
+              </Button>
+            </Group>
+          </>
+        )}
       </Paper>
 
       <Modal
