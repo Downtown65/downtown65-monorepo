@@ -9,8 +9,8 @@
  * Env vars required (via varlock):
  *   AUTH0_DOMAIN, AUTH0_CLIENT_USER_MANAGEMENT_ID, AUTH0_CLIENT_USER_MANAGEMENT_SECRET
  */
-import { writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 
 function requireEnv(key: string): string {
   const value = process.env[key];
@@ -140,6 +140,7 @@ async function main(): Promise<void> {
 
   const sql = generateSQL(users);
   const outputPath = resolve(import.meta.dirname, '..', 'data/seed-users.sql');
+  mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, sql);
   log(`Written to ${outputPath}`);
 
