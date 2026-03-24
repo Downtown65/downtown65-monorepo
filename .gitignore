@@ -5,6 +5,8 @@ dist/
 .dev.vars
 *.tsbuildinfo
 worker-configuration.d.ts
+# Varlock auto-generated type files
+/apps/*/env.d.ts
 .DS_Store
 coverage/
 .zed/
