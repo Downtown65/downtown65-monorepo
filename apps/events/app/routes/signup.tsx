@@ -10,15 +10,16 @@ import {
   Title,
 } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
-import { Form, Link, redirect, useActionData, useNavigation } from 'react-router';
+import { Form, Link, redirect, useNavigation } from 'react-router';
 import { ENV } from 'varlock/env';
 import { createAuth0User, getLoginUrl } from '~/lib/auth.server';
 import { createPkceCookie } from '~/lib/session.server';
+import type { Route } from './+types/signup';
 
-interface ActionData {
-  error?: string;
-  fieldErrors?: Record<string, string>;
-}
+// interface ActionData {
+//   error?: string;
+//   fieldErrors?: Record<string, string>;
+// }
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
@@ -37,18 +38,18 @@ export async function action({ request }: { request: Request }) {
   if (!registerSecret) fieldErrors.registerSecret = 'Rekisteröintitunnus vaaditaan';
 
   if (Object.keys(fieldErrors).length > 0) {
-    return { fieldErrors } satisfies ActionData;
+    return { fieldErrors };
   }
 
   if (registerSecret !== ENV.REGISTER_SECRET) {
-    return { error: 'Virheellinen rekisteröintitunnus' } satisfies ActionData;
+    return { error: 'Virheellinen rekisteröintitunnus' };
   }
 
   try {
     await createAuth0User({ email, password, name, nickname });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Rekisteröinti epäonnistui';
-    return { error: message } satisfies ActionData;
+    return { error: message };
   }
 
   // After successful signup, redirect to Auth0 login
@@ -60,8 +61,7 @@ export async function action({ request }: { request: Request }) {
   });
 }
 
-export default function Signup() {
-  const actionData = useActionData<ActionData>();
+export default function Signup({ actionData }: Route.ComponentProps) {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
 

@@ -29,9 +29,10 @@ import {
   IconTrophy,
   IconUser,
 } from '@tabler/icons-react';
-import { Link, redirect, useFetcher, useLoaderData } from 'react-router';
+import { Link, redirect, useFetcher } from 'react-router';
 import { createAuthClient, requireAuth } from '~/lib/api.server';
 import { getSession } from '~/lib/session.server';
+import type { Route } from './+types/events.$id';
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
@@ -107,8 +108,8 @@ function ParticipantBadge({
   );
 }
 
-export default function EventDetailPage() {
-  const { event, currentNickname } = useLoaderData<typeof loader>();
+export default function EventDetailPage({ loaderData }: Route.ComponentProps) {
+  const { event, currentNickname } = loaderData;
   const fetcher = useFetcher();
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure();
 

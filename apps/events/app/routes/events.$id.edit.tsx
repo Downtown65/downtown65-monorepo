@@ -1,9 +1,10 @@
 import { getApiEventsById, putApiEventsById } from '@dt65/api-client';
 import { Container, Title } from '@mantine/core';
-import { redirect, useLoaderData, useNavigation } from 'react-router';
+import { redirect, useNavigation } from 'react-router';
 import { EventWizard } from '~/components/event-wizard/EventWizard';
 import type { EventFormData } from '~/components/event-wizard/types';
 import { createAuthClient, requireAuth } from '~/lib/api.server';
+import type { Route } from './+types/events.$id.edit';
 
 export async function loader({ request, params }: { request: Request; params: { id: string } }) {
   const session = await requireAuth(request);
@@ -52,8 +53,8 @@ export async function action({ request, params }: { request: Request; params: { 
   return redirect(`/events/${params.id}`);
 }
 
-export default function EditEvent() {
-  const { formData } = useLoaderData<typeof loader>();
+export default function EditEvent({ loaderData }: Route.ComponentProps) {
+  const { formData } = loaderData;
   const navigation = useNavigation();
 
   function handleSubmit(data: EventFormData) {

@@ -11,23 +11,19 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
 } from 'react-router';
 import { AppLayout } from '~/components/AppLayout';
 import { getSession } from '~/lib/session.server';
 import { theme } from '~/theme';
+import type { Route } from './+types/root';
 
-export interface RootLoaderData {
-  user: { nickname: string; email?: string | undefined } | null;
-}
-
-export async function loader({ request }: { request: Request }): Promise<RootLoaderData> {
+export async function loader({ request }: { request: Request }) {
   const session = await getSession(request);
   if (!session) return { user: null };
 
   return {
     user: {
-      nickname: session.user.nickname ?? session.user.email ?? 'Käyttäjä',
+      nickname: session.user.nickname,
       email: session.user.email,
     },
   };
@@ -54,8 +50,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function Root() {
-  const { user } = useLoaderData<RootLoaderData>();
+export default function Root({ loaderData }: Route.ComponentProps) {
+  const { user } = loaderData;
 
   return (
     <AppLayout user={user}>
