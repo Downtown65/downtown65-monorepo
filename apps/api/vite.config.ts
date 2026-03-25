@@ -55,7 +55,7 @@ export default defineConfig(async () => {
   const varlockPlugins = await loadVarlockPlugins();
 
   return {
-    plugins: [...varlockPlugins, cloudflare()],
+    plugins: [...varlockPlugins, cloudflare({ inspectorPort: 9230 })],
     resolve: {
       alias: {
         '@': path.resolve(import.meta.dirname, 'src'),
