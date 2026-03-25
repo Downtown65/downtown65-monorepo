@@ -74,7 +74,7 @@ export function EventCard({ event }: { event: EventSummary }) {
             radius="xs"
             tt="none"
           >
-            by #{event.creatorId}
+            by #{event}
           </Badge>
         </div>
       </Card.Section>
