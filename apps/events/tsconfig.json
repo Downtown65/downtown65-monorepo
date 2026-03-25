@@ -9,8 +9,16 @@
     "paths": {
       "~/*": ["./app/*"]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "rootDirs": [".", "./.react-router/types"]
   },
-  "include": ["app", "workers", "env.d.ts", "react-router.config.ts", "vite.config.ts"],
+  "include": [
+    "app",
+    "workers",
+    "env.d.ts",
+    "react-router.config.ts",
+    "vite.config.ts",
+    ".react-router/types/**/*"
+  ],
   "references": [{ "path": "../../packages/shared" }]
 }

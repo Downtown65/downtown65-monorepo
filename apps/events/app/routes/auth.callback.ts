@@ -1,6 +1,5 @@
 import { redirect } from 'react-router';
-import type { SessionData } from '~/lib/auth.server';
-import { exchangeCode, getUserInfo } from '~/lib/auth.server';
+import { exchangeCode, getUserInfo, type SessionData, SessionDataSchema } from '~/lib/auth.server';
 import { clearPkceCookie, createSessionCookie, getPkceData } from '~/lib/session.server';
 
 export async function loader({ request }: { request: Request }) {
@@ -26,12 +25,12 @@ export async function loader({ request }: { request: Request }) {
   const tokens = await exchangeCode(request, code, pkceData.codeVerifier);
   const user = await getUserInfo(tokens.access_token);
 
-  const session: SessionData = {
+  const session: SessionData = SessionDataSchema.encode({
     accessToken: tokens.access_token,
     refreshToken: tokens.refresh_token,
     expiresAt: Date.now() + tokens.expires_in * 1000,
     user,
-  };
+  });
 
   const sessionCookie = await createSessionCookie(session);
   const clearPkce = clearPkceCookie();

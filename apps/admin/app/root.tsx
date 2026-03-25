@@ -11,7 +11,6 @@ import {
 import { AdminLayout } from '~/components/AdminLayout';
 import { getSession } from '~/lib/session.server';
 import { theme } from '~/theme';
-import type { Route } from './+types/root';
 
 export async function loader({ request }: { request: Request }) {
   const session = await getSession(request);

@@ -4,5 +4,19 @@ export const FONT_BANGERS = 'Bangers, cursive';
 
 export const theme = createTheme({
   primaryColor: 'blue',
-  fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif',
+  fontFamily: 'Zalando Sans, Roboto, Helvetica, Arial, sans-serif',
+  colors: {
+    'dt-pink': [
+      '#ffebf7',
+      '#f9d7e8',
+      '#eca0c5',
+      '#e47fb0',
+      '#dc5998',
+      '#d74189',
+      '#d53482',
+      '#bd266f',
+      '#aa1e63',
+      '#951156',
+    ],
+  },
 });
