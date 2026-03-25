@@ -55,7 +55,11 @@ export default defineConfig(async () => {
   const varlockPlugins = await loadVarlockPlugins();
 
   return {
-    plugins: [...varlockPlugins, cloudflare({ viteEnvironment: { name: 'ssr' } }), reactRouter()],
+    plugins: [
+      ...varlockPlugins,
+      cloudflare({ inspectorPort: 9231, viteEnvironment: { name: 'ssr' } }),
+      reactRouter(),
+    ],
     resolve: {
       alias: {
         '~': path.resolve(import.meta.dirname, 'app'),
