@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "generate": "openapi-ts",
+    "generate-openapi": "openapi-ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint",
     "format": "biome check --write",
@@ -20,6 +20,7 @@
     "@hey-api/client-fetch": "^0.9.0"
   },
   "devDependencies": {
+    "@dt65/api": "workspace:*",
     "@hey-api/openapi-ts": "^0.82.0",
     "rimraf": "catalog:",
     "typescript": "catalog:"
