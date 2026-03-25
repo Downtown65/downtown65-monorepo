@@ -74,11 +74,13 @@ export function EventCard({ event }: { event: EventSummary }) {
             radius="xs"
             tt="none"
           >
-            by #{event}
+            by #{event.creator.nickname}
           </Badge>
         </div>
       </Card.Section>
-
+      <Text fw="bold" mt="xs">
+        {event.subtitle}
+      </Text>
       <Group gap="xs" mb="xs">
         <IconCalendarEvent size={14} />
         <Text size="sm" c="dimmed">
@@ -87,15 +89,13 @@ export function EventCard({ event }: { event: EventSummary }) {
         </Text>
       </Group>
 
-      {event.location && (
-        <Group gap="xs" mb="xs">
-          <IconMapPin size={14} />
-          <Text size="sm" c="dimmed">
-            {event.location}
-          </Text>
-        </Group>
-      )}
-      <Text>Subtitle</Text>
+      <Group gap="xs" mb="xs">
+        <IconMapPin size={14} />
+        <Text size="sm" c="dimmed">
+          {event.location ?? 'Ei määritelty'}
+        </Text>
+      </Group>
+
       <Button
         component={Link}
         to={`/events/${String(event.id)}`}

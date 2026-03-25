@@ -1,72 +1,21 @@
-import { EVENT_TYPES, type EventType } from '@dt65/shared';
+import { type EventType, toEventType } from '@dt65/shared';
 import { asc, eq, gte, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
-import z from 'zod';
+import type { z } from 'zod';
 import { eventIdCondition } from '@/db/query-helpers';
 import { events, users, usersToEvents } from '@/db/schema';
+import {
+  type CreateEventSchema,
+  type EventDetailSchema,
+  type EventSchema,
+  EventSummarySchema,
+  type UpdateEventSchema,
+} from '@/routes/events/events.schemas';
 
-type EventInput = {
-  type: EventType;
-  title: string;
-  dateStart: string;
-  timeStart?: string | undefined;
-  location?: string | undefined;
-  subtitle?: string | undefined;
-  description?: string | undefined;
-  race: boolean;
-};
-
-type EventUpdateInput = {
-  type?: EventType | undefined;
-  title?: string | undefined;
-  dateStart?: string | undefined;
-  timeStart?: string | undefined;
-  location?: string | undefined;
-  subtitle?: string | undefined;
-  description?: string | undefined;
-  race?: boolean | undefined;
-};
-
-type EventRow = {
-  id: number;
-  type: EventType;
-  title: string;
-  dateStart: string;
-  timeStart: string | null;
-  location: string | null;
-  subtitle: string | null;
-  description: string | null;
-  race: boolean;
-  creatorId: number;
-  createdAt: string;
-  updatedAt: string;
-  participantCount: number;
-};
-
-type EventDetail = Omit<EventRow, 'participantCount'> & {
-  participants: Array<{
-    userId: number;
-    nickname: string;
-    joinedAt: string;
-  }>;
-};
-
-const EventSummarySchema = z.object({
-  id: z.number(),
-  title: z.string(),
-  subtitle: z.string(),
-  dateStart: z.iso.date(),
-  timeStart: z.iso.time().nullable(),
-  type: z.enum(EVENT_TYPES),
-  location: z.string().nullable(),
-  race: z.coerce.boolean(),
-  participantCount: z.number(),
-  creator: z.object({
-    id: z.number(),
-    nickname: z.string(),
-  }),
-});
-
+type EventInput = z.infer<typeof CreateEventSchema>;
+type EventUpdateInput = z.infer<typeof UpdateEventSchema>;
+type EventRow = z.infer<typeof EventSchema>;
+type EventDetail = z.infer<typeof EventDetailSchema>;
 type EventSummary = z.infer<typeof EventSummarySchema>;
 
 type Result<T> = { ok: true; data: T } | { ok: false; error: 'FORBIDDEN' | 'NOT_FOUND' };
@@ -103,7 +52,7 @@ function buildUpdateFields(data: EventUpdateInput): Record<string, unknown> {
 function toEventRow(event: typeof events.$inferSelect, participantCount: number): EventRow {
   return {
     id: event.id,
-    type: event.eventType as EventType,
+    type: toEventType(event.eventType),
     title: event.title,
     dateStart: event.dateStart,
     timeStart: event.timeStart,
@@ -199,7 +148,7 @@ export async function getEventById(d1: D1Database, idParam: string): Promise<Eve
 
   return {
     id: event.id,
-    type: event.eventType as EventType,
+    type: toEventType(event.eventType),
     title: event.title,
     dateStart: event.dateStart,
     timeStart: event.timeStart,

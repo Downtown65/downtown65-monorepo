@@ -59,13 +59,19 @@ export type CreateEvent = {
 export type EventSummary = {
     id: number;
     title: string;
+    subtitle: string | null;
     dateStart: string;
     timeStart: string | null;
     type: 'CYCLING' | 'KARONKKA' | 'MEETING' | 'NORDIC_WALKING' | 'ICE_HOCKEY' | 'ORIENTEERING' | 'OTHER' | 'RUNNING' | 'SKIING' | 'SPINNING' | 'SWIMMING' | 'TRACK_RUNNING' | 'TRAIL_RUNNING' | 'TRIATHLON' | 'ULTRAS';
     location: string | null;
     race: boolean;
     participantCount: number;
-    creatorId: number;
+    creator: Creator;
+};
+
+export type Creator = {
+    id: number;
+    nickname: string;
 };
 
 export type UpdateEvent = {

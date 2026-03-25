@@ -1,5 +1,5 @@
 import { ENV } from 'varlock/env';
-import type { SessionData } from './auth.server';
+import { type SessionData, SessionDataSchema } from './auth.server';
 
 const SESSION_COOKIE = 'dt65_session';
 const PKCE_COOKIE = 'dt65_pkce';
@@ -64,7 +64,7 @@ export async function getSession(request: Request): Promise<SessionData | null> 
 
   try {
     const decrypted = await decrypt(sessionCookie);
-    return JSON.parse(decrypted) as SessionData;
+    return SessionDataSchema.parse(JSON.parse(decrypted));
   } catch {
     return null;
   }
