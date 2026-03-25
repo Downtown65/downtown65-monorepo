@@ -1,6 +1,9 @@
 import type { EventSummary } from '@dt65/api-client';
 import { ActionIcon, Badge, Button, Card, Group, Image, Text } from '@mantine/core';
 import { IconCalendarEvent, IconMapPin, IconTrophy, IconUsers } from '@tabler/icons-react';
+import { format, parseISO } from 'date-fns';
+import { fi } from 'date-fns/locale';
+
 import { Link } from 'react-router';
 import classes from './EventCard.module.css';
 
@@ -11,21 +14,12 @@ function formatEventType(type: string): string {
     .replace(/^\w/, (c) => c.toUpperCase());
 }
 
-function formatDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('fi-FI', {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
-  });
-}
+function formatDateTime(isoDate: string, isotime: string | null): string {
+  const d = parseISO(isoDate);
+  const date = format(d, 'd.M.yyyy (EEEEEE)', { locale: fi });
+  const time = isotime != null ? `klo ${isotime}` : '';
 
-function formatTime(timeStr: string | null): string {
-  if (!timeStr) {
-    return '';
-  }
-
-  return `klo ${timeStr.slice(0, 5)}`;
+  return `${date} ${time}`;
 }
 
 export function EventCard({ event }: { event: EventSummary }) {
@@ -81,22 +75,18 @@ export function EventCard({ event }: { event: EventSummary }) {
       <Text fw="bold" mt="xs">
         {event.subtitle}
       </Text>
-      <Group gap="xs" mb="xs">
+      <Group>
         <IconCalendarEvent size={14} />
-        <Text size="sm" c="dimmed">
-          {formatDate(event.dateStart)}
-          {formatTime(event.timeStart)}
-        </Text>
+        <Text size="sm">{formatDateTime(event.dateStart, event.timeStart)}</Text>
       </Group>
-
-      <Group gap="xs" mb="xs">
+      <Group>
         <IconMapPin size={14} />
         <Text size="sm" c="dimmed">
           {event.location ?? 'Ei määritelty'}
         </Text>
       </Group>
-
       <Button
+        my="sm"
         component={Link}
         to={`/events/${String(event.id)}`}
         variant="light"

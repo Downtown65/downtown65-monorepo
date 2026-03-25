@@ -26,6 +26,7 @@
     "@tiptap/starter-kit": "^2.12.0",
     "@varlock/infisical-plugin": "catalog:",
     "@varlock/vite-integration": "catalog:",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "react": "catalog:",
     "react-dom": "catalog:",
