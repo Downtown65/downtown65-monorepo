@@ -1,15 +1,18 @@
-import type { EventType } from '@dt65/shared';
+import { EVENT_TYPES, type EventType } from '@dt65/shared';
+import { z } from 'zod/v4';
 
-export interface EventFormData {
-  eventType: EventType | null;
-  title: string;
-  dateStart: string;
-  timeStart: string | null;
-  location: string;
-  subtitle: string;
-  description: string;
-  race: boolean;
-}
+export const EventFormDataSchema = z.object({
+  eventType: z.enum(EVENT_TYPES).nullable(),
+  title: z.string(),
+  dateStart: z.string(),
+  timeStart: z.string().nullable(),
+  location: z.string(),
+  subtitle: z.string(),
+  description: z.string(),
+  race: z.boolean(),
+});
+
+export type EventFormData = z.infer<typeof EventFormDataSchema>;
 
 export const initialFormData: EventFormData = {
   eventType: null,

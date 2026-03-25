@@ -75,7 +75,7 @@ export async function action({ request, params }: { request: Request; params: { 
   const session = await requireAuth(request);
   const { apiClient } = await createAuthClient(session);
   const formData = await request.formData();
-  const intent = formData.get('intent') as string;
+  const intent = String(formData.get('intent'));
 
   if (intent === 'join') {
     await postApiEventsByIdParticipants({ client: apiClient, path: { id: params.id } });

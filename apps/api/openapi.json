@@ -283,6 +283,9 @@
           "title": {
             "type": "string"
           },
+          "subtitle": {
+            "type": ["string", "null"]
+          },
           "dateStart": {
             "type": "string",
             "format": "date"
@@ -320,21 +323,34 @@
           "participantCount": {
             "type": "number"
           },
-          "creatorId": {
-            "type": "number"
+          "creator": {
+            "$ref": "#/components/schemas/Creator"
           }
         },
         "required": [
           "id",
           "title",
+          "subtitle",
           "dateStart",
           "timeStart",
           "type",
           "location",
           "race",
           "participantCount",
-          "creatorId"
+          "creator"
         ]
+      },
+      "Creator": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "nickname": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "nickname"]
       },
       "UpdateEvent": {
         "type": "object",

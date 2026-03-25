@@ -36,12 +36,15 @@ export class Auth0Service implements AuthenticationService {
       throw new Error('Invalid token format');
     }
 
-    const [headerPart, payloadPart, signaturePart] = parts as [string, string, string];
+    const [headerPart, payloadPart, signaturePart] = parts;
+    if (!headerPart || !payloadPart || !signaturePart) {
+      throw new Error('Invalid token format');
+    }
 
-    const header = JSON.parse(decodeBase64Url(headerPart)) as { kid?: string; alg?: string };
-    const payload = JSON.parse(decodeBase64Url(payloadPart)) as Record<string, unknown>;
+    const header: Record<string, unknown> = JSON.parse(decodeBase64Url(headerPart));
+    const payload: Record<string, unknown> = JSON.parse(decodeBase64Url(payloadPart));
 
-    if (header.alg !== 'RS256') {
+    if (typeof header.alg !== 'string' || header.alg !== 'RS256') {
       throw new Error('Unsupported algorithm');
     }
 
@@ -67,7 +70,7 @@ export class Auth0Service implements AuthenticationService {
       throw new Error('Missing sub claim');
     }
 
-    if (!header.kid) {
+    if (typeof header.kid !== 'string') {
       throw new Error('Missing kid in token header');
     }
 

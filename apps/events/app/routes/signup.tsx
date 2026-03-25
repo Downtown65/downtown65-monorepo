@@ -23,11 +23,11 @@ import type { Route } from './+types/signup';
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
-  const name = formData.get('name') as string;
-  const nickname = formData.get('nickname') as string;
-  const registerSecret = formData.get('registerSecret') as string;
+  const email = String(formData.get('email') ?? '');
+  const password = String(formData.get('password') ?? '');
+  const name = String(formData.get('name') ?? '');
+  const nickname = String(formData.get('nickname') ?? '');
+  const registerSecret = String(formData.get('registerSecret') ?? '');
 
   const fieldErrors: Record<string, string> = {};
   if (!email) fieldErrors.email = 'Sähköposti vaaditaan';

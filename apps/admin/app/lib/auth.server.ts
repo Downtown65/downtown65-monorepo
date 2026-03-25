@@ -1,5 +1,6 @@
 import { Auth0UserInfoSchema, type TokenResponse, TokenResponseSchema } from '@dt65/shared';
 import { ENV } from 'varlock/env';
+import { z } from 'zod/v4';
 
 const CALLBACK_PATH = '/auth/callback';
 const ROLE_CLAIM = 'https://downtown65.com/role';
@@ -8,17 +9,18 @@ const PLUS_RE = /\+/g;
 const SLASH_RE = /\//g;
 const TRAILING_EQUALS_RE = /=+$/;
 
-export interface SessionData {
-  accessToken: string;
-  refreshToken?: string | undefined;
-  expiresAt: number;
-  user: {
-    sub: string;
-    nickname: string;
-    email?: string | undefined;
-    role: string;
-  };
-}
+export const SessionDataSchema = z.object({
+  accessToken: z.string(),
+  refreshToken: z.string().optional(),
+  expiresAt: z.number(),
+  user: z.object({
+    sub: z.string(),
+    nickname: z.string(),
+    email: z.string().optional(),
+    role: z.string(),
+  }),
+});
+export type SessionData = z.infer<typeof SessionDataSchema>;
 
 function getCallbackUrl(request: Request): string {
   const url = new URL(request.url);

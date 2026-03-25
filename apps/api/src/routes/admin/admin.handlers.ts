@@ -1,4 +1,4 @@
-import type { EventType } from '@dt65/shared';
+import { toEventType } from '@dt65/shared';
 import type { RouteHandler } from '@hono/zod-openapi';
 import { desc, eq, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
@@ -219,7 +219,7 @@ export const handleListAdminEvents: RouteHandler<typeof listAdminEventsRoute, Ap
     {
       events: rows.map((row) => ({
         ...row,
-        eventType: row.eventType as EventType,
+        eventType: toEventType(row.eventType),
         race: row.race === 1,
       })),
       total,

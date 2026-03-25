@@ -28,6 +28,7 @@
 - `verbatimModuleSyntax: true` -- use `import type` for type-only imports
 - `composite: true` + `incremental: true` for project references
 - `skipLibCheck: true` -- skip checking third-party `.d.ts` files
+- **No `as` casts** -- validate external data with Zod at system boundaries (API responses, JSON.parse, FormData). Use type guards or `String()`/`Number()` for narrowing. The only acceptable `as` is `as const`.
 
 ## Dependencies
 

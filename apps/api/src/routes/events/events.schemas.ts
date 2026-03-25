@@ -8,6 +8,13 @@ const EventTypeSchema = z.enum(EVENT_TYPES).openapi({
 const ISODateSchema = z.iso.date();
 const ISOTimeSchema = z.iso.time({ precision: -1 });
 
+const CreatorSchema = z
+  .object({
+    id: z.number(),
+    nickname: z.string(),
+  })
+  .openapi('Creator');
+
 export const CreateEventSchema = z
   .object({
     type: EventTypeSchema,
@@ -56,13 +63,14 @@ export const EventSummarySchema = z
   .object({
     id: z.number(),
     title: z.string(),
+    subtitle: z.string().nullable(),
     dateStart: ISODateSchema,
     timeStart: ISOTimeSchema.nullable(),
     type: EventTypeSchema,
     location: z.string().nullable(),
-    race: z.boolean(),
+    race: z.coerce.boolean(),
     participantCount: z.number(),
-    creatorId: z.number(),
+    creator: CreatorSchema,
   })
   .openapi('EventSummary');
 

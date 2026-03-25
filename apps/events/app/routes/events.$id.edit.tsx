@@ -2,7 +2,7 @@ import { getApiEventsById, putApiEventsById } from '@dt65/api-client';
 import { Container, Title } from '@mantine/core';
 import { redirect, useNavigation } from 'react-router';
 import { EventWizard } from '~/components/event-wizard/EventWizard';
-import type { EventFormData } from '~/components/event-wizard/types';
+import { type EventFormData, EventFormDataSchema } from '~/components/event-wizard/types';
 import { createAuthClient, requireAuth } from '~/lib/api.server';
 import type { Route } from './+types/events.$id.edit';
 
@@ -33,7 +33,7 @@ export async function action({ request, params }: { request: Request; params: { 
   const session = await requireAuth(request);
   const { apiClient } = await createAuthClient(session);
   const formData = await request.formData();
-  const data = JSON.parse(formData.get('data') as string) as EventFormData;
+  const data = EventFormDataSchema.parse(JSON.parse(String(formData.get('data'))));
 
   await putApiEventsById({
     client: apiClient,
