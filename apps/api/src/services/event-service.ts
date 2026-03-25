@@ -1,6 +1,7 @@
-import type { EventType } from '@dt65/shared';
+import { EVENT_TYPES, type EventType } from '@dt65/shared';
 import { asc, eq, gte, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
+import z from 'zod';
 import { eventIdCondition } from '@/db/query-helpers';
 import { events, users, usersToEvents } from '@/db/schema';
 
@@ -50,17 +51,20 @@ type EventDetail = Omit<EventRow, 'participantCount'> & {
   }>;
 };
 
-type EventSummary = {
-  id: number;
-  title: string;
-  dateStart: string;
-  timeStart: string | null;
-  type: EventType;
-  location: string | null;
-  race: boolean;
-  participantCount: number;
-  creatorId: number;
-};
+const EventSummarySchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  subtitle: z.string(),
+  dateStart: z.iso.date(),
+  timeStart: z.iso.time().nullable(),
+  type: z.enum(EVENT_TYPES),
+  location: z.string().nullable(),
+  race: z.coerce.boolean(),
+  participantCount: z.number(),
+  creatorId: z.number(),
+});
+
+type EventSummary = z.infer<typeof EventSummarySchema>;
 
 type Result<T> = { ok: true; data: T } | { ok: false; error: 'FORBIDDEN' | 'NOT_FOUND' };
 
@@ -264,6 +268,7 @@ export async function listUpcomingEvents(d1: D1Database): Promise<EventSummary[]
     .select({
       id: events.id,
       title: events.title,
+      subtitle: events.subtitle,
       dateStart: events.dateStart,
       timeStart: events.timeStart,
       type: events.eventType,
@@ -279,9 +284,5 @@ export async function listUpcomingEvents(d1: D1Database): Promise<EventSummary[]
     .where(gte(events.dateStart, today))
     .orderBy(asc(events.dateStart));
 
-  return rows.map((row) => ({
-    ...row,
-    type: row.type as EventType,
-    race: toBool(row.race),
-  }));
+  return rows.map((row) => EventSummarySchema.parse(row));
 }

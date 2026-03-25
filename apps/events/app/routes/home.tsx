@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <Container size="lg" h="60vh">
       <Flex justify="center" align="center" direction="column" h="100%">
-        <Title ff="Bangers, cursive" c="dt-pink.2" size={52} lts={2}>
+        <Title ff="Bangers, cursive" c="pink.2" size={52} lts={2}>
           Downtown 65 Events
         </Title>
         <Group>

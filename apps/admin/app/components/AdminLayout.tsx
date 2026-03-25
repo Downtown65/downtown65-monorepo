@@ -59,7 +59,6 @@ export function AdminLayout({ children, user }: AdminLayoutProps) {
             </Group>
           </Group>
           <Group gap="xs" visibleFrom="sm">
-            {/* biome-ignore lint/performance/useSolidForComponent: this is React, not Solid */}
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -97,7 +96,6 @@ export function AdminLayout({ children, user }: AdminLayoutProps) {
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
-        {/* biome-ignore lint/performance/useSolidForComponent: this is React, not Solid */}
         {navLinks.map((link) => (
           <NavLink
             key={link.to}
