@@ -61,7 +61,10 @@ const EventSummarySchema = z.object({
   location: z.string().nullable(),
   race: z.coerce.boolean(),
   participantCount: z.number(),
-  creatorId: z.number(),
+  creator: z.object({
+    id: z.number(),
+    nickname: z.string(),
+  }),
 });
 
 type EventSummary = z.infer<typeof EventSummarySchema>;
@@ -274,13 +277,17 @@ export async function listUpcomingEvents(d1: D1Database): Promise<EventSummary[]
       type: events.eventType,
       location: events.location,
       race: events.race,
-      creatorId: events.creatorId,
+      creator: {
+        id: users.id,
+        nickname: users.nickname,
+      },
       participantCount: sql<number>`(
         SELECT count(*) FROM users_to_events
         WHERE users_to_events.event_id = ${events.id}
       )`,
     })
     .from(events)
+    .innerJoin(users, eq(events.creatorId, users.id))
     .where(gte(events.dateStart, today))
     .orderBy(asc(events.dateStart));
 
