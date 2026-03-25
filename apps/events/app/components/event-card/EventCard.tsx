@@ -1,7 +1,8 @@
 import type { EventSummary } from '@dt65/api-client';
-import { Badge, Button, Card, Group, Text } from '@mantine/core';
+import { ActionIcon, Badge, Button, Card, Group, Image, Text } from '@mantine/core';
 import { IconCalendarEvent, IconMapPin, IconTrophy, IconUsers } from '@tabler/icons-react';
 import { Link } from 'react-router';
+import classes from './EventCard.module.css';
 
 function formatEventType(type: string): string {
   return type
@@ -30,20 +31,53 @@ function formatTime(timeStr: string | null): string {
 export function EventCard({ event }: { event: EventSummary }) {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Group justify="space-between" mb="xs">
-        <Text fw={500} lineClamp={1}>
-          {event.title}
-        </Text>
-        {event.race && (
-          <Badge color="yellow" variant="light" leftSection={<IconTrophy size={12} />}>
-            Kilpailu
+      <Card.Section className={classes.imageSection}>
+        <Image src="/event-images/hockey.jpg" height={160} alt="Norway" />
+        <div className={classes.imageOverlay}>
+          <Badge
+            size="md"
+            radius="xs"
+            className={classes.participantCount}
+            leftSection={<IconUsers size={14} />}
+          >
+            {event.participantCount}
           </Badge>
-        )}
-      </Group>
 
-      <Badge variant="light" mb="sm">
-        {formatEventType(event.type)}
-      </Badge>
+          {/* Center - title */}
+          <Text className={classes.title} size="xl" fw={700}>
+            {event.title}
+          </Text>
+
+          {/* Bottom left - badge */}
+          <Badge
+            className={classes.type}
+            variant="gradient"
+            gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+            radius="xs"
+          >
+            {formatEventType(event.type)}
+          </Badge>
+
+          <ActionIcon
+            variant="gradient"
+            size="md"
+            aria-label="Gradient action icon"
+            gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+          >
+            <IconTrophy size={18} />
+          </ActionIcon>
+
+          <Badge
+            className={classes.author}
+            variant="gradient"
+            gradient={{ from: 'violet', to: 'indigo', deg: 90 }}
+            radius="xs"
+            tt="none"
+          >
+            by #{event.creatorId}
+          </Badge>
+        </div>
+      </Card.Section>
 
       <Group gap="xs" mb="xs">
         <IconCalendarEvent size={14} />
@@ -61,14 +95,7 @@ export function EventCard({ event }: { event: EventSummary }) {
           </Text>
         </Group>
       )}
-
-      <Group gap="xs" mb="md">
-        <IconUsers size={14} />
-        <Text size="sm" c="dimmed">
-          {String(event.participantCount)} osallistujaa
-        </Text>
-      </Group>
-
+      <Text>Subtitle</Text>
       <Button
         component={Link}
         to={`/events/${String(event.id)}`}

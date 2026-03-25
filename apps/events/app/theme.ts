@@ -6,7 +6,7 @@ export const theme = createTheme({
   primaryColor: 'blue',
   fontFamily: 'Zalando Sans, Roboto, Helvetica, Arial, sans-serif',
   colors: {
-    'dt-pink': [
+    pink: [
       '#ffebf7',
       '#f9d7e8',
       '#eca0c5',

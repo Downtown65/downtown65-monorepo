@@ -49,10 +49,12 @@ export function AppLayout({ children, user }: AppLayoutProps) {
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
             <Title
               order={3}
+              c="pink.2"
+              ff="Bangers, cursive"
               renderRoot={(props) => <Link to="/" {...props} />}
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
-              Downtown 65
+              DT65 Events
             </Title>
           </Group>
           <Group gap="xs" visibleFrom="sm">
