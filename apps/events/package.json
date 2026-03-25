@@ -6,7 +6,7 @@
     "dev": "vite dev --port 4100",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "typegen": "varlock typegen",
+    "typegen": "varlock typegen && react-router typegen",
     "test": "vitest run --passWithNoTests",
     "lint": "biome lint",
     "format": "biome check --write",
@@ -30,7 +30,8 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-router": "catalog:",
-    "varlock": "catalog:"
+    "varlock": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "catalog:",

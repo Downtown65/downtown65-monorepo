@@ -5,15 +5,18 @@ import {
   TokenResponseSchema,
 } from '@dt65/shared';
 import { ENV } from 'varlock/env';
+import { z } from 'zod';
 
 const CALLBACK_PATH = '/auth/callback';
 
-export interface SessionData {
-  accessToken: string;
-  refreshToken?: string | undefined;
-  expiresAt: number;
-  user: Auth0UserInfo;
-}
+export const SessionDataSchema = z.object({
+  accessToken: z.string(),
+  refreshToken: z.string().optional(),
+  expiresAt: z.number(),
+  user: Auth0UserInfoSchema,
+});
+
+export type SessionData = z.infer<typeof SessionDataSchema>;
 
 function getCallbackUrl(request: Request): string {
   const url = new URL(request.url);

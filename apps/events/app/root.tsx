@@ -34,11 +34,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <html lang="fi" {...mantineHtmlProps}>
       <head>
         <meta charSet="utf-8" />
+
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Bangers&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Bangers&family=Jura:wght@300..700&family=Zalando+Sans:ital,wght@0,200..900;1,200..900&display=swap"
           rel="stylesheet"
         />
         <ColorSchemeScript defaultColorScheme="auto" />

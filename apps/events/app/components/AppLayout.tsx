@@ -9,11 +9,12 @@ import {
   IconUserPlus,
 } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router';
+import type { User } from '~/domain/user';
 import { ThemeToggle } from './ThemeToggle';
 
 interface AppLayoutProps {
   children: React.ReactNode;
-  user?: { nickname: string; email?: string | undefined } | null;
+  user: User | null;
 }
 
 export function AppLayout({ children, user }: AppLayoutProps) {
