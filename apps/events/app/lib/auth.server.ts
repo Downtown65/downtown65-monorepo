@@ -66,14 +66,21 @@ export async function getLoginUrl(
   };
 }
 
-export async function getSignupUrl(
-  request: Request,
-): Promise<{ url: string; codeVerifier: string; state: string }> {
-  const result = await getLoginUrl(request);
-  return {
-    ...result,
-    url: `${result.url}&screen_hint=signup`,
-  };
+export async function requestPasswordReset(email: string): Promise<void> {
+  const response = await fetch(`https://${ENV.AUTH0_DOMAIN}/dbconnections/change_password`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      client_id: ENV.AUTH0_CLIENT_ID,
+      email,
+      connection: 'Username-Password-Authentication',
+    }),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Password reset request failed: ${response.status} ${text}`);
+  }
 }
 
 export async function exchangeCode(
