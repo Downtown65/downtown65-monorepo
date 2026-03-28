@@ -9,5 +9,6 @@ export default [
   route('login', 'routes/login.ts'),
   route('logout', 'routes/logout.ts'),
   route('signup', 'routes/signup.tsx'),
+  route('forgot-password', 'routes/forgot-password.tsx'),
   route('auth/callback', 'routes/auth.callback.ts'),
 ] satisfies RouteConfig;

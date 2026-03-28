@@ -14,7 +14,8 @@
     "ci:lint": "pnpm -r run ci:lint",
     "typecheck": "tsc --build",
     "test": "pnpm -r run test",
-    "clean": "pnpm -r run clean"
+    "clean": "pnpm -r run clean",
+    "kill-apps": "lsof -ti :4000,:4100,:4200 | xargs kill -9 2>/dev/null || true"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
