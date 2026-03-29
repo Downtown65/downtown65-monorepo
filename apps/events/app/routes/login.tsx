@@ -13,22 +13,35 @@ import {
 import { IconAlertCircle } from '@tabler/icons-react';
 import { Form, Link, redirect, useNavigation } from 'react-router';
 import { ENV } from 'varlock/env';
+import { z } from 'zod/v4';
 import { type SessionData, SessionDataSchema } from '~/lib/auth.server';
 import { createSessionCookie } from '~/lib/session.server';
 import type { Route } from './+types/login';
 
+const LoginFormSchema = z.object({
+  email: z.email('Sähköposti vaaditaan'),
+  password: z.string().min(1, 'Salasana vaaditaan'),
+});
+
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
-  const email = String(formData.get('email') ?? '');
-  const password = String(formData.get('password') ?? '');
+  const result = LoginFormSchema.safeParse({
+    email: String(formData.get('email') ?? ''),
+    password: String(formData.get('password') ?? ''),
+  });
 
-  const fieldErrors: Record<string, string> = {};
-  if (!email) fieldErrors.email = 'Sähköposti vaaditaan';
-  if (!password) fieldErrors.password = 'Salasana vaaditaan';
-
-  if (Object.keys(fieldErrors).length > 0) {
+  if (!result.success) {
+    const fieldErrors: Record<string, string> = {};
+    for (const issue of result.error.issues) {
+      const field = issue.path[0];
+      if (typeof field === 'string') {
+        fieldErrors[field] = issue.message;
+      }
+    }
     return { fieldErrors };
   }
+
+  const { email, password } = result.data;
 
   client.setConfig({
     baseUrl: ENV.API_BASE_URL,

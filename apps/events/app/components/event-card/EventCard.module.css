@@ -12,7 +12,7 @@
     "badge  .       author";
   grid-template-columns: auto 1fr auto;
   grid-template-rows: auto 1fr auto;
-  padding: var(--mantine-spacing-xs);
+  padding: 0;
 }
 
 .title {
@@ -35,11 +35,9 @@
 .author {
   grid-area: author;
   align-self: end;
-  color: white;
 }
 
 .race {
   grid-area: race;
   align-self: start;
-  color: white;
 }

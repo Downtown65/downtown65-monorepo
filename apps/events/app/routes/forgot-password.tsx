@@ -3,15 +3,24 @@ import { Alert, Anchor, Button, Container, Paper, Text, TextInput, Title } from 
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { Form, Link, useNavigation } from 'react-router';
 import { ENV } from 'varlock/env';
+import { z } from 'zod/v4';
 import type { Route } from './+types/forgot-password';
+
+const ForgotPasswordFormSchema = z.object({
+  email: z.email('Sähköposti vaaditaan'),
+});
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
-  const email = String(formData.get('email') ?? '');
+  const result = ForgotPasswordFormSchema.safeParse({
+    email: String(formData.get('email') ?? ''),
+  });
 
-  if (!email) {
-    return { error: 'Sähköposti vaaditaan' };
+  if (!result.success) {
+    return { error: result.error.issues[0]?.message ?? 'Sähköposti vaaditaan' };
   }
+
+  const { email } = result.data;
 
   client.setConfig({
     baseUrl: ENV.API_BASE_URL,

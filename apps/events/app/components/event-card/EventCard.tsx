@@ -1,6 +1,13 @@
 import type { EventSummary } from '@dt65/api-client';
-import { ActionIcon, Badge, Button, Card, Group, Image, Text } from '@mantine/core';
-import { IconCalendarEvent, IconMapPin, IconTrophy, IconUsers } from '@tabler/icons-react';
+import { ActionIcon, Badge, Box, Button, Card, Grid, Group, Image, Text } from '@mantine/core';
+import {
+  IconArrowRight,
+  IconCalendarEvent,
+  IconHandStop,
+  IconMapPin,
+  IconTrophy,
+  IconUsers,
+} from '@tabler/icons-react';
 import { format, parseISO } from 'date-fns';
 import { fi } from 'date-fns/locale';
 
@@ -53,6 +60,7 @@ export function EventCard({ event }: { event: EventSummary }) {
           </Badge>
 
           <ActionIcon
+            className={classes.race}
             variant="gradient"
             size="md"
             aria-label="Gradient action icon"
@@ -72,26 +80,36 @@ export function EventCard({ event }: { event: EventSummary }) {
           </Badge>
         </div>
       </Card.Section>
-      <Text fw="bold" mt="xs">
+      <Text fw="bold" size="lg">
         {event.subtitle}
       </Text>
-      <Group>
-        <IconCalendarEvent size={14} />
-        <Text size="sm">{formatDateTime(event.dateStart, event.timeStart)}</Text>
-      </Group>
-      <Group>
-        <IconMapPin size={14} />
-        <Text size="sm" c="dimmed">
-          {event.location ?? 'Ei määritelty'}
-        </Text>
-      </Group>
+      <Grid justify="space-between" align="center">
+        <Grid.Col span={7}>
+          <Group gap="xs" wrap="nowrap">
+            <IconCalendarEvent size={14} style={{ flexShrink: 0 }} />
+            <Text size="sm">{formatDateTime(event.dateStart, event.timeStart)}</Text>
+          </Group>
+          <Group gap="xs" wrap="nowrap" align="flex-start">
+            <IconMapPin size={14} style={{ flexShrink: 0, marginTop: '0.2em' }} />
+            <Text size="sm" c="dimmed">
+              {event.location ?? 'Ei määritelty'} lorem ipsum lorem ipsum
+            </Text>
+          </Group>
+        </Grid.Col>
+        <Grid.Col span={5} display="flex" style={{ justifyContent: 'flex-end' }}>
+          <Button size="sm" leftSection={<IconHandStop size={16} />}>
+            Osallistun
+          </Button>
+        </Grid.Col>
+      </Grid>
+
       <Button
-        my="sm"
         component={Link}
         to={`/events/${String(event.id)}`}
-        variant="light"
+        variant="outline"
         fullWidth
-        mt="auto"
+        mt="sm"
+        rightSection={<IconArrowRight size={14} />}
       >
         Näytä lisää
       </Button>
