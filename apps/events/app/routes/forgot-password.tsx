@@ -1,7 +1,8 @@
+import { client, postApiAuthForgotPassword } from '@dt65/api-client';
 import { Alert, Anchor, Button, Container, Paper, Text, TextInput, Title } from '@mantine/core';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { Form, Link, useNavigation } from 'react-router';
-import { requestPasswordReset } from '~/lib/auth.server';
+import { ENV } from 'varlock/env';
 import type { Route } from './+types/forgot-password';
 
 export async function action({ request }: { request: Request }) {
@@ -12,8 +13,13 @@ export async function action({ request }: { request: Request }) {
     return { error: 'Sähköposti vaaditaan' };
   }
 
+  client.setConfig({
+    baseUrl: ENV.API_BASE_URL,
+    headers: { 'x-api-key': ENV.X_API_KEY },
+  });
+
   try {
-    await requestPasswordReset(email);
+    await postApiAuthForgotPassword({ client, body: { email } });
   } catch {
     // Don't reveal whether the email exists
   }

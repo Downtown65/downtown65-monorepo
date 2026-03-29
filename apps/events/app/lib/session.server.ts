@@ -2,7 +2,6 @@ import { ENV } from 'varlock/env';
 import { type SessionData, SessionDataSchema } from './auth.server';
 
 const SESSION_COOKIE = 'dt65_session';
-const PKCE_COOKIE = 'dt65_pkce';
 const SIX_MONTHS_SECONDS = 60 * 60 * 24 * 180;
 
 /**
@@ -83,42 +82,4 @@ export async function createSessionCookie(session: SessionData): Promise<string>
  */
 export function clearSessionCookie(): string {
   return `${SESSION_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`;
-}
-
-/**
- * Store PKCE state in a short-lived cookie
- */
-export async function createPkceCookie(data: {
-  codeVerifier: string;
-  state: string;
-}): Promise<string> {
-  const encrypted = await encrypt(JSON.stringify(data));
-  return `${PKCE_COOKIE}=${encrypted}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`;
-}
-
-/**
- * Get PKCE state from request cookies
- */
-export async function getPkceData(
-  request: Request,
-): Promise<{ codeVerifier: string; state: string } | null> {
-  const cookieHeader = request.headers.get('cookie') ?? '';
-  const cookies = parseCookies(cookieHeader);
-  const pkceCookie = cookies[PKCE_COOKIE];
-
-  if (!pkceCookie) return null;
-
-  try {
-    const decrypted = await decrypt(pkceCookie);
-    return JSON.parse(decrypted) as { codeVerifier: string; state: string };
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Clear the PKCE cookie
- */
-export function clearPkceCookie(): string {
-  return `${PKCE_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`;
 }

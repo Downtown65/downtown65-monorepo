@@ -1,4 +1,4 @@
-import { client, postApiAuthSignup } from '@dt65/api-client';
+import { client, postApiAuthLogin } from '@dt65/api-client';
 import {
   Alert,
   Anchor,
@@ -15,30 +15,19 @@ import { Form, Link, redirect, useNavigation } from 'react-router';
 import { ENV } from 'varlock/env';
 import { type SessionData, SessionDataSchema } from '~/lib/auth.server';
 import { createSessionCookie } from '~/lib/session.server';
-import type { Route } from './+types/signup';
+import type { Route } from './+types/login';
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const email = String(formData.get('email') ?? '');
   const password = String(formData.get('password') ?? '');
-  const name = String(formData.get('name') ?? '');
-  const nickname = String(formData.get('nickname') ?? '');
-  const registerSecret = String(formData.get('registerSecret') ?? '');
 
   const fieldErrors: Record<string, string> = {};
   if (!email) fieldErrors.email = 'Sähköposti vaaditaan';
-  if (!password || password.length < 8)
-    fieldErrors.password = 'Salasanan on oltava vähintään 8 merkkiä';
-  if (!name) fieldErrors.name = 'Nimi vaaditaan';
-  if (!nickname) fieldErrors.nickname = 'Nickname vaaditaan';
-  if (!registerSecret) fieldErrors.registerSecret = 'Rekisteröintitunnus vaaditaan';
+  if (!password) fieldErrors.password = 'Salasana vaaditaan';
 
   if (Object.keys(fieldErrors).length > 0) {
     return { fieldErrors };
-  }
-
-  if (registerSecret !== ENV.REGISTER_SECRET) {
-    return { error: 'Virheellinen rekisteröintitunnus' };
   }
 
   client.setConfig({
@@ -46,14 +35,13 @@ export async function action({ request }: { request: Request }) {
     headers: { 'x-api-key': ENV.X_API_KEY },
   });
 
-  const { data, error } = await postApiAuthSignup({
+  const { data, error } = await postApiAuthLogin({
     client,
-    body: { email, password, name, nickname },
+    body: { email, password },
   });
 
   if (error || !data) {
-    const message = error?.error?.message ?? 'Rekisteröinti epäonnistui';
-    return { error: message };
+    return { error: 'Virheellinen sähköposti tai salasana' };
   }
 
   const session: SessionData = SessionDataSchema.encode({
@@ -70,15 +58,15 @@ export async function action({ request }: { request: Request }) {
   });
 }
 
-export default function Signup({ actionData }: Route.ComponentProps) {
+export default function Login({ actionData }: Route.ComponentProps) {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
 
   return (
     <Container size={420} py={40}>
-      <Title ta="center">Rekisteröidy</Title>
+      <Title ta="center">Kirjaudu sisään</Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Rekisteröimiseen tarvitset seuran jäsenyyden ja liittymistunnuksen.
+        Downtown65 tapahtumat
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
@@ -105,43 +93,22 @@ export default function Signup({ actionData }: Route.ComponentProps) {
             mt="md"
             error={actionData?.fieldErrors?.password}
           />
-          <TextInput
-            label="Nimi"
-            placeholder="Etunimi Sukunimi"
-            name="name"
-            required
-            mt="md"
-            error={actionData?.fieldErrors?.name}
-          />
-          <TextInput
-            label="Nickname"
-            description="Tunnus/nickname, näkyy ilmoittautumisissa"
-            placeholder="setämies72"
-            name="nickname"
-            required
-            mt="md"
-            error={actionData?.fieldErrors?.nickname}
-          />
-          <PasswordInput
-            label="Rekisteröintitunnus"
-            description="Saat tämän seuralta."
-            placeholder="supersecret"
-            name="registerSecret"
-            required
-            mt="md"
-            error={actionData?.fieldErrors?.registerSecret}
-          />
 
           <Button type="submit" fullWidth mt="xl" loading={isSubmitting}>
-            Rekisteröidy
+            Kirjaudu
           </Button>
-
-          <Text ta="right" mt="md" size="sm">
-            <Anchor component={Link} to="/login">
-              Kirjautumiseen
-            </Anchor>
-          </Text>
         </Form>
+
+        <Text ta="right" mt="md" size="sm">
+          <Anchor component={Link} to="/forgot-password">
+            Unohditko salasanan?
+          </Anchor>
+        </Text>
+        <Text ta="right" mt={4} size="sm">
+          <Anchor component={Link} to="/signup">
+            Rekisteröidy
+          </Anchor>
+        </Text>
       </Paper>
     </Container>
   );

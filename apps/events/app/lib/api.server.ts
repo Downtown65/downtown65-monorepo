@@ -1,8 +1,7 @@
-import { client } from '@dt65/api-client';
+import { client, postApiAuthRefresh } from '@dt65/api-client';
 import { redirect } from 'react-router';
 import { ENV } from 'varlock/env';
 import type { SessionData } from './auth.server';
-import { refreshAccessToken } from './auth.server';
 import { createSessionCookie, getSession } from './session.server';
 
 /**
@@ -14,6 +13,15 @@ export async function requireAuth(request: Request): Promise<SessionData> {
     throw redirect('/login');
   }
   return session;
+}
+
+function configureApiClient() {
+  client.setConfig({
+    baseUrl: ENV.API_BASE_URL,
+    headers: {
+      'x-api-key': ENV.X_API_KEY,
+    },
+  });
 }
 
 /**
@@ -30,14 +38,23 @@ export async function createAuthClient(session: SessionData): Promise<{
 
   // Refresh token if expired (with 60s buffer)
   if (session.expiresAt < Date.now() + 60_000 && session.refreshToken) {
+    configureApiClient();
     try {
-      const tokens = await refreshAccessToken(session.refreshToken);
-      accessToken = tokens.access_token;
+      const { data } = await postApiAuthRefresh({
+        client,
+        body: { refreshToken: session.refreshToken },
+      });
+
+      if (!data) {
+        throw redirect('/login');
+      }
+
+      accessToken = data.accessToken;
       const updatedSession: SessionData = {
         ...session,
         accessToken,
-        refreshToken: tokens.refresh_token ?? session.refreshToken,
-        expiresAt: Date.now() + tokens.expires_in * 1000,
+        refreshToken: data.refreshToken ?? session.refreshToken,
+        expiresAt: Date.now() + data.expiresIn * 1000,
       };
       sessionCookie = await createSessionCookie(updatedSession);
     } catch {
