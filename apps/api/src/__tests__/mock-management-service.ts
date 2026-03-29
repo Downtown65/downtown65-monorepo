@@ -2,6 +2,7 @@ import type { UserRole } from '@/app';
 import type {
   Auth0ManagementConfig,
   Auth0ManagementUser,
+  CreateUserOptions,
   ManagementService,
 } from '@/services/auth0-management-service';
 
@@ -10,6 +11,10 @@ export class MockManagementService implements ManagementService {
 
   addUser(user: Auth0ManagementUser): void {
     this.users.set(user.user_id, user);
+  }
+
+  async createUser(_config: Auth0ManagementConfig, _options: CreateUserOptions): Promise<void> {
+    // No-op in mock
   }
 
   async listUsers(_config: Auth0ManagementConfig): Promise<Auth0ManagementUser[]> {

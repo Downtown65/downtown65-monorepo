@@ -14,9 +14,17 @@ export type Auth0ManagementConfig = {
   clientSecret: string;
 };
 
+export type CreateUserOptions = {
+  email: string;
+  password: string;
+  name: string;
+  nickname: string;
+};
+
 export interface ManagementService {
   listUsers(config: Auth0ManagementConfig): Promise<Auth0ManagementUser[]>;
   getUser(config: Auth0ManagementConfig, userId: string): Promise<Auth0ManagementUser | null>;
+  createUser(config: Auth0ManagementConfig, options: CreateUserOptions): Promise<void>;
   updateUserRole(config: Auth0ManagementConfig, userId: string, role: UserRole): Promise<void>;
   updateUserBlocked(config: Auth0ManagementConfig, userId: string, blocked: boolean): Promise<void>;
   updateUserFees(
@@ -58,6 +66,30 @@ export class Auth0ManagementService implements ManagementService {
     };
 
     return data.access_token;
+  }
+
+  async createUser(config: Auth0ManagementConfig, options: CreateUserOptions): Promise<void> {
+    const token = await this.getAccessToken(config);
+
+    const response = await fetch(`https://${config.domain}/api/v2/users`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${token}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        connection: 'Username-Password-Authentication',
+        email: options.email,
+        password: options.password,
+        name: options.name,
+        nickname: options.nickname,
+      }),
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`Failed to create user: ${String(response.status)} ${text}`);
+    }
   }
 
   async listUsers(config: Auth0ManagementConfig): Promise<Auth0ManagementUser[]> {

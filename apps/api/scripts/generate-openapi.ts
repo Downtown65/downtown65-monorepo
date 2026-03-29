@@ -1,14 +1,17 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createApiApp } from '../src/create-app';
+import type { ManagementService } from '../src/services/auth0-management-service';
 import type { AuthenticationService } from '../src/services/authentication-service';
 
-// Stub service — only route definitions matter for OpenAPI spec generation
+// Stub services — only route definitions matter for OpenAPI spec generation
 const stubAuth: AuthenticationService = {
   verifyToken: () => Promise.resolve({ sub: '', role: undefined }),
 };
 
-const app = createApiApp(stubAuth);
+const stubManagement = {} as ManagementService;
+
+const app = createApiApp(stubAuth, stubManagement);
 
 const spec = app.getOpenAPI31Document({
   openapi: '3.1.0',

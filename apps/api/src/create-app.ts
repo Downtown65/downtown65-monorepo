@@ -6,6 +6,7 @@ import { apiKeyAuth } from '@/middleware/api-key';
 import { errorHandler, notFoundHandler } from '@/middleware/error-handler';
 import { requestLogger } from '@/middleware/request-logger';
 import { createAdminRouter } from '@/routes/admin/admin.index';
+import { createAuthRouter } from '@/routes/auth/auth.index';
 import { createEventsRouter } from '@/routes/events/events.index';
 import type { ManagementService } from '@/services/auth0-management-service';
 import type { AuthenticationService } from '@/services/authentication-service';
@@ -80,6 +81,7 @@ export function createApiApp(
   app.notFound(notFoundHandler);
 
   // Routes
+  app.route('/api', createAuthRouter(managementService));
   app.route('/api', createEventsRouter(authService));
   app.route('/api', createAdminRouter(authService, managementService));
 
