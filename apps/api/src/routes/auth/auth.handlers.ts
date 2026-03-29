@@ -93,8 +93,8 @@ export function createHandleSignup(
     try {
       const config = {
         domain: ENV.AUTH0_DOMAIN,
-        clientId: ENV.AUTH0_CLIENT_USER_MANAGEMENT_ID,
-        clientSecret: ENV.AUTH0_CLIENT_USER_MANAGEMENT_SECRET,
+        clientId: ENV.AUTH0_CLIENT_ID,
+        clientSecret: ENV.AUTH0_CLIENT_SECRET,
       };
 
       await managementService.createUser(config, { email, password, name, nickname });

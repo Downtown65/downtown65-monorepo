@@ -48,11 +48,7 @@ function getManagementConfig(
 }
 
 function configFromEnv(env: AppEnv['Bindings']): Auth0ManagementConfig {
-  return getManagementConfig(
-    env.AUTH0_DOMAIN,
-    env.AUTH0_CLIENT_USER_MANAGEMENT_ID,
-    env.AUTH0_CLIENT_USER_MANAGEMENT_SECRET,
-  );
+  return getManagementConfig(env.AUTH0_DOMAIN, env.AUTH0_CLIENT_ID, env.AUTH0_CLIENT_SECRET);
 }
 
 export function createHandleListUsers(
