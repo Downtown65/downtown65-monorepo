@@ -4,7 +4,7 @@
   "workspaces": {
     ".": {
       "ignoreDependencies": ["rimraf", "tsx"],
-      "ignoreBinaries": ["wrangler"],
+      "ignoreBinaries": ["wrangler", "lsof"],
       "entry": [],
       "project": []
     },
@@ -24,7 +24,9 @@
     },
     "apps/admin": {
       "entry": ["workers/app.ts", "app/**/*.{ts,tsx}"],
-      "ignoreDependencies": ["@varlock/infisical-plugin"]
+      "ignoreDependencies": ["@varlock/infisical-plugin"],
+      "vite": false,
+      "vitest": false
     },
     "apps/www": {
       "entry": ["src/pages/**/*.astro"],
@@ -33,7 +35,7 @@
     "packages/api-client": {
       "entry": ["openapi-ts.config.ts"],
       "ignore": ["src/generated/**"],
-      "ignoreDependencies": ["@hey-api/client-fetch"]
+      "ignoreDependencies": ["@hey-api/client-fetch", "@dt65/api"]
     },
     "packages/shared": {}
   }
