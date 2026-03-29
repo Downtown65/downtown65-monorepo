@@ -13,29 +13,45 @@ import {
 import { IconAlertCircle } from '@tabler/icons-react';
 import { Form, Link, redirect, useNavigation } from 'react-router';
 import { ENV } from 'varlock/env';
+import { z } from 'zod/v4';
 import { type SessionData, SessionDataSchema } from '~/lib/auth.server';
 import { createSessionCookie } from '~/lib/session.server';
 import type { Route } from './+types/signup';
 
+const SignupFormSchema = z.object({
+  email: z.email('Sähköposti vaaditaan'),
+  password: z.string().min(8, 'Salasanan on oltava vähintään 8 merkkiä'),
+  name: z.string().min(1, 'Nimi vaaditaan'),
+  nickname: z.string().min(1, 'Nickname vaaditaan'),
+  registerSecret: z.string().min(1, 'Rekisteröintitunnus vaaditaan'),
+});
+
+function parseFormData(formData: FormData) {
+  return {
+    email: String(formData.get('email') ?? ''),
+    password: String(formData.get('password') ?? ''),
+    name: String(formData.get('name') ?? ''),
+    nickname: String(formData.get('nickname') ?? ''),
+    registerSecret: String(formData.get('registerSecret') ?? ''),
+  };
+}
+
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
-  const email = String(formData.get('email') ?? '');
-  const password = String(formData.get('password') ?? '');
-  const name = String(formData.get('name') ?? '');
-  const nickname = String(formData.get('nickname') ?? '');
-  const registerSecret = String(formData.get('registerSecret') ?? '');
+  const result = SignupFormSchema.safeParse(parseFormData(formData));
 
-  const fieldErrors: Record<string, string> = {};
-  if (!email) fieldErrors.email = 'Sähköposti vaaditaan';
-  if (!password || password.length < 8)
-    fieldErrors.password = 'Salasanan on oltava vähintään 8 merkkiä';
-  if (!name) fieldErrors.name = 'Nimi vaaditaan';
-  if (!nickname) fieldErrors.nickname = 'Nickname vaaditaan';
-  if (!registerSecret) fieldErrors.registerSecret = 'Rekisteröintitunnus vaaditaan';
-
-  if (Object.keys(fieldErrors).length > 0) {
+  if (!result.success) {
+    const fieldErrors: Record<string, string> = {};
+    for (const issue of result.error.issues) {
+      const field = issue.path[0];
+      if (typeof field === 'string') {
+        fieldErrors[field] = issue.message;
+      }
+    }
     return { fieldErrors };
   }
+
+  const { email, password, name, nickname, registerSecret } = result.data;
 
   if (registerSecret !== ENV.REGISTER_SECRET) {
     return { error: 'Virheellinen rekisteröintitunnus' };

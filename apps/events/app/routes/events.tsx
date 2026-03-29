@@ -18,19 +18,12 @@ export default function Events({ loaderData }: Route.ComponentProps) {
 
   return (
     <Container size="lg">
-      <Group justify="space-between" mb="md">
-        <Title order={2}>Tapahtumat</Title>
-        <Button component={Link} to="/events/new" leftSection={<IconCalendarEvent size={16} />}>
-          Luo uusi
-        </Button>
-      </Group>
-
       {events.length === 0 ? (
         <Text c="dimmed" ta="center" py="xl">
           Ei tulevia tapahtumia.
         </Text>
       ) : (
-        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
+        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xs">
           {events.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
