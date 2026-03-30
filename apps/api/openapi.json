@@ -194,6 +194,9 @@
           "title": {
             "type": "string"
           },
+          "subtitle": {
+            "type": "string"
+          },
           "dateStart": {
             "type": "string",
             "format": "date"
@@ -202,19 +205,16 @@
             "type": ["string", "null"]
           },
           "location": {
-            "type": ["string", "null"]
-          },
-          "subtitle": {
-            "type": ["string", "null"]
-          },
-          "description": {
-            "type": ["string", "null"]
+            "type": "string"
           },
           "race": {
             "type": "boolean"
           },
-          "creatorId": {
-            "type": "number"
+          "description": {
+            "type": ["string", "null"]
+          },
+          "creator": {
+            "$ref": "#/components/schemas/Creator"
           },
           "createdAt": {
             "type": "string"
@@ -233,17 +233,29 @@
           "id",
           "type",
           "title",
+          "subtitle",
           "dateStart",
           "timeStart",
           "location",
-          "subtitle",
-          "description",
           "race",
-          "creatorId",
+          "description",
+          "creator",
           "createdAt",
           "updatedAt",
           "participants"
         ]
+      },
+      "Creator": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "nickname": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "nickname"]
       },
       "Participant": {
         "type": "object",
@@ -308,6 +320,9 @@
           "title": {
             "type": "string"
           },
+          "subtitle": {
+            "type": "string"
+          },
           "dateStart": {
             "type": "string",
             "format": "date"
@@ -316,16 +331,13 @@
             "type": ["string", "null"]
           },
           "location": {
-            "type": ["string", "null"]
-          },
-          "subtitle": {
-            "type": ["string", "null"]
-          },
-          "description": {
-            "type": ["string", "null"]
+            "type": "string"
           },
           "race": {
             "type": "boolean"
+          },
+          "description": {
+            "type": ["string", "null"]
           },
           "creatorId": {
             "type": "number"
@@ -344,12 +356,12 @@
           "id",
           "type",
           "title",
+          "subtitle",
           "dateStart",
           "timeStart",
           "location",
-          "subtitle",
-          "description",
           "race",
+          "description",
           "creatorId",
           "createdAt",
           "updatedAt",
@@ -408,26 +420,13 @@
             "default": false
           }
         },
-        "required": ["type", "title", "dateStart"]
+        "required": ["type", "title", "dateStart", "location", "subtitle"]
       },
       "EventSummary": {
         "type": "object",
         "properties": {
           "id": {
             "type": "number"
-          },
-          "title": {
-            "type": "string"
-          },
-          "subtitle": {
-            "type": ["string", "null"]
-          },
-          "dateStart": {
-            "type": "string",
-            "format": "date"
-          },
-          "timeStart": {
-            "type": ["string", "null"]
           },
           "type": {
             "type": "string",
@@ -450,8 +449,21 @@
             ],
             "example": "RUNNING"
           },
-          "location": {
+          "title": {
+            "type": "string"
+          },
+          "subtitle": {
+            "type": "string"
+          },
+          "dateStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "timeStart": {
             "type": ["string", "null"]
+          },
+          "location": {
+            "type": "string"
           },
           "race": {
             "type": ["boolean", "null"]
@@ -468,27 +480,15 @@
         },
         "required": [
           "id",
+          "type",
           "title",
           "subtitle",
           "dateStart",
           "timeStart",
-          "type",
           "location",
           "participantCount",
           "creator"
         ]
-      },
-      "Creator": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "nickname": {
-            "type": "string"
-          }
-        },
-        "required": ["id", "nickname"]
       },
       "UpdateEvent": {
         "type": "object",

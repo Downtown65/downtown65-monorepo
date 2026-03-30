@@ -1,92 +1,36 @@
 import type { EventSummary } from '@dt65/api-client';
-import { Badge, Button, Card, Group, Image, Stack, Text } from '@mantine/core';
-import {
-  IconArrowRight,
-  IconAt,
-  IconCalendarEvent,
-  IconHandOff,
-  IconHandStop,
-  IconMapPin,
-  IconTrophy,
-  IconUsers,
-  IconUsersMinus,
-  IconUsersPlus,
-} from '@tabler/icons-react';
-import { format, parseISO } from 'date-fns';
-import { fi } from 'date-fns/locale';
+import { Button, Card, Stack, Text } from '@mantine/core';
+import { IconArrowRight, IconUsersMinus, IconUsersPlus } from '@tabler/icons-react';
 import { Link } from 'react-router';
-import { getEventTypeInfo } from '~/lib/event-type-map';
-import classes from './EventCard.module.css';
-
-function formatDateTime(isoDate: string, isoTime: string | null): string {
-  const d = parseISO(isoDate);
-  const date = format(d, 'd.M.yyyy (EEEEEE)', { locale: fi });
-  const time = isoTime != null ? `klo ${isoTime}` : '';
-
-  return `${date} ${time}`;
-}
+import { EventImageHeader } from './EventImageHeader';
+import { EventMeta } from './EventMeta';
+import classes from './event-card.module.css';
 
 export function EventCard({ event }: { event: EventSummary }) {
-  const typeInfo = getEventTypeInfo(event.type);
-
   return (
     <Card shadow="sm" padding={0} radius="md" withBorder className={classes.card}>
-      <Card.Section className={classes.imageSection}>
-        <Image src={typeInfo.image} height={180} alt={event.title} />
-        <div className={classes.imageOverlay}>
-          {event.race && <IconTrophy size={64} className={classes.raceTrophy} />}
-          <Text className={classes.imageTitle} size="xl" fw={700}>
-            {event.title}
-          </Text>
-          <Group gap="xs" mt={4}>
-            <Badge
-              variant="gradient"
-              gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
-              radius="xs"
-              size="sm"
-              leftSection={<typeInfo.icon size={14} />}
-            >
-              {typeInfo.label}
-            </Badge>
-            <Badge
-              variant="gradient"
-              gradient={{ from: 'violet', to: 'indigo', deg: 90 }}
-              radius="xs"
-              size="sm"
-              tt="none"
-              leftSection={<IconAt size={14} />}
-            >
-              {event.creator.nickname}
-            </Badge>
-          </Group>
-        </div>
-        <Badge
-          className={classes.imageTopRight}
-          size="md"
-          radius="xs"
-          color={event.isParticipant ? 'pink.3' : undefined}
-          leftSection={<IconUsers size={14} />}
-        >
-          {event.participantCount}
-        </Badge>
-      </Card.Section>
+      <EventImageHeader
+        title={event.title}
+        type={event.type}
+        race={event.race ?? false}
+        creatorNickname={event.creator.nickname}
+        participantCount={event.participantCount}
+        isParticipant={event.isParticipant ?? false}
+        imageHeight={180}
+      />
 
       <Stack gap="xs" p="md" style={{ flex: 1 }}>
-        <Text fw={600} size="md" lineClamp={2}>
-          {event.subtitle}
-        </Text>
-
-        <div className={classes.metaRow}>
-          <IconCalendarEvent size={14} className={classes.metaIcon} />
-          <Text size="sm">{formatDateTime(event.dateStart, event.timeStart)}</Text>
-        </div>
-
-        <div className={classes.metaRow}>
-          <IconMapPin size={14} className={classes.metaIcon} />
-          <Text size="sm" c="dimmed">
-            {event.location}
+        {event.subtitle && (
+          <Text fw={600} size="md" lineClamp={2}>
+            {event.subtitle}
           </Text>
-        </div>
+        )}
+
+        <EventMeta
+          dateStart={event.dateStart}
+          timeStart={event.timeStart}
+          location={event.location}
+        />
 
         <div className={classes.footer}>
           <Button

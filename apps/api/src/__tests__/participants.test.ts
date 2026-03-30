@@ -45,6 +45,8 @@ async function createFutureEvent(title: string): Promise<number> {
         type: 'RUNNING',
         title,
         dateStart: futureDate(),
+        location: 'Keskuspuisto',
+        subtitle: 'Tapahtuma',
       }),
     },
     env,

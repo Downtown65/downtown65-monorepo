@@ -18,21 +18,21 @@
   padding: var(--mantine-spacing-sm);
 }
 
+.imageTitle {
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
 .imageTopRight {
   position: absolute;
   top: var(--mantine-spacing-xs);
   right: var(--mantine-spacing-xs);
 }
 
-.imageTopLeft {
+.imageBottomRight {
   position: absolute;
-  top: var(--mantine-spacing-xs);
-  left: var(--mantine-spacing-xs);
-}
-
-.imageTitle {
-  color: white;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  bottom: var(--mantine-spacing-xs);
+  right: var(--mantine-spacing-xs);
 }
 
 .raceTrophy {

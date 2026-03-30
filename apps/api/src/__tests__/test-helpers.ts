@@ -37,8 +37,10 @@ export async function insertPastEvent(creatorId: number): Promise<number> {
     .insert(events)
     .values({
       title: 'Past Event',
+      subtitle: 'Mennyt tapahtuma',
       eventType: 'RUNNING',
       dateStart: '2020-01-01',
+      location: 'Keskuspuisto',
       race: 0,
       creatorId,
       createdAt: now,

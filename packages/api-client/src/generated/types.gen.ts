@@ -54,16 +54,21 @@ export type EventDetail = {
     id: number;
     type: 'CYCLING' | 'KARONKKA' | 'MEETING' | 'NORDIC_WALKING' | 'ICE_HOCKEY' | 'ORIENTEERING' | 'OTHER' | 'RUNNING' | 'SKIING' | 'SPINNING' | 'SWIMMING' | 'TRACK_RUNNING' | 'TRAIL_RUNNING' | 'TRIATHLON' | 'ULTRAS';
     title: string;
+    subtitle: string;
     dateStart: string;
     timeStart: string | null;
-    location: string | null;
-    subtitle: string | null;
-    description: string | null;
+    location: string;
     race: boolean;
-    creatorId: number;
+    description: string | null;
+    creator: Creator;
     createdAt: string;
     updatedAt: string;
     participants: Array<Participant>;
+};
+
+export type Creator = {
+    id: number;
+    nickname: string;
 };
 
 export type Participant = {
@@ -83,12 +88,12 @@ export type Event = {
     id: number;
     type: 'CYCLING' | 'KARONKKA' | 'MEETING' | 'NORDIC_WALKING' | 'ICE_HOCKEY' | 'ORIENTEERING' | 'OTHER' | 'RUNNING' | 'SKIING' | 'SPINNING' | 'SWIMMING' | 'TRACK_RUNNING' | 'TRAIL_RUNNING' | 'TRIATHLON' | 'ULTRAS';
     title: string;
+    subtitle: string;
     dateStart: string;
     timeStart: string | null;
-    location: string | null;
-    subtitle: string | null;
-    description: string | null;
+    location: string;
     race: boolean;
+    description: string | null;
     creatorId: number;
     createdAt: string;
     updatedAt: string;
@@ -100,29 +105,24 @@ export type CreateEvent = {
     title: string;
     dateStart: string;
     timeStart?: string;
-    location?: string;
-    subtitle?: string;
+    location: string;
+    subtitle: string;
     description?: string;
     race?: boolean;
 };
 
 export type EventSummary = {
     id: number;
+    type: 'CYCLING' | 'KARONKKA' | 'MEETING' | 'NORDIC_WALKING' | 'ICE_HOCKEY' | 'ORIENTEERING' | 'OTHER' | 'RUNNING' | 'SKIING' | 'SPINNING' | 'SWIMMING' | 'TRACK_RUNNING' | 'TRAIL_RUNNING' | 'TRIATHLON' | 'ULTRAS';
     title: string;
-    subtitle: string | null;
+    subtitle: string;
     dateStart: string;
     timeStart: string | null;
-    type: 'CYCLING' | 'KARONKKA' | 'MEETING' | 'NORDIC_WALKING' | 'ICE_HOCKEY' | 'ORIENTEERING' | 'OTHER' | 'RUNNING' | 'SKIING' | 'SPINNING' | 'SWIMMING' | 'TRACK_RUNNING' | 'TRAIL_RUNNING' | 'TRIATHLON' | 'ULTRAS';
-    location: string | null;
+    location: string;
     race?: boolean | null;
     participantCount: number;
     isParticipant?: boolean | null;
     creator: Creator;
-};
-
-export type Creator = {
-    id: number;
-    nickname: string;
 };
 
 export type UpdateEvent = {
