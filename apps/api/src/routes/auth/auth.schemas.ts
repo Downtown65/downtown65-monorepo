@@ -61,6 +61,18 @@ export const LogoutUrlQuerySchema = z.object({
   returnTo: z.url(),
 });
 
+export const UserProfileSchema = z
+  .object({
+    name: z.string(),
+    nickname: z.string(),
+    email: z.string(),
+    picture: z.string(),
+    createdAt: z.string(),
+    subscribeEventCreationEmail: z.boolean(),
+    subscribeWeeklyEmail: z.boolean(),
+  })
+  .openapi('UserProfile');
+
 export const ErrorSchema = z
   .object({
     error: z.object({

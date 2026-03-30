@@ -164,6 +164,41 @@
         },
         "required": ["logoutUrl"]
       },
+      "UserProfile": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "picture": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "subscribeEventCreationEmail": {
+            "type": "boolean"
+          },
+          "subscribeWeeklyEmail": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "nickname",
+          "email",
+          "picture",
+          "createdAt",
+          "subscribeEventCreationEmail",
+          "subscribeWeeklyEmail"
+        ]
+      },
       "EventDetail": {
         "type": "object",
         "properties": {
@@ -902,6 +937,34 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LogoutUrlResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get current user profile",
+        "responses": {
+          "200": {
+            "description": "User profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthError"
                 }
               }
             }

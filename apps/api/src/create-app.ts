@@ -81,7 +81,7 @@ export function createApiApp(
   app.notFound(notFoundHandler);
 
   // Routes
-  app.route('/api', createAuthRouter(managementService));
+  app.route('/api', createAuthRouter(authService, managementService));
   app.route('/api', createEventsRouter(authService));
   app.route('/api', createAdminRouter(authService, managementService));
 

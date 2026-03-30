@@ -48,6 +48,7 @@ export function jwtAuth(authService: AuthenticationService) {
 
     c.set('userId', user.id);
     c.set('userRole', role);
+    c.set('auth0Sub', sub);
     await next();
   });
 }

@@ -9,6 +9,7 @@ import {
   RefreshResponseSchema,
   RefreshTokenSchema,
   SignupSchema,
+  UserProfileSchema,
 } from './auth.schemas';
 
 export const loginRoute = createRoute({
@@ -94,6 +95,23 @@ export const refreshRoute = createRoute({
     401: {
       content: { 'application/json': { schema: ErrorSchema } },
       description: 'Invalid refresh token',
+    },
+  },
+});
+
+export const meRoute = createRoute({
+  method: 'get',
+  path: '/auth/me',
+  tags: ['Auth'],
+  summary: 'Get current user profile',
+  responses: {
+    200: {
+      content: { 'application/json': { schema: UserProfileSchema } },
+      description: 'User profile',
+    },
+    401: {
+      content: { 'application/json': { schema: ErrorSchema } },
+      description: 'Not authenticated',
     },
   },
 });
