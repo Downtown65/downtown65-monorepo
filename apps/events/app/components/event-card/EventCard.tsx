@@ -10,14 +10,8 @@ import {
 import { format, parseISO } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import { Link } from 'react-router';
+import { getEventTypeInfo } from '~/lib/event-type-map';
 import classes from './EventCard.module.css';
-
-function formatEventType(type: string): string {
-  return type
-    .replace(/_/g, ' ')
-    .toLowerCase()
-    .replace(/^\w/, (c) => c.toUpperCase());
-}
 
 function formatDateTime(isoDate: string, isoTime: string | null): string {
   const d = parseISO(isoDate);
@@ -28,10 +22,12 @@ function formatDateTime(isoDate: string, isoTime: string | null): string {
 }
 
 export function EventCard({ event }: { event: EventSummary }) {
+  const typeInfo = getEventTypeInfo(event.type);
+
   return (
     <Card shadow="sm" padding={0} radius="md" withBorder className={classes.card}>
       <Card.Section className={classes.imageSection}>
-        <Image src="/event-images/hockey.jpg" height={180} alt={event.title} />
+        <Image src={typeInfo.image} height={180} alt={event.title} />
         <div className={classes.imageOverlay}>
           <Text className={classes.imageTitle} size="xl" fw={700}>
             {event.title}
@@ -42,8 +38,9 @@ export function EventCard({ event }: { event: EventSummary }) {
               gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
               radius="xs"
               size="sm"
+              leftSection={<typeInfo.icon size={14} />}
             >
-              {formatEventType(event.type)}
+              {typeInfo.label}
             </Badge>
             {event.race && (
               <Badge
@@ -69,11 +66,9 @@ export function EventCard({ event }: { event: EventSummary }) {
       </Card.Section>
 
       <Stack gap="xs" p="md" style={{ flex: 1 }}>
-        {event.subtitle && (
-          <Text fw={600} size="md" lineClamp={2}>
-            {event.subtitle}
-          </Text>
-        )}
+        <Text fw={600} size="md" lineClamp={2}>
+          {event.subtitle}
+        </Text>
 
         <div className={classes.metaRow}>
           <IconCalendarEvent size={14} className={classes.metaIcon} />
