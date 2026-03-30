@@ -2,19 +2,20 @@ import type { EventType } from '@dt65/shared';
 import {
   type Icon,
   IconBike,
-  IconBuildingStadium,
+  IconBlind,
+  IconCarFan,
   IconCompass,
   IconDots,
-  IconGlassFull,
-  IconMountain,
+  IconIceSkating,
+  IconMug,
+  IconMusic,
   IconRun,
   IconSnowflake,
   IconSwimming,
-  IconTrekking,
+  IconTrack,
+  IconTrees,
   IconTriangleSquareCircle,
   IconUsers,
-  IconWalk,
-  IconWindmill,
 } from '@tabler/icons-react';
 
 type EventTypeInfo = {
@@ -32,7 +33,7 @@ const EVENT_TYPE_MAP: Record<EventType, EventTypeInfo> = {
   KARONKKA: {
     label: 'Karonkka',
     image: '/event-images/karonkka.jpg',
-    icon: IconGlassFull,
+    icon: IconMug,
   },
   MEETING: {
     label: 'Kokous',
@@ -42,12 +43,12 @@ const EVENT_TYPE_MAP: Record<EventType, EventTypeInfo> = {
   NORDIC_WALKING: {
     label: 'Sauvakävely',
     image: '/event-images/nordicwalking.jpg',
-    icon: IconWalk,
+    icon: IconBlind,
   },
   ICE_HOCKEY: {
     label: 'Jääkiekko',
     image: '/event-images/hockey.jpg',
-    icon: IconBuildingStadium,
+    icon: IconIceSkating,
   },
   ORIENTEERING: {
     label: 'Suunnistus',
@@ -72,7 +73,7 @@ const EVENT_TYPE_MAP: Record<EventType, EventTypeInfo> = {
   SPINNING: {
     label: 'Spinning',
     image: '/event-images/spinning.jpg',
-    icon: IconWindmill,
+    icon: IconCarFan,
   },
   SWIMMING: {
     label: 'Uinti',
@@ -82,12 +83,12 @@ const EVENT_TYPE_MAP: Record<EventType, EventTypeInfo> = {
   TRACK_RUNNING: {
     label: 'Ratajuoksu',
     image: '/event-images/trackrunning.jpg',
-    icon: IconBuildingStadium,
+    icon: IconTrack,
   },
   TRAIL_RUNNING: {
     label: 'Polkujuoksu',
     image: '/event-images/trailrunning.jpg',
-    icon: IconMountain,
+    icon: IconTrees,
   },
   TRIATHLON: {
     label: 'Triathlon',
@@ -95,9 +96,9 @@ const EVENT_TYPE_MAP: Record<EventType, EventTypeInfo> = {
     icon: IconTriangleSquareCircle,
   },
   ULTRAS: {
-    label: 'Ultra',
+    label: 'Ultras',
     image: '/event-images/ultras.jpg',
-    icon: IconTrekking,
+    icon: IconMusic,
   },
 };
 

@@ -96,11 +96,11 @@ export async function createEvent(
     .insert(events)
     .values({
       title: data.title,
-      subtitle: data.subtitle ?? null,
+      subtitle: data.subtitle,
       eventType: data.type,
       dateStart: data.dateStart,
       timeStart: data.timeStart ?? null,
-      location: data.location ?? null,
+      location: data.location,
       description: data.description ?? null,
       race: data.race ? 1 : 0,
       creatorId,
@@ -136,6 +136,14 @@ export async function getEventById(d1: D1Database, idParam: string): Promise<Eve
     return null;
   }
 
+  const creatorRows = await db
+    .select({ id: users.id, nickname: users.nickname })
+    .from(users)
+    .where(eq(users.id, event.creatorId))
+    .limit(1);
+
+  const creator = creatorRows[0] ?? { id: event.creatorId, nickname: '' };
+
   const participantRows = await db
     .select({
       userId: usersToEvents.userId,
@@ -156,7 +164,7 @@ export async function getEventById(d1: D1Database, idParam: string): Promise<Eve
     subtitle: event.subtitle,
     description: event.description,
     race: toBool(event.race),
-    creatorId: event.creatorId,
+    creator,
     createdAt: event.createdAt,
     updatedAt: event.updatedAt,
     participants: participantRows,
@@ -174,10 +182,6 @@ export async function updateEvent(
   const event = await findEventById(db, idParam);
   if (!event) {
     return { ok: false, error: 'NOT_FOUND' };
-  }
-
-  if (event.creatorId !== requesterId) {
-    return { ok: false, error: 'FORBIDDEN' };
   }
 
   const now = new Date().toISOString();

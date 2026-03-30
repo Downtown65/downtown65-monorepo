@@ -21,6 +21,18 @@ function futureDate(): string {
   return date.toISOString().split('T')[0] as string;
 }
 
+function createEventBody(overrides: Record<string, unknown> = {}) {
+  return JSON.stringify({
+    type: 'RUNNING',
+    title: 'Test Event',
+    dateStart: futureDate(),
+    location: 'Keskuspuisto',
+    subtitle: 'Aamulenkki',
+    race: false,
+    ...overrides,
+  });
+}
+
 function authHeaders(auth0Sub: string) {
   return {
     'x-api-key': API_KEY,
@@ -76,12 +88,7 @@ describe('POST /api/events', () => {
       {
         method: 'POST',
         headers: authHeaders(AUTH0_SUB_1),
-        body: JSON.stringify({
-          type: 'RUNNING',
-          title: 'Morning Run',
-          dateStart: futureDate(),
-          race: false,
-        }),
+        body: createEventBody({ title: 'Morning Run' }),
       },
       env,
     );
@@ -128,7 +135,7 @@ describe('GET /api/events', () => {
       {
         method: 'POST',
         headers: authHeaders(AUTH0_SUB_1),
-        body: JSON.stringify({ type: 'CYCLING', title: 'Later', dateStart: dateStr2 }),
+        body: createEventBody({ type: 'CYCLING', title: 'Later', dateStart: dateStr2 }),
       },
       env,
     );
@@ -137,7 +144,7 @@ describe('GET /api/events', () => {
       {
         method: 'POST',
         headers: authHeaders(AUTH0_SUB_1),
-        body: JSON.stringify({ type: 'RUNNING', title: 'Sooner', dateStart: date1 }),
+        body: createEventBody({ title: 'Sooner', dateStart: date1 }),
       },
       env,
     );
@@ -160,11 +167,7 @@ describe('GET /api/events/:id', () => {
       {
         method: 'POST',
         headers: authHeaders(AUTH0_SUB_1),
-        body: JSON.stringify({
-          type: 'RUNNING',
-          title: 'Public Detail Test',
-          dateStart: futureDate(),
-        }),
+        body: createEventBody({ title: 'Public Detail Test' }),
       },
       env,
     );
@@ -190,11 +193,7 @@ describe('PUT /api/events/:id', () => {
       {
         method: 'POST',
         headers: authHeaders(AUTH0_SUB_1),
-        body: JSON.stringify({
-          type: 'RUNNING',
-          title: 'To Be Updated',
-          dateStart: futureDate(),
-        }),
+        body: createEventBody({ title: 'To Be Updated' }),
       },
       env,
     );
@@ -214,17 +213,13 @@ describe('PUT /api/events/:id', () => {
     expect(body.title).toBe('Updated Title');
   });
 
-  it('non-owner gets 403', async () => {
+  it('any user can update event', async () => {
     const createRes = await app.request(
       '/api/events',
       {
         method: 'POST',
         headers: authHeaders(AUTH0_SUB_1),
-        body: JSON.stringify({
-          type: 'RUNNING',
-          title: 'Ownership Test',
-          dateStart: futureDate(),
-        }),
+        body: createEventBody({ title: 'Ownership Test' }),
       },
       env,
     );
@@ -235,11 +230,11 @@ describe('PUT /api/events/:id', () => {
       {
         method: 'PUT',
         headers: authHeaders(AUTH0_SUB_2),
-        body: JSON.stringify({ title: 'Hijacked' }),
+        body: JSON.stringify({ title: 'Updated by another user' }),
       },
       env,
     );
-    expect(res.status).toBe(403);
+    expect(res.status).toBe(200);
   });
 });
 
@@ -250,11 +245,7 @@ describe('DELETE /api/events/:id', () => {
       {
         method: 'POST',
         headers: authHeaders(AUTH0_SUB_1),
-        body: JSON.stringify({
-          type: 'RUNNING',
-          title: 'To Be Deleted',
-          dateStart: futureDate(),
-        }),
+        body: createEventBody({ title: 'To Be Deleted' }),
       },
       env,
     );
@@ -281,11 +272,7 @@ describe('DELETE /api/events/:id', () => {
       {
         method: 'POST',
         headers: authHeaders(AUTH0_SUB_1),
-        body: JSON.stringify({
-          type: 'RUNNING',
-          title: 'Cannot Delete',
-          dateStart: futureDate(),
-        }),
+        body: createEventBody({ title: 'Cannot Delete' }),
       },
       env,
     );

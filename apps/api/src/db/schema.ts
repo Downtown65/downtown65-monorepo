@@ -26,11 +26,11 @@ export const events = sqliteTable(
     id: integer('id').primaryKey({ autoIncrement: true }),
     ulid: text('ulid'), // Legacy ULID from DynamoDB import
     title: text('title').notNull(),
-    subtitle: text('subtitle'),
+    subtitle: text('subtitle').notNull(),
     eventType: text('event_type').notNull(),
     dateStart: text('date_start').notNull(),
     timeStart: text('time_start'),
-    location: text('location'),
+    location: text('location').notNull(),
     description: text('description'),
     race: integer('race').notNull().default(0),
     creatorId: integer('creator_id')

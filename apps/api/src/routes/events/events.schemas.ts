@@ -15,14 +15,25 @@ const CreatorSchema = z
   })
   .openapi('Creator');
 
+const EventBaseSchema = z.object({
+  id: z.number(),
+  type: EventTypeSchema,
+  title: z.string(),
+  subtitle: z.string(),
+  dateStart: ISODateSchema,
+  timeStart: ISOTimeSchema.nullable(),
+  location: z.string(),
+  race: z.boolean(),
+});
+
 export const CreateEventSchema = z
   .object({
     type: EventTypeSchema,
     title: z.string().min(1).max(200),
     dateStart: ISODateSchema,
     timeStart: ISOTimeSchema.optional(),
-    location: z.string().max(200).optional(),
-    subtitle: z.string().max(200).optional(),
+    location: z.string().max(200),
+    subtitle: z.string().max(200),
     description: z.string().optional(),
     race: z.boolean().default(false),
   })
@@ -41,39 +52,20 @@ export const UpdateEventSchema = z
   })
   .openapi('UpdateEvent');
 
-export const EventSchema = z
-  .object({
-    id: z.number(),
-    type: EventTypeSchema,
-    title: z.string(),
-    dateStart: ISODateSchema,
-    timeStart: ISOTimeSchema.nullable(),
-    location: z.string().nullable(),
-    subtitle: z.string().nullable(),
-    description: z.string().nullable(),
-    race: z.boolean(),
-    creatorId: z.number(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-    participantCount: z.number(),
-  })
-  .openapi('Event');
+export const EventSchema = EventBaseSchema.extend({
+  description: z.string().nullable(),
+  creatorId: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  participantCount: z.number(),
+}).openapi('Event');
 
-export const EventSummarySchema = z
-  .object({
-    id: z.number(),
-    title: z.string(),
-    subtitle: z.string().nullable(),
-    dateStart: ISODateSchema,
-    timeStart: ISOTimeSchema.nullable(),
-    type: EventTypeSchema,
-    location: z.string().nullable(),
-    race: z.coerce.boolean(),
-    participantCount: z.number(),
-    isParticipant: z.coerce.boolean(),
-    creator: CreatorSchema,
-  })
-  .openapi('EventSummary');
+export const EventSummarySchema = EventBaseSchema.extend({
+  race: z.coerce.boolean(),
+  participantCount: z.number(),
+  isParticipant: z.coerce.boolean(),
+  creator: CreatorSchema,
+}).openapi('EventSummary');
 
 const ParticipantSchema = z
   .object({
@@ -83,23 +75,13 @@ const ParticipantSchema = z
   })
   .openapi('Participant');
 
-export const EventDetailSchema = z
-  .object({
-    id: z.number(),
-    type: EventTypeSchema,
-    title: z.string(),
-    dateStart: ISODateSchema,
-    timeStart: ISOTimeSchema.nullable(),
-    location: z.string().nullable(),
-    subtitle: z.string().nullable(),
-    description: z.string().nullable(),
-    race: z.boolean(),
-    creatorId: z.number(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-    participants: z.array(ParticipantSchema),
-  })
-  .openapi('EventDetail');
+export const EventDetailSchema = EventBaseSchema.extend({
+  description: z.string().nullable(),
+  creator: CreatorSchema,
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  participants: z.array(ParticipantSchema),
+}).openapi('EventDetail');
 
 export const ErrorSchema = z
   .object({
