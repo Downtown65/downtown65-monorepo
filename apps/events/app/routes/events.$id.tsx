@@ -1,9 +1,4 @@
-import {
-  deleteApiEventsById,
-  deleteApiEventsByIdParticipants,
-  getApiEventsById,
-  postApiEventsByIdParticipants,
-} from '@dt65/api-client';
+import { deleteApiEventsById, getApiEventsById } from '@dt65/api-client';
 import { Container } from '@mantine/core';
 import { redirect } from 'react-router';
 import { EventDetailCard } from '~/components/event-card/EventDetailCard';
@@ -32,11 +27,7 @@ export async function action({ request, params }: { request: Request; params: { 
   const formData = await request.formData();
   const intent = String(formData.get('intent'));
 
-  if (intent === 'join') {
-    await postApiEventsByIdParticipants({ client: apiClient, path: { id: params.id } });
-  } else if (intent === 'leave') {
-    await deleteApiEventsByIdParticipants({ client: apiClient, path: { id: params.id } });
-  } else if (intent === 'delete') {
+  if (intent === 'delete') {
     await deleteApiEventsById({ client: apiClient, path: { id: params.id } });
     return redirect('/events');
   }

@@ -1,5 +1,5 @@
 import type { EventType } from '@dt65/shared';
-import { Badge, Card, Group, Image, Text } from '@mantine/core';
+import { Badge, Card, Image, Text } from '@mantine/core';
 import { IconAt, IconTrophy, IconUsers } from '@tabler/icons-react';
 import { getEventTypeInfo } from '~/lib/event-type-map';
 import classes from './event-card.module.css';

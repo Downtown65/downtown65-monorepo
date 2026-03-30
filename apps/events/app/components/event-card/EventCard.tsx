@@ -1,10 +1,11 @@
 import type { EventSummary } from '@dt65/api-client';
 import { Button, Card, Stack, Text } from '@mantine/core';
-import { IconArrowRight, IconUsersMinus, IconUsersPlus } from '@tabler/icons-react';
+import { IconArrowRight } from '@tabler/icons-react';
 import { Link } from 'react-router';
 import { EventImageHeader } from './EventImageHeader';
 import { EventMeta } from './EventMeta';
 import classes from './event-card.module.css';
+import { JoinLeaveButton } from './JoinLeaveButton';
 
 export function EventCard({ event }: { event: EventSummary }) {
   return (
@@ -42,15 +43,7 @@ export function EventCard({ event }: { event: EventSummary }) {
           >
             Näytä lisää
           </Button>
-          <Button
-            color={event.isParticipant ? 'pink.3' : undefined}
-            size="sm"
-            leftSection={
-              event.isParticipant ? <IconUsersMinus size={14} /> : <IconUsersPlus size={14} />
-            }
-          >
-            {event.isParticipant ? 'Poistu' : 'Osallistu'}
-          </Button>
+          <JoinLeaveButton eventId={event.id} isParticipant={event.isParticipant ?? false} />
         </div>
       </Stack>
     </Card>
