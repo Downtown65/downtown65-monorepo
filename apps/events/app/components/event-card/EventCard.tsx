@@ -1,16 +1,14 @@
 import type { EventSummary } from '@dt65/api-client';
-import { ActionIcon, Badge, Box, Button, Card, Grid, Group, Image, Text } from '@mantine/core';
+import { ActionIcon, Badge, Button, Card, Group, Image, Stack, Text } from '@mantine/core';
 import {
   IconArrowRight,
   IconCalendarEvent,
-  IconHandStop,
   IconMapPin,
   IconTrophy,
   IconUsers,
 } from '@tabler/icons-react';
 import { format, parseISO } from 'date-fns';
 import { fi } from 'date-fns/locale';
-
 import { Link } from 'react-router';
 import classes from './EventCard.module.css';
 
@@ -21,98 +19,93 @@ function formatEventType(type: string): string {
     .replace(/^\w/, (c) => c.toUpperCase());
 }
 
-function formatDateTime(isoDate: string, isotime: string | null): string {
+function formatDateTime(isoDate: string, isoTime: string | null): string {
   const d = parseISO(isoDate);
   const date = format(d, 'd.M.yyyy (EEEEEE)', { locale: fi });
-  const time = isotime != null ? `klo ${isotime}` : '';
+  const time = isoTime != null ? `klo ${isoTime}` : '';
 
   return `${date} ${time}`;
 }
 
 export function EventCard({ event }: { event: EventSummary }) {
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <Card shadow="sm" padding={0} radius="md" withBorder className={classes.card}>
       <Card.Section className={classes.imageSection}>
-        <Image src="/event-images/hockey.jpg" height={160} alt="Norway" />
+        <Image src="/event-images/hockey.jpg" height={180} alt={event.title} />
         <div className={classes.imageOverlay}>
-          <Badge
-            size="md"
-            radius="xs"
-            className={classes.participantCount}
-            leftSection={<IconUsers size={14} />}
-          >
-            {event.participantCount}
-          </Badge>
-
-          {/* Center - title */}
-          <Text className={classes.title} size="xl" fw={700}>
+          <Text className={classes.imageTitle} size="xl" fw={700}>
             {event.title}
           </Text>
-
-          {/* Bottom left - badge */}
-          <Badge
-            className={classes.type}
-            variant="gradient"
-            gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
-            radius="xs"
-          >
-            {formatEventType(event.type)}
-          </Badge>
-
-          <ActionIcon
-            className={classes.race}
-            variant="gradient"
-            size="md"
-            aria-label="Gradient action icon"
-            gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
-          >
-            <IconTrophy size={18} />
-          </ActionIcon>
-
-          <Badge
-            className={classes.author}
-            variant="gradient"
-            gradient={{ from: 'violet', to: 'indigo', deg: 90 }}
-            radius="xs"
-            tt="none"
-          >
-            by #{event.creator.nickname}
-          </Badge>
+          <Group gap="xs" mt={4}>
+            <Badge
+              variant="gradient"
+              gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+              radius="xs"
+              size="sm"
+            >
+              {formatEventType(event.type)}
+            </Badge>
+            {event.race && (
+              <Badge
+                variant="gradient"
+                gradient={{ from: 'orange', to: 'red' }}
+                radius="xs"
+                size="sm"
+                leftSection={<IconTrophy size={12} />}
+              >
+                Kilpailu
+              </Badge>
+            )}
+          </Group>
         </div>
+        <Badge
+          className={classes.imageTopRight}
+          size="md"
+          radius="xs"
+          leftSection={<IconUsers size={14} />}
+        >
+          {event.participantCount}
+        </Badge>
       </Card.Section>
-      <Text fw="bold" size="lg">
-        {event.subtitle}
-      </Text>
-      <Grid justify="space-between" align="center">
-        <Grid.Col span={7}>
-          <Group gap="xs" wrap="nowrap">
-            <IconCalendarEvent size={14} style={{ flexShrink: 0 }} />
-            <Text size="sm">{formatDateTime(event.dateStart, event.timeStart)}</Text>
-          </Group>
-          <Group gap="xs" wrap="nowrap" align="flex-start">
-            <IconMapPin size={14} style={{ flexShrink: 0, marginTop: '0.2em' }} />
-            <Text size="sm" c="dimmed">
-              {event.location ?? 'Ei määritelty'} lorem ipsum lorem ipsum
-            </Text>
-          </Group>
-        </Grid.Col>
-        <Grid.Col span={5} display="flex" style={{ justifyContent: 'flex-end' }}>
-          <Button size="sm" leftSection={<IconHandStop size={16} />}>
+
+      <Stack gap="xs" p="md" style={{ flex: 1 }}>
+        {event.subtitle && (
+          <Text fw={600} size="md" lineClamp={2}>
+            {event.subtitle}
+          </Text>
+        )}
+
+        <div className={classes.metaRow}>
+          <IconCalendarEvent size={14} className={classes.metaIcon} />
+          <Text size="sm">{formatDateTime(event.dateStart, event.timeStart)}</Text>
+        </div>
+
+        <div className={classes.metaRow}>
+          <IconMapPin size={14} className={classes.metaIcon} />
+          <Text size="sm" c="dimmed">
+            {event.location}
+          </Text>
+        </div>
+
+        <Text size="xs" c="dimmed">
+          event lead: {event.creator.nickname}
+        </Text>
+
+        <div className={classes.footer}>
+          <Button
+            component={Link}
+            to={`/events/${String(event.id)}`}
+            variant="subtle"
+            size="compact-sm"
+            rightSection={<IconArrowRight size={14} />}
+          >
+            Näytä lisää
+          </Button>
+          <Button variant="solid" size="sm" leftSection={<IconUsers size={14} />}>
             Osallistun
           </Button>
-        </Grid.Col>
-      </Grid>
-
-      <Button
-        component={Link}
-        to={`/events/${String(event.id)}`}
-        variant="outline"
-        fullWidth
-        mt="sm"
-        rightSection={<IconArrowRight size={14} />}
-      >
-        Näytä lisää
-      </Button>
+        </div>
+      </Stack>
     </Card>
   );
 }
