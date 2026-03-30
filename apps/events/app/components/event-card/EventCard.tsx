@@ -2,6 +2,7 @@ import type { EventSummary } from '@dt65/api-client';
 import { Badge, Button, Card, Group, Image, Stack, Text } from '@mantine/core';
 import {
   IconArrowRight,
+  IconAt,
   IconCalendarEvent,
   IconMapPin,
   IconTrophy,
@@ -43,6 +44,16 @@ export function EventCard({ event }: { event: EventSummary }) {
             >
               {typeInfo.label}
             </Badge>
+            <Badge
+              variant="gradient"
+              gradient={{ from: 'violet', to: 'indigo', deg: 90 }}
+              radius="xs"
+              size="sm"
+              tt="none"
+              leftSection={<IconAt size={14} />}
+            >
+              {event.creator.nickname}
+            </Badge>
           </Group>
         </div>
         <Badge
@@ -71,10 +82,6 @@ export function EventCard({ event }: { event: EventSummary }) {
             {event.location}
           </Text>
         </div>
-
-        <Text size="xs" c="dimmed">
-          event lead: {event.creator.nickname}
-        </Text>
 
         <div className={classes.footer}>
           <Button
