@@ -1,5 +1,5 @@
 import type { EventSummary } from '@dt65/api-client';
-import { ActionIcon, Badge, Button, Card, Group, Image, Stack, Text } from '@mantine/core';
+import { Badge, Button, Card, Group, Image, Stack, Text } from '@mantine/core';
 import {
   IconArrowRight,
   IconCalendarEvent,
@@ -29,6 +29,7 @@ export function EventCard({ event }: { event: EventSummary }) {
       <Card.Section className={classes.imageSection}>
         <Image src={typeInfo.image} height={180} alt={event.title} />
         <div className={classes.imageOverlay}>
+          {event.race && <IconTrophy size={64} className={classes.raceTrophy} />}
           <Text className={classes.imageTitle} size="xl" fw={700}>
             {event.title}
           </Text>
@@ -42,17 +43,6 @@ export function EventCard({ event }: { event: EventSummary }) {
             >
               {typeInfo.label}
             </Badge>
-            {event.race && (
-              <Badge
-                variant="gradient"
-                gradient={{ from: 'orange', to: 'red' }}
-                radius="xs"
-                size="sm"
-                leftSection={<IconTrophy size={12} />}
-              >
-                Kilpailu
-              </Badge>
-            )}
           </Group>
         </div>
         <Badge
