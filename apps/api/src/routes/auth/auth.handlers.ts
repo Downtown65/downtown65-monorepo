@@ -8,6 +8,7 @@ import type {
   forgotPasswordRoute,
   loginRoute,
   logoutUrlRoute,
+  meRoute,
   refreshRoute,
   signupRoute,
 } from './auth.routes';
@@ -168,6 +169,37 @@ export const handleRefresh: RouteHandler<typeof refreshRoute, AppEnv> = async (c
     200,
   );
 };
+
+export function createHandleMe(
+  managementService: ManagementService,
+): RouteHandler<typeof meRoute, AppEnv> {
+  return async (c) => {
+    const auth0Sub = c.get('auth0Sub');
+    const config = {
+      domain: ENV.AUTH0_DOMAIN,
+      clientId: ENV.AUTH0_CLIENT_ID,
+      clientSecret: ENV.AUTH0_CLIENT_SECRET,
+    };
+
+    const auth0User = await managementService.getUser(config, auth0Sub);
+    if (!auth0User) {
+      return c.json({ error: { code: 'NOT_FOUND', message: 'User not found' } }, 401);
+    }
+
+    return c.json(
+      {
+        name: auth0User.name,
+        nickname: auth0User.nickname,
+        email: auth0User.email,
+        picture: auth0User.picture,
+        createdAt: auth0User.created_at,
+        subscribeEventCreationEmail: auth0User.user_metadata?.subscribeEventCreationEmail ?? false,
+        subscribeWeeklyEmail: auth0User.user_metadata?.subscribeWeeklyEmail ?? false,
+      },
+      200,
+    );
+  };
+}
 
 export const handleLogoutUrl: RouteHandler<typeof logoutUrlRoute, AppEnv> = async (c) => {
   const { returnTo } = c.req.valid('query');

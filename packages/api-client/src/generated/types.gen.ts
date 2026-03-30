@@ -50,6 +50,16 @@ export type LogoutUrlResponse = {
     logoutUrl: string;
 };
 
+export type UserProfile = {
+    name: string;
+    nickname: string;
+    email: string;
+    picture: string;
+    createdAt: string;
+    subscribeEventCreationEmail: boolean;
+    subscribeWeeklyEmail: boolean;
+};
+
 export type EventDetail = {
     id: number;
     type: 'CYCLING' | 'KARONKKA' | 'MEETING' | 'NORDIC_WALKING' | 'ICE_HOCKEY' | 'ORIENTEERING' | 'OTHER' | 'RUNNING' | 'SKIING' | 'SPINNING' | 'SWIMMING' | 'TRACK_RUNNING' | 'TRAIL_RUNNING' | 'TRIATHLON' | 'ULTRAS';
@@ -303,6 +313,31 @@ export type GetApiAuthLogoutUrlResponses = {
 };
 
 export type GetApiAuthLogoutUrlResponse = GetApiAuthLogoutUrlResponses[keyof GetApiAuthLogoutUrlResponses];
+
+export type GetApiAuthMeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/auth/me';
+};
+
+export type GetApiAuthMeErrors = {
+    /**
+     * Not authenticated
+     */
+    401: AuthError;
+};
+
+export type GetApiAuthMeError = GetApiAuthMeErrors[keyof GetApiAuthMeErrors];
+
+export type GetApiAuthMeResponses = {
+    /**
+     * User profile
+     */
+    200: UserProfile;
+};
+
+export type GetApiAuthMeResponse = GetApiAuthMeResponses[keyof GetApiAuthMeResponses];
 
 export type DeleteApiEventsByIdData = {
     body?: never;

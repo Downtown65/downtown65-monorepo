@@ -21,22 +21,31 @@ export const Auth0UserInfoSchema = z.object({
 export type Auth0UserInfo = z.infer<typeof Auth0UserInfoSchema>;
 
 // Management API /api/v2/users response — used by API service
-export const Auth0ManagementUserSchema = z.object({
-  user_id: z.string(),
-  email: z.string(),
-  name: z.string(),
-  nickname: z.string(),
-  picture: z.string(),
-  blocked: z.boolean(),
-  last_login: z.string().nullable(),
-  created_at: z.string(),
-  app_metadata: z
-    .object({
-      role: z.string().optional(),
-      fees: z.record(z.string(), z.boolean()).optional(),
-    })
-    .optional(),
-});
+export const Auth0ManagementUserSchema = z
+  .object({
+    user_id: z.string(),
+    email: z.string(),
+    name: z.string(),
+    nickname: z.string(),
+    picture: z.string(),
+    last_login: z.string().nullable(),
+    created_at: z.string(),
+    user_metadata: z
+      .object({
+        subscribeEventCreationEmail: z.boolean().optional(),
+        subscribeWeeklyEmail: z.boolean().optional(),
+      })
+      .passthrough()
+      .optional(),
+    app_metadata: z
+      .object({
+        role: z.string().optional(),
+        fees: z.record(z.string(), z.boolean()).optional(),
+      })
+      .passthrough()
+      .optional(),
+  })
+  .passthrough();
 export type Auth0ManagementUser = z.infer<typeof Auth0ManagementUserSchema>;
 
 // Paginated user list from Management API

@@ -12,6 +12,7 @@ export type UserRole = 'admin' | 'board_member' | 'member';
 export type Variables = {
   userId: number;
   userRole: UserRole;
+  auth0Sub: string;
 };
 
 export type AppEnv = { Bindings: Bindings; Variables: Variables };

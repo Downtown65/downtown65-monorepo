@@ -33,7 +33,7 @@ function toAdminUser(user: Auth0ManagementUser) {
     nickname: user.nickname,
     picture: user.picture,
     role,
-    blocked: user.blocked,
+    blocked: user.blocked ?? false,
     lastLogin: user.last_login ?? null,
     createdAt: user.created_at,
   };
