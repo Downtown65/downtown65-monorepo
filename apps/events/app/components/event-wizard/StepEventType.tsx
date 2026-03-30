@@ -28,8 +28,8 @@ export function StepEventType({ value, onChange }: StepEventTypeProps) {
               key={type}
               color={value === type ? 'pink.3' : 'blue'}
               onClick={() => onChange(type)}
-              size="md"
-              leftSection={<TypeIcon size={18} />}
+              size="sm"
+              leftSection={<TypeIcon size={16} />}
             >
               {info.label}
             </Button>

@@ -1,8 +1,15 @@
-import { createTheme } from '@mantine/core';
+import { Container, createTheme } from '@mantine/core';
 
 export const theme = createTheme({
   primaryColor: 'blue',
   fontFamily: 'Zalando Sans, Roboto, Helvetica, Arial, sans-serif',
+  components: {
+    Container: Container.extend({
+      defaultProps: {
+        px: { base: 0, sm: 'md' },
+      },
+    }),
+  },
   colors: {
     pink: [
       '#ffebf7',
