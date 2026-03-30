@@ -70,6 +70,7 @@ export const EventSummarySchema = z
     location: z.string().nullable(),
     race: z.coerce.boolean(),
     participantCount: z.number(),
+    isParticipant: z.coerce.boolean(),
     creator: CreatorSchema,
   })
   .openapi('EventSummary');

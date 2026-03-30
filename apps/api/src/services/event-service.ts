@@ -212,7 +212,7 @@ export async function deleteEvent(
   return { ok: true, data: undefined };
 }
 
-export async function listUpcomingEvents(d1: D1Database): Promise<EventSummary[]> {
+export async function listUpcomingEvents(d1: D1Database, userId: number): Promise<EventSummary[]> {
   const db = drizzle(d1);
   const today = new Date().toISOString().split('T')[0] as string;
 
@@ -233,6 +233,11 @@ export async function listUpcomingEvents(d1: D1Database): Promise<EventSummary[]
       participantCount: sql<number>`(
         SELECT count(*) FROM users_to_events
         WHERE users_to_events.event_id = ${events.id}
+      )`,
+      isParticipant: sql<number>`(
+        SELECT count(*) FROM users_to_events
+        WHERE users_to_events.event_id = ${events.id}
+        AND users_to_events.user_id = ${userId}
       )`,
     })
     .from(events)

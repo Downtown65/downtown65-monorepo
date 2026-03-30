@@ -116,6 +116,7 @@ export type EventSummary = {
     location: string | null;
     race?: boolean | null;
     participantCount: number;
+    isParticipant?: boolean | null;
     creator: Creator;
 };
 

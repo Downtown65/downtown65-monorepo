@@ -459,6 +459,9 @@
           "participantCount": {
             "type": "number"
           },
+          "isParticipant": {
+            "type": ["boolean", "null"]
+          },
           "creator": {
             "$ref": "#/components/schemas/Creator"
           }
