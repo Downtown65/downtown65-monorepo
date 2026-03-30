@@ -1,17 +1,12 @@
 import type { EventDetail, Participant } from '@dt65/api-client';
 import { Badge, Button, Card, Divider, Group, Modal, Stack, Text, Typography } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import {
-  IconPencil,
-  IconTrash,
-  IconUser,
-  IconUsersMinus,
-  IconUsersPlus,
-} from '@tabler/icons-react';
+import { IconPencil, IconTrash, IconUser } from '@tabler/icons-react';
 import { Link, useFetcher } from 'react-router';
 import { EventImageHeader } from './EventImageHeader';
 import { EventMeta } from './EventMeta';
 import classes from './event-card.module.css';
+import { JoinLeaveButton } from './JoinLeaveButton';
 
 function ParticipantBadge({
   participant,
@@ -38,12 +33,12 @@ interface EventDetailCardProps {
 }
 
 export function EventDetailCard({ event, currentNickname }: EventDetailCardProps) {
-  const fetcher = useFetcher();
+  const deleteFetcher = useFetcher();
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure();
 
   const isParticipant = event.participants.some((p) => p.nickname === currentNickname);
-  const isSubmitting = fetcher.state !== 'idle';
   const isCreator = event.creator.nickname === currentNickname;
+  const isDeleting = deleteFetcher.state !== 'idle';
 
   return (
     <>
@@ -99,32 +94,7 @@ export function EventDetailCard({ event, currentNickname }: EventDetailCardProps
           )}
 
           <div className={classes.footer}>
-            <fetcher.Form method="post">
-              {isParticipant ? (
-                <Button
-                  type="submit"
-                  name="intent"
-                  value="leave"
-                  color="pink.3"
-                  size="sm"
-                  leftSection={<IconUsersMinus size={14} />}
-                  loading={isSubmitting}
-                >
-                  Poistu
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  name="intent"
-                  value="join"
-                  size="sm"
-                  leftSection={<IconUsersPlus size={14} />}
-                  loading={isSubmitting}
-                >
-                  Osallistu
-                </Button>
-              )}
-            </fetcher.Form>
+            <JoinLeaveButton eventId={event.id} isParticipant={isParticipant} />
 
             <Group gap="xs">
               <Button
@@ -163,11 +133,11 @@ export function EventDetailCard({ event, currentNickname }: EventDetailCardProps
           <Button variant="default" onClick={closeDeleteModal}>
             Peruuta
           </Button>
-          <fetcher.Form method="post">
-            <Button type="submit" name="intent" value="delete" color="red" loading={isSubmitting}>
+          <deleteFetcher.Form method="post">
+            <Button type="submit" name="intent" value="delete" color="red" loading={isDeleting}>
               Poista
             </Button>
-          </fetcher.Form>
+          </deleteFetcher.Form>
         </Group>
       </Modal>
     </>
