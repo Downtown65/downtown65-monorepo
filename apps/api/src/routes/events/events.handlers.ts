@@ -26,7 +26,8 @@ export const handleCreateEvent: RouteHandler<typeof createEventRoute, AppEnv> = 
 };
 
 export const handleListEvents: RouteHandler<typeof listEventsRoute, AppEnv> = async (c) => {
-  const eventList = await listUpcomingEvents(c.env.DB);
+  const userId = c.get('userId');
+  const eventList = await listUpcomingEvents(c.env.DB, userId);
   return c.json(eventList, 200);
 };
 

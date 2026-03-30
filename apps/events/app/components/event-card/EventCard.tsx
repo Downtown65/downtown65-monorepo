@@ -4,9 +4,13 @@ import {
   IconArrowRight,
   IconAt,
   IconCalendarEvent,
+  IconHandOff,
+  IconHandStop,
   IconMapPin,
   IconTrophy,
   IconUsers,
+  IconUsersMinus,
+  IconUsersPlus,
 } from '@tabler/icons-react';
 import { format, parseISO } from 'date-fns';
 import { fi } from 'date-fns/locale';
@@ -60,6 +64,7 @@ export function EventCard({ event }: { event: EventSummary }) {
           className={classes.imageTopRight}
           size="md"
           radius="xs"
+          color={event.isParticipant ? 'pink.3' : undefined}
           leftSection={<IconUsers size={14} />}
         >
           {event.participantCount}
@@ -93,8 +98,14 @@ export function EventCard({ event }: { event: EventSummary }) {
           >
             Näytä lisää
           </Button>
-          <Button variant="solid" size="sm" leftSection={<IconUsers size={14} />}>
-            Osallistun
+          <Button
+            color={event.isParticipant ? 'pink.3' : undefined}
+            size="sm"
+            leftSection={
+              event.isParticipant ? <IconUsersMinus size={14} /> : <IconUsersPlus size={14} />
+            }
+          >
+            {event.isParticipant ? 'Poistu' : 'Osallistu'}
           </Button>
         </div>
       </Stack>
