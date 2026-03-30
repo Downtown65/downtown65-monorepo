@@ -31,6 +31,7 @@ import {
 } from '@tabler/icons-react';
 import { Link, redirect, useFetcher } from 'react-router';
 import { createAuthClient, requireAuth } from '~/lib/api.server';
+import { getEventTypeInfo } from '~/lib/event-type-map';
 import { getSession } from '~/lib/session.server';
 import type { Route } from './+types/events.$id';
 
@@ -47,13 +48,6 @@ function formatDate(dateStr: string): string {
 function formatTime(timeStr: string | null): string | null {
   if (!timeStr) return null;
   return `klo ${timeStr.slice(0, 5)}`;
-}
-
-function formatEventType(type: string): string {
-  return type
-    .replace(/_/g, ' ')
-    .toLowerCase()
-    .replace(/^\w/, (c) => c.toUpperCase());
 }
 
 export async function loader({ request, params }: { request: Request; params: { id: string } }) {
@@ -136,7 +130,7 @@ export default function EventDetailPage({ loaderData }: Route.ComponentProps) {
         )}
 
         <Badge variant="light" mb="md">
-          {formatEventType(event.type)}
+          {getEventTypeInfo(event.type).label}
         </Badge>
 
         <Stack gap="xs" mb="md">
