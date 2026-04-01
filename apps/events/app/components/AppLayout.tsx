@@ -2,7 +2,6 @@ import {
   Anchor,
   AppShell,
   Avatar,
-  Box,
   Burger,
   Divider,
   Drawer,

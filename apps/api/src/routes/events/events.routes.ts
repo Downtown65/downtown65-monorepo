@@ -70,7 +70,7 @@ export const updateEventRoute = createRoute({
   method: 'put',
   path: '/events/{id}',
   tags: ['Events'],
-  summary: 'Update an event (owner only)',
+  summary: 'Update an event',
   request: {
     params: IdParamSchema,
     body: {

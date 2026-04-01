@@ -45,9 +45,8 @@ export const handleGetEvent: RouteHandler<typeof getEventRoute, AppEnv> = async 
 export const handleUpdateEvent: RouteHandler<typeof updateEventRoute, AppEnv> = async (c) => {
   const { id } = c.req.valid('param');
   const body = c.req.valid('json');
-  const userId = c.get('userId');
 
-  const result = await updateEvent(c.env.DB, id, body, userId);
+  const result = await updateEvent(c.env.DB, id, body);
 
   if (!result.ok) {
     if (result.error === 'NOT_FOUND') {
