@@ -8,6 +8,6 @@
     },
     "types": ["@cloudflare/vitest-pool-workers"]
   },
-  "include": ["src", "env.d.ts", "worker-configuration.d.ts", "scripts/*.ts"],
+  "include": ["src", "env.d.ts", "worker-configuration.d.ts"],
   "references": [{ "path": "../../packages/shared" }]
 }
