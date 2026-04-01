@@ -32,8 +32,7 @@
 
 ## Dependencies
 
-- All versions pinned in `pnpm-workspace.yaml` catalog
-- Use `catalog:` protocol in package.json -- never hardcode versions
-- Add new shared versions to the catalog section in `pnpm-workspace.yaml`
+- Dependencies used across multiple packages go in `pnpm-workspace.yaml` catalog with `catalog:` protocol
+- App-specific dependencies (used in one place only) can use hardcoded versions directly
 - Root devDependencies for shared tooling (biome, knip, typescript)
 - App-specific dependencies in each app's package.json
