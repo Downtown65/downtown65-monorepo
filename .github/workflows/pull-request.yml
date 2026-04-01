@@ -79,7 +79,7 @@ jobs:
       - name: Sync Auth0 users to D1
         working-directory: apps/api
         run: |
-          npx varlock run -- tsx scripts/sync-auth0-users.ts
+          pnpm run db:create:users-seed
           npx wrangler d1 execute dt65-pr-${PR_NUM} --remote --file data/seed-users.sql --config dist/downtown65_api/wrangler.pr.json
 
       - name: Deploy API preview
