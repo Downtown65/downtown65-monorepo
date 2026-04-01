@@ -1,4 +1,4 @@
-import { client, postApiAuthLogin } from '@dt65/api-client';
+import { postApiAuthLogin } from '@dt65/api-client';
 import {
   Alert,
   Anchor,
@@ -12,8 +12,8 @@ import {
 } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { Form, Link, redirect, useNavigation } from 'react-router';
-import { ENV } from 'varlock/env';
 import { z } from 'zod/v4';
+import { createApiClient } from '~/lib/api.server';
 import { type SessionData, SessionDataSchema } from '~/lib/auth.server';
 import { createSessionCookie } from '~/lib/session.server';
 import type { Route } from './+types/login';
@@ -43,13 +43,10 @@ export async function action({ request }: { request: Request }) {
 
   const { email, password } = result.data;
 
-  client.setConfig({
-    baseUrl: ENV.API_BASE_URL,
-    headers: { 'x-api-key': ENV.X_API_KEY },
-  });
+  const apiClient = createApiClient();
 
   const { data, error } = await postApiAuthLogin({
-    client,
+    client: apiClient,
     body: { email, password },
   });
 
