@@ -1,4 +1,4 @@
-import { client, postApiAuthSignup } from '@dt65/api-client';
+import { postApiAuthSignup } from '@dt65/api-client';
 import {
   Alert,
   Anchor,
@@ -14,6 +14,7 @@ import { IconAlertCircle } from '@tabler/icons-react';
 import { Form, Link, redirect, useNavigation } from 'react-router';
 import { ENV } from 'varlock/env';
 import { z } from 'zod/v4';
+import { createApiClient } from '~/lib/api.server';
 import { type SessionData, SessionDataSchema } from '~/lib/auth.server';
 import { createSessionCookie } from '~/lib/session.server';
 import type { Route } from './+types/signup';
@@ -57,13 +58,10 @@ export async function action({ request }: { request: Request }) {
     return { error: 'Virheellinen rekisteröintitunnus' };
   }
 
-  client.setConfig({
-    baseUrl: ENV.API_BASE_URL,
-    headers: { 'x-api-key': ENV.X_API_KEY },
-  });
+  const apiClient = createApiClient();
 
   const { data, error } = await postApiAuthSignup({
-    client,
+    client: apiClient,
     body: { email, password, name, nickname },
   });
 

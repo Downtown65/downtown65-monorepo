@@ -1,9 +1,9 @@
-import { client, postApiAuthForgotPassword } from '@dt65/api-client';
+import { postApiAuthForgotPassword } from '@dt65/api-client';
 import { Alert, Anchor, Button, Container, Paper, Text, TextInput, Title } from '@mantine/core';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { Form, Link, useNavigation } from 'react-router';
-import { ENV } from 'varlock/env';
 import { z } from 'zod/v4';
+import { createApiClient } from '~/lib/api.server';
 import type { Route } from './+types/forgot-password';
 
 const ForgotPasswordFormSchema = z.object({
@@ -22,13 +22,10 @@ export async function action({ request }: { request: Request }) {
 
   const { email } = result.data;
 
-  client.setConfig({
-    baseUrl: ENV.API_BASE_URL,
-    headers: { 'x-api-key': ENV.X_API_KEY },
-  });
+  const apiClient = createApiClient();
 
   try {
-    await postApiAuthForgotPassword({ client, body: { email } });
+    await postApiAuthForgotPassword({ client: apiClient, body: { email } });
   } catch {
     // Don't reveal whether the email exists
   }

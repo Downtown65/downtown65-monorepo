@@ -1,4 +1,4 @@
-import { client, postApiAuthRefresh } from '@dt65/api-client';
+import { type Client, createClient, postApiAuthRefresh } from '@dt65/api-client';
 import { redirect } from 'react-router';
 import { ENV } from 'varlock/env';
 import type { SessionData } from './auth.server';
@@ -15,8 +15,11 @@ export async function requireAuth(request: Request): Promise<SessionData> {
   return session;
 }
 
-function configureApiClient() {
-  client.setConfig({
+/**
+ * Create a fresh API client with base config (no auth).
+ */
+export function createApiClient(): Client {
+  return createClient({
     baseUrl: ENV.API_BASE_URL,
     headers: {
       'x-api-key': ENV.X_API_KEY,
@@ -30,7 +33,7 @@ function configureApiClient() {
  * Returns the configured client and optionally a new session cookie.
  */
 export async function createAuthClient(session: SessionData): Promise<{
-  apiClient: typeof client;
+  apiClient: Client;
   sessionCookie?: string | undefined;
 }> {
   let { accessToken } = session;
@@ -38,10 +41,10 @@ export async function createAuthClient(session: SessionData): Promise<{
 
   // Refresh token if expired (with 60s buffer)
   if (session.expiresAt < Date.now() + 60_000 && session.refreshToken) {
-    configureApiClient();
+    const refreshClient = createApiClient();
     try {
       const { data } = await postApiAuthRefresh({
-        client,
+        client: refreshClient,
         body: { refreshToken: session.refreshToken },
       });
 
@@ -62,8 +65,7 @@ export async function createAuthClient(session: SessionData): Promise<{
     }
   }
 
-  const apiClient = client;
-  apiClient.setConfig({
+  const apiClient = createClient({
     baseUrl: ENV.API_BASE_URL,
     headers: {
       'x-api-key': ENV.X_API_KEY,
