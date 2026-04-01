@@ -16,12 +16,9 @@
       "types": "./src/index.ts"
     }
   },
-  "dependencies": {
-    "@hey-api/client-fetch": "^0.9.0"
-  },
   "devDependencies": {
     "@dt65/api": "workspace:*",
-    "@hey-api/openapi-ts": "^0.82.0",
+    "@hey-api/openapi-ts": "^0.94.5",
     "rimraf": "catalog:",
     "typescript": "catalog:"
   }
