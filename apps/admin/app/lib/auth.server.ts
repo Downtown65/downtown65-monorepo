@@ -127,11 +127,17 @@ export async function getUserInfo(accessToken: string) {
   return Auth0UserInfoSchema.parse(await response.json());
 }
 
+export function decodeBase64Url(input: string): string {
+  const base64 = input.replace(/-/g, '+').replace(/_/g, '/');
+  const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
+  return atob(padded);
+}
+
 export function extractRoleFromToken(accessToken: string): string {
   try {
     const parts = accessToken.split('.');
     if (parts.length !== 3) return 'member';
-    const payload = JSON.parse(atob(parts[1]?.replace(/-/g, '+').replace(/_/g, '/') ?? ''));
+    const payload = JSON.parse(decodeBase64Url(parts[1] ?? ''));
     const role = payload[ROLE_CLAIM];
     return typeof role === 'string' ? role : 'member';
   } catch {
