@@ -22,9 +22,13 @@ export type EventType = (typeof EVENT_TYPES)[number];
 
 const EVENT_TYPE_SET: ReadonlySet<string> = new Set(EVENT_TYPES);
 
+export function isEventType(value: string): value is EventType {
+  return EVENT_TYPE_SET.has(value);
+}
+
 export function toEventType(value: string): EventType {
-  if (!EVENT_TYPE_SET.has(value)) {
+  if (!isEventType(value)) {
     throw new Error(`Invalid event type: ${value}`);
   }
-  return value as EventType;
+  return value;
 }

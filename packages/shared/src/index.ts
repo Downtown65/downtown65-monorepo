@@ -13,4 +13,4 @@ export {
   type TokenResponse,
   TokenResponseSchema,
 } from './auth0-schemas';
-export { DT65_APP_NAME, EVENT_TYPES, type EventType, toEventType } from './constants';
+export { DT65_APP_NAME, EVENT_TYPES, type EventType, isEventType, toEventType } from './constants';
