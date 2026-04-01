@@ -18,7 +18,14 @@
   "env": {
     "production": {
       "name": "downtown65-api-production",
-      "workers_dev": true
+      "workers_dev": true,
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "downtown65-events-production",
+          "database_id": "068ce462-643d-4dee-8932-035f2563d41c"
+        }
+      ]
     }
   }
 }
