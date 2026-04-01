@@ -40,7 +40,7 @@ export function EventImageHeader({
       </div>
       <Badge
         className={classes.imageBottomRight}
-        color="grey"
+        color="gray"
         radius="xs"
         size="sm"
         tt="none"
