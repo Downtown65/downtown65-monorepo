@@ -2,7 +2,11 @@ import { getApiEventsById, putApiEventsById } from '@dt65/api-client';
 import { Container, Title } from '@mantine/core';
 import { redirect, useNavigation } from 'react-router';
 import { EventWizard } from '~/components/event-wizard/EventWizard';
-import { type EventFormData, EventFormDataSchema } from '~/components/event-wizard/types';
+import {
+  type EventFormData,
+  EventFormDataSchema,
+  type WizardState,
+} from '~/components/event-wizard/types';
 import { createAuthClient, requireAuth } from '~/lib/api.server';
 import type { Route } from './+types/events.$id.edit';
 
@@ -15,8 +19,8 @@ export async function loader({ request, params }: { request: Request; params: { 
     throw new Response('Not found', { status: 404 });
   }
 
-  const formData: EventFormData = {
-    eventType: event.type as EventFormData['eventType'],
+  const formData: WizardState = {
+    eventType: event.type,
     title: event.title,
     dateStart: event.dateStart,
     timeStart: event.timeStart,
@@ -39,7 +43,7 @@ export async function action({ request, params }: { request: Request; params: { 
     client: apiClient,
     path: { id: params.id },
     body: {
-      type: data.eventType as NonNullable<typeof data.eventType>,
+      type: data.eventType,
       title: data.title.trim(),
       dateStart: data.dateStart,
       timeStart: data.timeStart ?? undefined,
