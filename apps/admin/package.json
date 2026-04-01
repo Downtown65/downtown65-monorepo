@@ -14,6 +14,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
+    "@dt65/shared": "workspace:*",
     "@mantine/core": "catalog:",
     "@mantine/hooks": "catalog:",
     "@tabler/icons-react": "catalog:",
@@ -23,8 +24,7 @@
     "react-dom": "catalog:",
     "react-router": "catalog:",
     "varlock": "catalog:",
-    "zod": "catalog:",
-    "@dt65/shared": "workspace:*"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "catalog:",
