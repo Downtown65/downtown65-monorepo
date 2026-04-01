@@ -25,7 +25,6 @@ interface Env {
 const requestHandler = createRequestHandler(
   // @ts-expect-error virtual module provided by React Router Vite plugin
   () => import('virtual:react-router/server-build'),
-  import.meta.env.MODE,
 );
 
 export default {
