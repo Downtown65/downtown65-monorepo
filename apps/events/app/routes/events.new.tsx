@@ -7,7 +7,7 @@ import { createAuthClient, requireAuth } from '~/lib/api.server';
 
 export async function action({ request }: { request: Request }) {
   const session = await requireAuth(request);
-  const { apiClient } = await createAuthClient(session);
+  const { apiClient, headers } = await createAuthClient(session);
   const formData = await request.formData();
   const data = EventFormDataSchema.parse(JSON.parse(String(formData.get('data'))));
 
@@ -25,7 +25,7 @@ export async function action({ request }: { request: Request }) {
     },
   });
 
-  return redirect('/events');
+  return redirect('/events', { headers });
 }
 
 export default function NewEvent() {
