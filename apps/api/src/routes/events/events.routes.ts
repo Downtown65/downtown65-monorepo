@@ -83,10 +83,6 @@ export const updateEventRoute = createRoute({
       content: { 'application/json': { schema: EventSchema } },
       description: 'Event updated',
     },
-    403: {
-      content: { 'application/json': { schema: ErrorSchema } },
-      description: 'Not the event owner',
-    },
     404: {
       content: { 'application/json': { schema: ErrorSchema } },
       description: 'Event not found',

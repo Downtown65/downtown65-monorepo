@@ -49,10 +49,7 @@ export const handleUpdateEvent: RouteHandler<typeof updateEventRoute, AppEnv> = 
   const result = await updateEvent(c.env.DB, id, body);
 
   if (!result.ok) {
-    if (result.error === 'NOT_FOUND') {
-      return c.json({ error: { code: 'NOT_FOUND', message: 'Event not found' } }, 404);
-    }
-    return c.json({ error: { code: 'FORBIDDEN', message: 'Not the event owner' } }, 403);
+    return c.json({ error: { code: 'NOT_FOUND', message: 'Event not found' } }, 404);
   }
 
   return c.json(result.data, 200);
