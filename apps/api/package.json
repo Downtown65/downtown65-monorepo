@@ -24,7 +24,8 @@
     "drizzle-orm": "^0.45.1",
     "hono": "^4.12.8",
     "loglayer": "^9.1.0",
-    "varlock": "catalog:"
+    "varlock": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "catalog:",
@@ -35,7 +36,6 @@
     "typescript": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:",
-    "wrangler": "catalog:",
-    "zod": "^4.3.5"
+    "wrangler": "catalog:"
   }
 }
