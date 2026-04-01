@@ -35,7 +35,7 @@
     "packages/api-client": {
       "entry": ["openapi-ts.config.ts"],
       "ignore": ["src/generated/**"],
-      "ignoreDependencies": ["@hey-api/client-fetch", "@dt65/api"]
+      "ignoreDependencies": ["@dt65/api"]
     },
     "packages/shared": {}
   }

@@ -13,7 +13,7 @@
     "ci:lint": "biome ci",
     "generate-openapi": "varlock run -- tsx scripts/generate-openapi.ts",
     "clean": "rimraf dist",
-    "db:create:users": "varlock run -- tsx scripts/sync-auth0-users.ts",
+    "db:create:users-seed": "varlock run -- tsx scripts/sync-auth0-users.ts",
     "db:local:seed-users": "wrangler d1 execute downtown65-db --local --file data/seed-users.sql",
     "db:local:migrate": "wrangler d1 migrations apply downtown65-db --local",
     "db:generate": "drizzle-kit generate"
