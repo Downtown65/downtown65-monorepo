@@ -109,7 +109,11 @@ export async function createEvent(
     })
     .returning({ id: events.id });
 
-  const id = rows[0]?.id as number;
+  const inserted = rows[0];
+  if (!inserted) {
+    throw new Error('Insert did not return a row');
+  }
+  const id = inserted.id;
 
   return {
     id,
@@ -186,12 +190,16 @@ export async function updateEvent(
   const now = new Date().toISOString();
   const updateFields = { ...buildUpdateFields(data), updatedAt: now };
 
-  await db.update(events).set(updateFields).where(eq(events.id, event.id));
+  const updatedRows = await db
+    .update(events)
+    .set(updateFields)
+    .where(eq(events.id, event.id))
+    .returning();
 
-  const updatedRows = await findEventById(db, String(event.id));
+  const updated = updatedRows[0] ?? event;
   const count = await getParticipantCount(db, event.id);
 
-  return { ok: true, data: toEventRow(updatedRows ?? event, count) };
+  return { ok: true, data: toEventRow(updated, count) };
 }
 
 export async function deleteEvent(
