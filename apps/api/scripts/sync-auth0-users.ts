@@ -7,22 +7,17 @@
  * Usage: cd apps/api && varlock run -- npx tsx scripts/sync-auth0-users.ts
  *
  * Env vars required (via varlock):
- *   AUTH0_DOMAIN, AUTH0_CLIENT_USER_MANAGEMENT_ID, AUTH0_CLIENT_USER_MANAGEMENT_SECRET
+ *   AUTH0_DOMAIN, AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { ManagementTokenResponseSchema } from '@dt65/shared';
+import { ENV } from 'varlock/env';
 import { z } from 'zod/v4';
 
-function requireEnv(key: string): string {
-  const value = process.env[key];
-  if (!value) throw new Error(`Missing required env var: ${key}`);
-  return value;
-}
-
-const AUTH0_DOMAIN = requireEnv('AUTH0_DOMAIN');
-const AUTH0_CLIENT_USER_MANAGEMENT_ID = requireEnv('AUTH0_CLIENT_USER_MANAGEMENT_ID');
-const AUTH0_CLIENT_USER_MANAGEMENT_SECRET = requireEnv('AUTH0_CLIENT_USER_MANAGEMENT_SECRET');
+const AUTH0_DOMAIN = ENV.AUTH0_DOMAIN;
+const AUTH0_CLIENT_ID = ENV.AUTH0_CLIENT_ID;
+const AUTH0_CLIENT_SECRET = ENV.AUTH0_CLIENT_SECRET;
 
 function log(message: string): void {
   // biome-ignore lint/suspicious/noConsole: CLI script
@@ -48,8 +43,8 @@ async function getManagementToken(): Promise<string> {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
-      client_id: AUTH0_CLIENT_USER_MANAGEMENT_ID,
-      client_secret: AUTH0_CLIENT_USER_MANAGEMENT_SECRET,
+      client_id: AUTH0_CLIENT_ID,
+      client_secret: AUTH0_CLIENT_SECRET,
       audience: `https://${AUTH0_DOMAIN}/api/v2/`,
       grant_type: 'client_credentials',
     }),
