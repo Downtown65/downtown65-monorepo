@@ -1,4 +1,4 @@
-import { type EventType, toEventType } from '@dt65/shared';
+import { toEventType } from '@dt65/shared';
 import { asc, eq, gte, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import type { z } from 'zod';
@@ -175,7 +175,6 @@ export async function updateEvent(
   d1: D1Database,
   idParam: string,
   data: EventUpdateInput,
-  requesterId: number,
 ): Promise<Result<EventRow>> {
   const db = drizzle(d1);
 
