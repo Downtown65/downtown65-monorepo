@@ -2,7 +2,7 @@ import { EVENT_TYPES, type EventType } from '@dt65/shared';
 import { z } from 'zod/v4';
 
 export const EventFormDataSchema = z.object({
-  eventType: z.enum(EVENT_TYPES).nullable(),
+  eventType: z.enum(EVENT_TYPES),
   title: z.string(),
   dateStart: z.string(),
   timeStart: z.string().nullable(),
@@ -14,7 +14,11 @@ export const EventFormDataSchema = z.object({
 
 export type EventFormData = z.infer<typeof EventFormDataSchema>;
 
-export const initialFormData: EventFormData = {
+export interface WizardState extends Omit<EventFormData, 'eventType'> {
+  eventType: EventType | null;
+}
+
+export const initialFormData: WizardState = {
   eventType: null,
   title: '',
   dateStart: '',
@@ -36,7 +40,7 @@ export type WizardAction =
   | { type: 'SET_RACE'; payload: boolean }
   | { type: 'RESET' };
 
-export function wizardReducer(state: EventFormData, action: WizardAction): EventFormData {
+export function wizardReducer(state: WizardState, action: WizardAction): WizardState {
   switch (action.type) {
     case 'SET_EVENT_TYPE':
       return { ...state, eventType: action.payload };
