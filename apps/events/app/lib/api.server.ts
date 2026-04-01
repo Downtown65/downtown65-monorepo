@@ -30,14 +30,14 @@ export function createApiClient(): Client {
 /**
  * Create an authenticated API client configured with the session's token.
  * Handles token refresh if the access token is about to expire.
- * Returns the configured client and optionally a new session cookie.
+ * Returns the configured client and response headers (with Set-Cookie if refreshed).
  */
 export async function createAuthClient(session: SessionData): Promise<{
   apiClient: Client;
-  sessionCookie?: string | undefined;
+  headers: Headers;
 }> {
   let { accessToken } = session;
-  let sessionCookie: string | undefined;
+  const headers = new Headers();
 
   // Refresh token if expired (with 60s buffer)
   if (session.expiresAt < Date.now() + 60_000 && session.refreshToken) {
@@ -59,7 +59,7 @@ export async function createAuthClient(session: SessionData): Promise<{
         refreshToken: data.refreshToken ?? session.refreshToken,
         expiresAt: Date.now() + data.expiresIn * 1000,
       };
-      sessionCookie = await createSessionCookie(updatedSession);
+      headers.set('Set-Cookie', await createSessionCookie(updatedSession));
     } catch {
       throw redirect('/login');
     }
@@ -73,5 +73,5 @@ export async function createAuthClient(session: SessionData): Promise<{
     },
   });
 
-  return { apiClient, sessionCookie };
+  return { apiClient, headers };
 }

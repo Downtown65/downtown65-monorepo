@@ -1,6 +1,6 @@
 import { getApiEventsById, putApiEventsById } from '@dt65/api-client';
 import { Container, Title } from '@mantine/core';
-import { redirect, useNavigation } from 'react-router';
+import { redirect, data as routeData, useNavigation } from 'react-router';
 import { EventWizard } from '~/components/event-wizard/EventWizard';
 import {
   type EventFormData,
@@ -12,7 +12,7 @@ import type { Route } from './+types/events.$id.edit';
 
 export async function loader({ request, params }: { request: Request; params: { id: string } }) {
   const session = await requireAuth(request);
-  const { apiClient } = await createAuthClient(session);
+  const { apiClient, headers } = await createAuthClient(session);
   const { data: event } = await getApiEventsById({ client: apiClient, path: { id: params.id } });
 
   if (!event) {
@@ -30,12 +30,12 @@ export async function loader({ request, params }: { request: Request; params: { 
     race: event.race,
   };
 
-  return { eventId: event.id, formData };
+  return routeData({ eventId: event.id, formData }, { headers });
 }
 
 export async function action({ request, params }: { request: Request; params: { id: string } }) {
   const session = await requireAuth(request);
-  const { apiClient } = await createAuthClient(session);
+  const { apiClient, headers } = await createAuthClient(session);
   const formData = await request.formData();
   const data = EventFormDataSchema.parse(JSON.parse(String(formData.get('data'))));
 
@@ -54,7 +54,7 @@ export async function action({ request, params }: { request: Request; params: { 
     },
   });
 
-  return redirect(`/events/${params.id}`);
+  return redirect(`/events/${params.id}`, { headers });
 }
 
 export default function EditEvent({ loaderData }: Route.ComponentProps) {

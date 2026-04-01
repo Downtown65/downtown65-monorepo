@@ -1,14 +1,15 @@
 import { getApiEvents } from '@dt65/api-client';
 import { Container, SimpleGrid, Text } from '@mantine/core';
+import { data as routeData } from 'react-router';
 import { EventCard } from '~/components/event-card/EventCard';
 import { createAuthClient, requireAuth } from '~/lib/api.server';
 import type { Route } from './+types/events';
 
 export async function loader({ request }: { request: Request }) {
   const session = await requireAuth(request);
-  const { apiClient } = await createAuthClient(session);
+  const { apiClient, headers } = await createAuthClient(session);
   const { data } = await getApiEvents({ client: apiClient });
-  return { events: data ?? [] };
+  return routeData({ events: data ?? [] }, { headers });
 }
 
 export default function Events({ loaderData }: Route.ComponentProps) {

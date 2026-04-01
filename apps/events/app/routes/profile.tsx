@@ -1,16 +1,17 @@
 import { getApiAuthMe } from '@dt65/api-client';
 import { Avatar, Badge, Card, Container, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { IconBell, IconMail } from '@tabler/icons-react';
+import { data as routeData } from 'react-router';
 import { ThemeToggle } from '~/components/ThemeToggle';
 import { createAuthClient, requireAuth } from '~/lib/api.server';
 import type { Route } from './+types/profile';
 
 export async function loader({ request }: { request: Request }) {
   const session = await requireAuth(request);
-  const { apiClient } = await createAuthClient(session);
+  const { apiClient, headers } = await createAuthClient(session);
   const { data: profile } = await getApiAuthMe({ client: apiClient });
 
-  return { profile };
+  return routeData({ profile }, { headers });
 }
 
 export default function Profile({ loaderData }: Route.ComponentProps) {
