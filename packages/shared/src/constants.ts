@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export const DT65_APP_NAME = 'Downtown 65';
 
 export const EVENT_TYPES = [
@@ -20,15 +22,12 @@ export const EVENT_TYPES = [
 
 export type EventType = (typeof EVENT_TYPES)[number];
 
-const EVENT_TYPE_SET: ReadonlySet<string> = new Set(EVENT_TYPES);
+const EventTypeSchema = z.enum(EVENT_TYPES);
 
 export function isEventType(value: string): value is EventType {
-  return EVENT_TYPE_SET.has(value);
+  return EventTypeSchema.safeParse(value).success;
 }
 
 export function toEventType(value: string): EventType {
-  if (!isEventType(value)) {
-    throw new Error(`Invalid event type: ${value}`);
-  }
-  return value;
+  return EventTypeSchema.parse(value);
 }
