@@ -2,6 +2,7 @@ import { toEventType } from '@dt65/shared';
 import type { RouteHandler } from '@hono/zod-openapi';
 import { desc, eq, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
+import { ENV } from 'varlock/env';
 import type { AppEnv, UserRole } from '@/app';
 import { events, users } from '@/db/schema';
 import type {
@@ -39,23 +40,19 @@ function toAdminUser(user: Auth0ManagementUser) {
   };
 }
 
-function getManagementConfig(
-  domain: string,
-  clientId: string,
-  clientSecret: string,
-): Auth0ManagementConfig {
-  return { domain, clientId, clientSecret };
-}
-
-function configFromEnv(env: AppEnv['Bindings']): Auth0ManagementConfig {
-  return getManagementConfig(env.AUTH0_DOMAIN, env.AUTH0_CLIENT_ID, env.AUTH0_CLIENT_SECRET);
+function getManagementConfig(): Auth0ManagementConfig {
+  return {
+    domain: ENV.AUTH0_DOMAIN,
+    clientId: ENV.AUTH0_CLIENT_ID,
+    clientSecret: ENV.AUTH0_CLIENT_SECRET,
+  };
 }
 
 export function createHandleListUsers(
   managementService: ManagementService,
 ): RouteHandler<typeof listUsersRoute, AppEnv> {
   return async (c) => {
-    const config = configFromEnv(c.env);
+    const config = getManagementConfig();
     const users = await managementService.listUsers(config);
     return c.json(users.map(toAdminUser), 200);
   };
@@ -66,7 +63,7 @@ export function createHandleGetUser(
 ): RouteHandler<typeof getUserRoute, AppEnv> {
   return async (c) => {
     const { userId } = c.req.valid('param');
-    const config = configFromEnv(c.env);
+    const config = getManagementConfig();
     const user = await managementService.getUser(config, userId);
 
     if (!user) {
@@ -83,7 +80,7 @@ export function createHandleUpdateUserRole(
   return async (c) => {
     const { userId } = c.req.valid('param');
     const { role } = c.req.valid('json');
-    const config = configFromEnv(c.env);
+    const config = getManagementConfig();
 
     const currentUser = await managementService.getUser(config, userId);
     if (!currentUser) {
@@ -119,7 +116,7 @@ export function createHandleUpdateUserBlocked(
   return async (c) => {
     const { userId } = c.req.valid('param');
     const { blocked } = c.req.valid('json');
-    const config = configFromEnv(c.env);
+    const config = getManagementConfig();
 
     const currentUser = await managementService.getUser(config, userId);
     if (!currentUser) {
@@ -143,7 +140,7 @@ export function createHandleUpdateUserFee(
   return async (c) => {
     const { userId, year } = c.req.valid('param');
     const { paid } = c.req.valid('json');
-    const config = configFromEnv(c.env);
+    const config = getManagementConfig();
 
     const user = await managementService.getUser(config, userId);
     if (!user) {
@@ -161,7 +158,7 @@ export function createHandleGetUserFee(
 ): RouteHandler<typeof getUserFeeRoute, AppEnv> {
   return async (c) => {
     const { userId, year } = c.req.valid('param');
-    const config = configFromEnv(c.env);
+    const config = getManagementConfig();
 
     const user = await managementService.getUser(config, userId);
     if (!user) {
