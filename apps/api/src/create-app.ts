@@ -55,7 +55,7 @@ function registerDocs(app: ReturnType<typeof createApp>) {
             oauth2: {
               flows: {
                 authorizationCode: {
-                  'x-scalar-client-id': ENV.AUTH0_CLIENT_ID,
+                  'x-scalar-client-id': ENV.SCALAR_CLIENT_ID,
                 },
               },
             },
