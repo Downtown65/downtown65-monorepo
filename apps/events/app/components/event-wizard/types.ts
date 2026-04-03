@@ -3,11 +3,11 @@ import { z } from 'zod/v4';
 
 export const EventFormDataSchema = z.object({
   eventType: z.enum(EVENT_TYPES),
-  title: z.string(),
-  dateStart: z.string(),
+  title: z.string().min(1).max(200),
+  dateStart: z.iso.date(),
   timeStart: z.string().nullable(),
-  location: z.string(),
-  subtitle: z.string(),
+  location: z.string().min(1).max(200),
+  subtitle: z.string().min(1).max(200),
   description: z.string(),
   race: z.boolean(),
 });
