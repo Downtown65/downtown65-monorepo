@@ -3,15 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite dev --port 4100",
     "build": "vite build",
-    "typecheck": "tsc --noEmit",
-    "typegen": "varlock typegen && react-router typegen",
-    "test": "vitest run --passWithNoTests",
-    "lint": "biome lint",
-    "format": "biome check --write",
     "ci:lint": "biome ci",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "dev": "vite dev --port 4100",
+    "format": "biome check --write",
+    "lint": "biome lint",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit",
+    "typegen": "varlock typegen && react-router typegen"
   },
   "dependencies": {
     "@dt65/api-client": "workspace:*",
@@ -31,16 +31,16 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-router": "catalog:",
-    "varlock": "catalog:",
     "sanitize-html": "2.17.2",
+    "varlock": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@types/sanitize-html": "2.16.0",
     "@cloudflare/vite-plugin": "catalog:",
     "@react-router/dev": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@types/sanitize-html": "2.16.0",
     "@vitest/coverage-v8": "catalog:",
     "postcss": "catalog:",
     "postcss-preset-mantine": "catalog:",

@@ -2,19 +2,19 @@
   "name": "@dt65/api-client",
   "private": true,
   "type": "module",
-  "scripts": {
-    "generate-openapi": "openapi-ts",
-    "typecheck": "tsc --noEmit",
-    "lint": "biome lint",
-    "format": "biome check --write",
-    "ci:lint": "biome ci",
-    "clean": "rimraf src/generated"
-  },
   "exports": {
     ".": {
       "import": "./src/index.ts",
       "types": "./src/index.ts"
     }
+  },
+  "scripts": {
+    "ci:lint": "biome ci",
+    "clean": "rimraf src/generated",
+    "format": "biome check --write",
+    "generate-openapi": "openapi-ts",
+    "lint": "biome lint",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@dt65/api": "workspace:*",

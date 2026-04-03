@@ -5,6 +5,10 @@ pre-commit:
       exclude: "**/generated/**"
       run: pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files} && git add {staged_files}
 
+    - name: sort package.json
+      glob: "**/package.json"
+      run: pnpm sort-package-json {staged_files} && git add {staged_files}
+
 commit-msg:
   jobs:
     - name: commitlint
