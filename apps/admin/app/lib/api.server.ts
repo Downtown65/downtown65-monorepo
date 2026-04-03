@@ -28,7 +28,10 @@ export async function createAuthClient(session: SessionData): Promise<{
   let { accessToken } = session;
   const headers = new Headers();
 
-  if (session.expiresAt < Date.now() + 60_000 && session.refreshToken) {
+  if (session.expiresAt < Date.now() + 60_000) {
+    if (!session.refreshToken) {
+      throw redirect('/login');
+    }
     const refreshClient = createApiClient();
     try {
       const { data } = await postApiAuthRefresh({

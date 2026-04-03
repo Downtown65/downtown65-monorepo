@@ -40,7 +40,10 @@ export async function createAuthClient(session: SessionData): Promise<{
   const headers = new Headers();
 
   // Refresh token if expired (with 60s buffer)
-  if (session.expiresAt < Date.now() + 60_000 && session.refreshToken) {
+  if (session.expiresAt < Date.now() + 60_000) {
+    if (!session.refreshToken) {
+      throw redirect('/login');
+    }
     const refreshClient = createApiClient();
     try {
       const { data } = await postApiAuthRefresh({
