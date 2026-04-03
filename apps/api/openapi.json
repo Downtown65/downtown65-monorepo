@@ -501,13 +501,13 @@
             "type": "string"
           },
           "race": {
-            "type": "number"
+            "type": "boolean"
           },
           "participantCount": {
             "type": "number"
           },
           "isParticipant": {
-            "type": "number"
+            "type": "boolean"
           },
           "creator": {
             "$ref": "#/components/schemas/Creator"
