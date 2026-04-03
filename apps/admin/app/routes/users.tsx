@@ -1,23 +1,24 @@
+import { getApiAdminUsers } from '@dt65/api-client';
 import { Container, Text, Title } from '@mantine/core';
-import { apiGet, requireAdmin } from '~/lib/api.server';
+import { data } from 'react-router';
+import { createAuthClient, requireAdmin } from '~/lib/api.server';
 import type { Route } from './+types/users';
-
-interface AdminUser {
-  userId: string;
-  email: string;
-  name: string;
-  nickname: string;
-  picture: string;
-  role: string;
-  blocked: boolean;
-  lastLogin: string | null;
-  createdAt: string;
-}
 
 export async function loader({ request }: { request: Request }) {
   const session = await requireAdmin(request);
-  const { data } = await apiGet(session, '/admin/users');
-  return { users: data as AdminUser[] };
+  const { apiClient, headers } = await createAuthClient(session);
+
+  const { data: users } = await getApiAdminUsers({ client: apiClient });
+
+  if (!users) {
+    throw new Response('Failed to fetch users', { status: 500 });
+  }
+
+  if (headers.has('Set-Cookie')) {
+    return data({ users }, { headers });
+  }
+
+  return { users };
 }
 
 export default function Users({ loaderData }: Route.ComponentProps) {
