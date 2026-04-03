@@ -3,20 +3,18 @@ import { Container } from '@mantine/core';
 import { redirect, data as routeData } from 'react-router';
 import { EventDetailCard } from '~/components/event-card/EventDetailCard';
 import { createAuthClient, requireAuth } from '~/lib/api.server';
-import { getSession } from '~/lib/session.server';
 import type { Route } from './+types/events.$id';
 
 export async function loader({ request, params }: { request: Request; params: { id: string } }) {
-  const session = await getSession(request);
-  const authSession = session ? { ...session } : await requireAuth(request);
-  const { apiClient, headers } = await createAuthClient(authSession);
+  const session = await requireAuth(request);
+  const { apiClient, headers } = await createAuthClient(session);
   const { data: event } = await getApiEventsById({ client: apiClient, path: { id: params.id } });
 
   if (!event) {
     throw new Response('Not found', { status: 404 });
   }
 
-  const currentNickname = authSession.user.nickname;
+  const currentNickname = session.user.nickname;
 
   return routeData({ event, currentNickname }, { headers });
 }
