@@ -20,7 +20,7 @@ const TIPTAP_ALLOWED_TAGS = [
 
 /**
  * Sanitize HTML content from event descriptions before rendering.
- * Allows only the tags produced by the Tiptap StarterKit + Link extensions.
+ * Allows only the tags produced by the Tiptap StarterKit, Link, and Underline extensions.
  */
 export function sanitizeEventHtml(html: string): string {
   return sanitizeHtml(html, {
