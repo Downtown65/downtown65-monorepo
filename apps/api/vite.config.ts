@@ -1,6 +1,5 @@
 import path from 'node:path';
 import { varlockCloudflareVitePlugin } from '@varlock/cloudflare-integration';
-import type { Plugin } from 'vite';
 import { defineConfig } from 'vite';
 
 // async function loadVarlockPlugins(): Promise<Plugin[]> {

@@ -1,7 +1,6 @@
 import path from 'node:path';
 import { reactRouter } from '@react-router/dev/vite';
 import { varlockCloudflareVitePlugin } from '@varlock/cloudflare-integration';
-import type { Plugin } from 'vite';
 import { defineConfig } from 'vite';
 
 // async function loadVarlockPlugins(): Promise<Plugin[]> {
