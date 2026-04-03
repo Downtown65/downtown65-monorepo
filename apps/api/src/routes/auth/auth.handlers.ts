@@ -16,7 +16,7 @@ import type {
 async function loginWithPassword(
   email: string,
   password: string,
-): Promise<{ accessToken: string; refreshToken?: string; expiresIn: number }> {
+): Promise<{ accessToken: string; refreshToken: string; expiresIn: number }> {
   const response = await fetch(`https://${ENV.AUTH0_DOMAIN}/oauth/token`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -38,14 +38,11 @@ async function loginWithPassword(
   }
 
   const tokens = TokenResponseSchema.parse(await response.json());
-  const result: { accessToken: string; refreshToken?: string; expiresIn: number } = {
+  return {
     accessToken: tokens.access_token,
+    refreshToken: tokens.refresh_token,
     expiresIn: tokens.expires_in,
   };
-  if (tokens.refresh_token !== undefined) {
-    result.refreshToken = tokens.refresh_token;
-  }
-  return result;
 }
 
 async function getUserInfo(accessToken: string) {

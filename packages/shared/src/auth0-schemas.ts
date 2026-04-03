@@ -3,7 +3,7 @@ import { z } from 'zod/v4';
 // /oauth/token response — used by all apps
 export const TokenResponseSchema = z.object({
   access_token: z.string(),
-  refresh_token: z.string().optional(),
+  refresh_token: z.string(),
   id_token: z.string().optional(),
   token_type: z.string(),
   expires_in: z.number(),
