@@ -32,9 +32,9 @@ export const CreateEventSchema = z
     title: z.string().min(1).max(200),
     dateStart: ISODateSchema,
     timeStart: ISOTimeSchema.optional(),
-    location: z.string().max(200),
-    subtitle: z.string().max(200),
-    description: z.string().optional(),
+    location: z.string().min(1).max(200),
+    subtitle: z.string().min(1).max(200),
+    description: z.string().min(1).optional(),
     race: z.boolean().default(false),
   })
   .openapi('CreateEvent');
@@ -45,9 +45,9 @@ export const UpdateEventSchema = z
     title: z.string().min(1).max(200).optional(),
     dateStart: ISODateSchema.optional(),
     timeStart: ISOTimeSchema.optional(),
-    location: z.string().max(200).optional(),
-    subtitle: z.string().max(200).optional(),
-    description: z.string().optional(),
+    location: z.string().min(1).max(200).optional(),
+    subtitle: z.string().min(1).max(200).optional(),
+    description: z.string().min(1).optional(),
     race: z.boolean().optional(),
   })
   .openapi('UpdateEvent');
