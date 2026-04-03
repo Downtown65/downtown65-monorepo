@@ -6,6 +6,12 @@ export type Bindings = {
 
 export type UserRole = 'admin' | 'board_member' | 'member';
 
+const USER_ROLES = new Set<string>(['admin', 'board_member', 'member']);
+
+export function isUserRole(value: string): value is UserRole {
+  return USER_ROLES.has(value);
+}
+
 export type Variables = {
   userId: number;
   userRole: UserRole;

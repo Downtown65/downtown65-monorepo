@@ -3,11 +3,9 @@ import { drizzle } from 'drizzle-orm/d1';
 import { createMiddleware } from 'hono/factory';
 import { HTTPException } from 'hono/http-exception';
 import { ENV } from 'varlock/env';
-import type { AppEnv, UserRole } from '@/app';
+import { type AppEnv, isUserRole, type UserRole } from '@/app';
 import { users } from '@/db/schema';
 import type { AuthenticationService } from '@/services/authentication-service';
-
-const VALID_ROLES: ReadonlySet<string> = new Set<UserRole>(['admin', 'board_member', 'member']);
 
 export function jwtAuth(authService: AuthenticationService) {
   return createMiddleware<AppEnv>(async (c, next) => {
@@ -29,7 +27,7 @@ export function jwtAuth(authService: AuthenticationService) {
         audience: ENV.AUTH0_AUDIENCE,
       });
       sub = payload.sub;
-      role = payload.role && VALID_ROLES.has(payload.role) ? (payload.role as UserRole) : 'member';
+      role = payload.role && isUserRole(payload.role) ? payload.role : 'member';
     } catch {
       throw new HTTPException(401, { message: 'Invalid authorization token' });
     }
