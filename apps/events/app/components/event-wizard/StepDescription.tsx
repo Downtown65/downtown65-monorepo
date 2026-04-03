@@ -12,6 +12,7 @@ function ClientOnlyEditor({ value, onChange }: StepDescriptionProps) {
     useEditor: typeof import('@tiptap/react').useEditor;
     StarterKit: typeof import('@tiptap/starter-kit').default;
     TiptapLink: typeof import('@tiptap/extension-link').default;
+    Underline: typeof import('@tiptap/extension-underline').default;
   } | null>(null);
   const [loadError, setLoadError] = useState(false);
 
@@ -21,13 +22,15 @@ function ClientOnlyEditor({ value, onChange }: StepDescriptionProps) {
       import('@tiptap/react'),
       import('@tiptap/starter-kit'),
       import('@tiptap/extension-link'),
+      import('@tiptap/extension-underline'),
     ])
-      .then(([tiptapMantine, tiptapReact, starterKit, link]) => {
+      .then(([tiptapMantine, tiptapReact, starterKit, link, underline]) => {
         setMod({
           RichTextEditor: tiptapMantine.RichTextEditor,
           useEditor: tiptapReact.useEditor,
           StarterKit: starterKit.default,
           TiptapLink: link.default,
+          Underline: underline.default,
         });
       })
       .catch(() => setLoadError(true));
@@ -50,10 +53,11 @@ function EditorInner({
     useEditor: typeof import('@tiptap/react').useEditor;
     StarterKit: typeof import('@tiptap/starter-kit').default;
     TiptapLink: typeof import('@tiptap/extension-link').default;
+    Underline: typeof import('@tiptap/extension-underline').default;
   };
 }) {
   const editor = mod.useEditor({
-    extensions: [mod.StarterKit, mod.TiptapLink],
+    extensions: [mod.StarterKit, mod.TiptapLink, mod.Underline],
     content: value,
     autofocus: 'end',
     onUpdate: ({ editor: e }) => {
@@ -74,12 +78,13 @@ function EditorInner({
         </RichTextEditor.ControlsGroup>
 
         <RichTextEditor.ControlsGroup>
+          <RichTextEditor.H1 />
           <RichTextEditor.H2 />
           <RichTextEditor.H3 />
-          <RichTextEditor.H4 />
         </RichTextEditor.ControlsGroup>
 
         <RichTextEditor.ControlsGroup>
+          <RichTextEditor.Hr />
           <RichTextEditor.Blockquote />
           <RichTextEditor.BulletList />
           <RichTextEditor.OrderedList />

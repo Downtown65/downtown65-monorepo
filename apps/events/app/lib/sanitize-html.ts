@@ -2,9 +2,9 @@ import sanitizeHtml from 'sanitize-html';
 
 const TIPTAP_ALLOWED_TAGS = [
   'p',
+  'h1',
   'h2',
   'h3',
-  'h4',
   'strong',
   'em',
   'u',
