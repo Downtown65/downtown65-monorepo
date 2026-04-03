@@ -10,7 +10,7 @@ catalog:
   "@cloudflare/vite-plugin": 1.27.0
   "@mantine/core": 8.3.18
   "@mantine/hooks": 8.3.18
-  "@react-router/dev": 7.13.1
+  "@react-router/dev": 7.13.2
   "@tabler/icons-react": 3.40.0
   "@types/react": 19.1.6
   "@types/react-dom": 19.1.6
