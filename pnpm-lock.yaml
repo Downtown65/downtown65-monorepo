@@ -27,12 +27,12 @@ catalogs:
     '@types/react-dom':
       specifier: 19.1.6
       version: 19.1.6
+    '@varlock/cloudflare-integration':
+      specifier: 0.0.1
+      version: 0.0.1
     '@varlock/infisical-plugin':
       specifier: 0.0.6
       version: 0.0.6
-    '@varlock/vite-integration':
-      specifier: 0.2.7
-      version: 0.2.7
     '@vitest/coverage-v8':
       specifier: 3.2.0
       version: 3.2.0
@@ -61,8 +61,8 @@ catalogs:
       specifier: 6.0.2
       version: 6.0.2
     varlock:
-      specifier: 0.7.0
-      version: 0.7.0
+      specifier: 0.7.1
+      version: 0.7.1
     vite:
       specifier: 7.3.1
       version: 7.3.1
@@ -128,12 +128,12 @@ importers:
       '@tabler/icons-react':
         specifier: 'catalog:'
         version: 3.40.0(react@19.2.4)
+      '@varlock/cloudflare-integration':
+        specifier: 'catalog:'
+        version: 0.0.1(@cloudflare/vite-plugin@1.27.0(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260329.1)(wrangler@4.79.0))(varlock@0.7.1)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(wrangler@4.79.0)
       '@varlock/infisical-plugin':
         specifier: 'catalog:'
-        version: 0.0.6(varlock@0.7.0)
-      '@varlock/vite-integration':
-        specifier: 'catalog:'
-        version: 0.2.7(varlock@0.7.0)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))
+        version: 0.0.6(varlock@0.7.1)
       react:
         specifier: 'catalog:'
         version: 19.2.4
@@ -145,7 +145,7 @@ importers:
         version: 7.13.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       varlock:
         specifier: 'catalog:'
-        version: 0.7.0
+        version: 0.7.1
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -198,12 +198,12 @@ importers:
       '@scalar/hono-api-reference':
         specifier: ^0.10.3
         version: 0.10.3(hono@4.12.8)
+      '@varlock/cloudflare-integration':
+        specifier: 'catalog:'
+        version: 0.0.1(@cloudflare/vite-plugin@1.27.0(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260107.1)(wrangler@4.79.0))(varlock@0.7.1)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(wrangler@4.79.0)
       '@varlock/infisical-plugin':
         specifier: 'catalog:'
-        version: 0.0.6(varlock@0.7.0)
-      '@varlock/vite-integration':
-        specifier: 'catalog:'
-        version: 0.2.7(varlock@0.7.0)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))
+        version: 0.0.6(varlock@0.7.1)
       drizzle-orm:
         specifier: ^0.45.1
         version: 0.45.1
@@ -215,7 +215,7 @@ importers:
         version: 9.1.0
       varlock:
         specifier: 'catalog:'
-        version: 0.7.0
+        version: 0.7.1
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -280,12 +280,12 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^2.12.0
         version: 2.27.2
+      '@varlock/cloudflare-integration':
+        specifier: 'catalog:'
+        version: 0.0.1(@cloudflare/vite-plugin@1.27.0(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260329.1)(wrangler@4.79.0))(varlock@0.7.1)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(wrangler@4.79.0)
       '@varlock/infisical-plugin':
         specifier: 'catalog:'
-        version: 0.0.6(varlock@0.7.0)
-      '@varlock/vite-integration':
-        specifier: 'catalog:'
-        version: 0.2.7(varlock@0.7.0)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))
+        version: 0.0.6(varlock@0.7.1)
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -303,7 +303,7 @@ importers:
         version: 7.13.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       varlock:
         specifier: 'catalog:'
-        version: 0.7.0
+        version: 0.7.1
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -2634,18 +2634,28 @@ packages:
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
+  '@varlock/cloudflare-integration@0.0.1':
+    resolution: {integrity: sha512-D+w/K7Hg80UvR/TRZ089ng+anQf3BKv4yAdPiOpAk0hfHKEARDgCxjlyZ1i3N3Sa9B22OQjzpe6GUKWmkwiSFA==}
+    engines: {node: '>=22'}
+    hasBin: true
+    peerDependencies:
+      '@cloudflare/vite-plugin': '>=1'
+      varlock: ^0.7.0
+      vite: '>=5'
+      wrangler: '>=3'
+    peerDependenciesMeta:
+      '@cloudflare/vite-plugin':
+        optional: true
+      vite:
+        optional: true
+      wrangler:
+        optional: true
+
   '@varlock/infisical-plugin@0.0.6':
     resolution: {integrity: sha512-1ueVXkNQJaegHBsr2hcKJj3enY1nbE7+ba+zToQ0LcFhwaKMDBKjClHtDVd+ZrgQVnsQvbpmK3oQw2Dpz+wGAQ==}
     engines: {node: '>=22'}
     peerDependencies:
       varlock: ^0.7.0
-
-  '@varlock/vite-integration@0.2.7':
-    resolution: {integrity: sha512-HXgu94wosyKdU6J3oj7mZA/jmwPcqzoX4dOqKIu8fXccFVjg5QdaDz9jR2PasmhwiICmUjH69y3e8rzm/bZfag==}
-    engines: {node: '>=22'}
-    peerDependencies:
-      varlock: ^0.6.3
-      vite: '>=5'
 
   '@vitest/coverage-v8@3.2.0':
     resolution: {integrity: sha512-HjgvaokAiHxRMI5ioXl4WmgAi4zQtKtnltOOlmpzUqApdcTTZrZJAastbbRGydtiqwtYLFaIb6Jpo3PzowZ0cg==}
@@ -4919,8 +4929,8 @@ packages:
       typescript:
         optional: true
 
-  varlock@0.7.0:
-    resolution: {integrity: sha512-jxJIATMakPT1SyTJTPOZiT4zbQS/NhNHF5bvEnE5KR8dnUpUL4N1bGEpdxICkw8xNrkTY7P3GojxLsgN2KeVOA==}
+  varlock@0.7.1:
+    resolution: {integrity: sha512-dPRddQmYWpnuMnICIXUalT0Kb1edFGjz17n18Nq3oJCHbw9HNDGXRhyygkUmL2MusDfk7vVurEZI+nX5vrzsKw==}
     engines: {bun: '>=1.3.3', node: '>=22'}
     hasBin: true
 
@@ -7145,14 +7155,25 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@varlock/infisical-plugin@0.0.6(varlock@0.7.0)':
+  '@varlock/cloudflare-integration@0.0.1(@cloudflare/vite-plugin@1.27.0(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260107.1)(wrangler@4.79.0))(varlock@0.7.1)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(wrangler@4.79.0)':
     dependencies:
-      varlock: 0.7.0
-
-  '@varlock/vite-integration@0.2.7(varlock@0.7.0)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))':
-    dependencies:
-      varlock: 0.7.0
+      varlock: 0.7.1
+    optionalDependencies:
+      '@cloudflare/vite-plugin': 1.27.0(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260107.1)(wrangler@4.79.0)
       vite: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2)
+      wrangler: 4.79.0
+
+  '@varlock/cloudflare-integration@0.0.1(@cloudflare/vite-plugin@1.27.0(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260329.1)(wrangler@4.79.0))(varlock@0.7.1)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(wrangler@4.79.0)':
+    dependencies:
+      varlock: 0.7.1
+    optionalDependencies:
+      '@cloudflare/vite-plugin': 1.27.0(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260329.1)(wrangler@4.79.0)
+      vite: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2)
+      wrangler: 4.79.0
+
+  '@varlock/infisical-plugin@0.0.6(varlock@0.7.1)':
+    dependencies:
+      varlock: 0.7.1
 
   '@vitest/coverage-v8@3.2.0(vitest@3.2.0(@types/debug@4.1.12)(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.31.1)(sugarss@5.0.1(postcss@8.5.6))(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
@@ -9730,7 +9751,7 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.2
 
-  varlock@0.7.0: {}
+  varlock@0.7.1: {}
 
   vfile-location@5.0.3:
     dependencies:
