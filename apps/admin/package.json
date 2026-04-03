@@ -20,7 +20,7 @@
     "@mantine/hooks": "catalog:",
     "@tabler/icons-react": "catalog:",
     "@varlock/infisical-plugin": "catalog:",
-    "@varlock/vite-integration": "catalog:",
+    "@varlock/cloudflare-integration": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-router": "catalog:",
