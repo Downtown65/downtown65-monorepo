@@ -3,7 +3,7 @@ import type { RouteHandler } from '@hono/zod-openapi';
 import { desc, eq, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { ENV } from 'varlock/env';
-import type { AppEnv, UserRole } from '@/app';
+import { type AppEnv, isUserRole } from '@/app';
 import { events, users } from '@/db/schema';
 import type {
   Auth0ManagementConfig,
@@ -20,12 +20,9 @@ import type {
   updateUserRoleRoute,
 } from './admin.routes';
 
-const VALID_ROLES = new Set<string>(['admin', 'board_member', 'member']);
-
 function toAdminUser(user: Auth0ManagementUser) {
   const rawRole = user.app_metadata?.role;
-  const role: UserRole =
-    typeof rawRole === 'string' && VALID_ROLES.has(rawRole) ? (rawRole as UserRole) : 'member';
+  const role = typeof rawRole === 'string' && isUserRole(rawRole) ? rawRole : 'member';
 
   return {
     userId: user.user_id,
