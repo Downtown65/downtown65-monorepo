@@ -26,8 +26,9 @@ export function sanitizeEventHtml(html: string): string {
   return sanitizeHtml(html, {
     allowedTags: TIPTAP_ALLOWED_TAGS,
     allowedAttributes: {
-      a: ['href'],
+      a: ['href', 'target', 'rel'],
     },
+    allowedSchemes: ['http', 'https', 'mailto'],
     transformTags: {
       a: (tagName, attribs) => ({
         tagName,
