@@ -23,7 +23,7 @@
     "@hono/zod-openapi": "^1.2.2",
     "@scalar/hono-api-reference": "^0.10.3",
     "@varlock/infisical-plugin": "catalog:",
-    "@varlock/cloudflare-integration": "catalog:",
+    "@varlock/vite-integration": "catalog:",
     "drizzle-orm": "^0.45.1",
     "hono": "^4.12.8",
     "loglayer": "^9.1.0",
