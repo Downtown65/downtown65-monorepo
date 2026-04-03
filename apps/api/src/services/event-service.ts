@@ -1,7 +1,7 @@
 import { toEventType } from '@dt65/shared';
 import { asc, eq, gte, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
-import type { z } from 'zod';
+import type { z } from 'zod/v4';
 import { eventIdCondition } from '@/db/query-helpers';
 import { events, users, usersToEvents } from '@/db/schema';
 import {

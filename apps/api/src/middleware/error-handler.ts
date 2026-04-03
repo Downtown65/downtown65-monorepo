@@ -1,6 +1,6 @@
 import type { ErrorHandler, NotFoundHandler } from 'hono';
 import { HTTPException } from 'hono/http-exception';
-import { ZodError } from 'zod';
+import { ZodError } from 'zod/v4';
 import type { AppEnv } from '@/app';
 import { logger } from '@/logger';
 
