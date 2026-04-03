@@ -28,7 +28,8 @@ export const Auth0ManagementUserSchema = z
     name: z.string(),
     nickname: z.string(),
     picture: z.string(),
-    last_login: z.string().nullable(),
+    blocked: z.boolean().optional(),
+    last_login: z.string().nullable().optional(),
     created_at: z.string(),
     user_metadata: z
       .object({
