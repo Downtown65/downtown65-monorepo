@@ -1,6 +1,6 @@
 import { getApiEvents } from '@dt65/api-client';
-import { Container, SimpleGrid, Text } from '@mantine/core';
-import { data as routeData } from 'react-router';
+import { Button, Container, SimpleGrid, Stack, Text } from '@mantine/core';
+import { Link, data as routeData } from 'react-router';
 import { EventCard } from '~/components/event-card/EventCard';
 import { createAuthClient, requireAuth } from '~/lib/api.server';
 import type { Route } from './+types/events';
@@ -18,9 +18,12 @@ export default function Events({ loaderData }: Route.ComponentProps) {
   return (
     <Container size="lg">
       {events.length === 0 ? (
-        <Text c="dimmed" ta="center" py="xl">
-          Ei tulevia tapahtumia.
-        </Text>
+        <Stack align="center" py="xl">
+          <Text c="dimmed">Ei tulevia tapahtumia.</Text>
+          <Button component={Link} to="/events/new">
+            Luo tapahtuma
+          </Button>
+        </Stack>
       ) : (
         <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xs">
           {events.map((event) => (
