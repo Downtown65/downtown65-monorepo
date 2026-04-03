@@ -9,7 +9,7 @@
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 // ---------------------------------------------------------------------------
 // Helpers
