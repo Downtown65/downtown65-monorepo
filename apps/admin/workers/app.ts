@@ -22,10 +22,7 @@ interface Env {
   [key: string]: string;
 }
 
-const requestHandler = createRequestHandler(
-  // @ts-expect-error virtual module provided by React Router Vite plugin
-  () => import('virtual:react-router/server-build'),
-);
+const requestHandler = createRequestHandler(() => import('virtual:react-router/server-build'));
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext) {

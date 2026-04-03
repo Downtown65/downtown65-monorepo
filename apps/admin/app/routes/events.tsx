@@ -1,31 +1,29 @@
+import { getApiAdminEvents } from '@dt65/api-client';
 import { Container, Text, Title } from '@mantine/core';
-import { apiGet, requireAdmin } from '~/lib/api.server';
+import { data } from 'react-router';
+import { createAuthClient, requireAdmin } from '~/lib/api.server';
 import type { Route } from './+types/events';
-
-interface PaginatedEvents {
-  events: Array<{
-    id: number;
-    title: string;
-    dateStart: string;
-    timeStart: string | null;
-    eventType: string;
-    location: string | null;
-    race: boolean;
-    creatorNickname: string;
-    participantCount: number;
-    createdAt: string;
-  }>;
-  total: number;
-  page: number;
-  perPage: number;
-}
 
 export async function loader({ request }: { request: Request }) {
   const session = await requireAdmin(request);
+  const { apiClient, headers } = await createAuthClient(session);
   const url = new URL(request.url);
   const page = url.searchParams.get('page') ?? '1';
-  const { data } = await apiGet(session, `/admin/events?page=${page}`);
-  return data as PaginatedEvents;
+
+  const { data: events } = await getApiAdminEvents({
+    client: apiClient,
+    query: { page, perPage: '20' },
+  });
+
+  if (!events) {
+    throw new Response('Failed to fetch events', { status: 500 });
+  }
+
+  if (headers.has('Set-Cookie')) {
+    return data(events, { headers });
+  }
+
+  return events;
 }
 
 export default function Events({ loaderData }: Route.ComponentProps) {

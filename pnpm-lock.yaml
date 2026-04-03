@@ -113,6 +113,9 @@ importers:
 
   apps/admin:
     dependencies:
+      '@dt65/api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
       '@dt65/shared':
         specifier: workspace:*
         version: link:../../packages/shared
