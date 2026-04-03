@@ -21,6 +21,7 @@
 - **Env vars:** VarLock manages all environment variables -- see [environment.md](environment.md)
 - **Logging:** No `console.log` -- use structured logger (Biome enforces `noConsole`)
 - **Imports:** Biome auto-sorts imports
+- **API calls:** Always use `@dt65/api-client` (generated from OpenAPI spec) for API requests in frontend apps -- never hand-roll fetch calls to the API
 
 ## TypeScript
 
