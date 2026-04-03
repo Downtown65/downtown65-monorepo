@@ -31,7 +31,7 @@ export const RefreshTokenSchema = z
 export const AuthResponseSchema = z
   .object({
     accessToken: z.string(),
-    refreshToken: z.string().optional(),
+    refreshToken: z.string(),
     expiresIn: z.number(),
     user: z.object({
       sub: z.string(),
@@ -46,7 +46,7 @@ export const AuthResponseSchema = z
 export const RefreshResponseSchema = z
   .object({
     accessToken: z.string(),
-    refreshToken: z.string().optional(),
+    refreshToken: z.string(),
     expiresIn: z.number(),
   })
   .openapi('RefreshResponse');
