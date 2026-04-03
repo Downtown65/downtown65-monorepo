@@ -6,7 +6,7 @@ export type ClientOptions = {
 
 export type AuthResponse = {
     accessToken: string;
-    refreshToken?: string;
+    refreshToken: string;
     expiresIn: number;
     user: {
         sub: string;
@@ -42,7 +42,7 @@ export type ForgotPasswordRequest = {
 
 export type RefreshResponse = {
     accessToken: string;
-    refreshToken?: string;
+    refreshToken: string;
     expiresIn: number;
 };
 

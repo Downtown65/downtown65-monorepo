@@ -20,7 +20,7 @@ export default function Events({ loaderData }: Route.ComponentProps) {
       {events.length === 0 ? (
         <Stack align="center" py="xl">
           <Text c="dimmed">Ei tulevia tapahtumia.</Text>
-          <Button component={Link} to="/events/new">
+          <Button component={Link} to="/events/new" size="xl">
             Luo tapahtuma
           </Button>
         </Stack>

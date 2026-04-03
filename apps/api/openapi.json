@@ -64,7 +64,7 @@
             "required": ["sub", "nickname", "name", "email", "picture"]
           }
         },
-        "required": ["accessToken", "expiresIn", "user"]
+        "required": ["accessToken", "refreshToken", "expiresIn", "user"]
       },
       "AuthError": {
         "type": "object",
@@ -143,7 +143,7 @@
             "type": "number"
           }
         },
-        "required": ["accessToken", "expiresIn"]
+        "required": ["accessToken", "refreshToken", "expiresIn"]
       },
       "RefreshTokenRequest": {
         "type": "object",
