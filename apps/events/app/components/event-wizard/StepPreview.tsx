@@ -1,6 +1,7 @@
 import { Badge, Card, Group, Stack, Text, Title, Typography } from '@mantine/core';
 import { IconCalendarEvent, IconMapPin, IconTrophy } from '@tabler/icons-react';
 import { getEventTypeInfo } from '~/lib/event-type-map';
+import { sanitizeEventHtml } from '~/lib/sanitize-html';
 import type { WizardState } from './types';
 
 interface StepPreviewProps {
@@ -68,7 +69,7 @@ export function StepPreview({ data }: StepPreviewProps) {
 
         {data.description && data.description !== '<p></p>' && (
           <Typography>
-            <div dangerouslySetInnerHTML={{ __html: data.description }} />
+            <div dangerouslySetInnerHTML={{ __html: sanitizeEventHtml(data.description) }} />
           </Typography>
         )}
       </Card>

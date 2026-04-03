@@ -3,6 +3,7 @@ import { Badge, Button, Card, Divider, Group, Modal, Stack, Text, Typography } f
 import { useDisclosure } from '@mantine/hooks';
 import { IconPencil, IconTrash, IconUser } from '@tabler/icons-react';
 import { Link, useFetcher } from 'react-router';
+import { sanitizeEventHtml } from '~/lib/sanitize-html';
 import { EventImageHeader } from './EventImageHeader';
 import { EventMeta } from './EventMeta';
 import classes from './event-card.module.css';
@@ -70,7 +71,7 @@ export function EventDetailCard({ event, currentNickname }: EventDetailCardProps
             <>
               <Divider my="xs" />
               <Typography>
-                <div dangerouslySetInnerHTML={{ __html: event.description }} />
+                <div dangerouslySetInnerHTML={{ __html: sanitizeEventHtml(event.description) }} />
               </Typography>
             </>
           )}
