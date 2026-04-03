@@ -30,9 +30,31 @@ async function decrypt(value: string): Promise<string> {
   return new TextDecoder().decode(decrypted);
 }
 
+const HKDF_SALT = new TextEncoder().encode('dt65-session-encryption');
+const HKDF_INFO = new TextEncoder().encode('aes-gcm-key');
+
+let cachedKey: CryptoKey | null = null;
+
 async function getKey(): Promise<CryptoKey> {
-  const keyData = new TextEncoder().encode(ENV.SESSION_SECRET.padEnd(32, '0').slice(0, 32));
-  return crypto.subtle.importKey('raw', keyData, 'AES-GCM', false, ['encrypt', 'decrypt']);
+  if (cachedKey) return cachedKey;
+
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(ENV.SESSION_SECRET),
+    'HKDF',
+    false,
+    ['deriveKey'],
+  );
+
+  cachedKey = await crypto.subtle.deriveKey(
+    { name: 'HKDF', hash: 'SHA-256', salt: HKDF_SALT, info: HKDF_INFO },
+    keyMaterial,
+    { name: 'AES-GCM', length: 256 },
+    false,
+    ['encrypt', 'decrypt'],
+  );
+
+  return cachedKey;
 }
 
 function parseCookies(cookieHeader: string): Record<string, string> {
