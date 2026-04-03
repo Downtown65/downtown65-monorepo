@@ -113,9 +113,8 @@ export function createHandleSignup(
         201,
       );
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Signup failed';
       logger.withError(err).error('Signup failed');
-      return c.json({ error: { code: 'SIGNUP_FAILED', message } }, 400);
+      return c.json({ error: { code: 'SIGNUP_FAILED', message: 'Signup failed' } }, 400);
     }
   };
 }
