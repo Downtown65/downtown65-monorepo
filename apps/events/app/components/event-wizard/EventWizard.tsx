@@ -7,7 +7,13 @@ import { StepEventType } from './StepEventType';
 import { StepPreview } from './StepPreview';
 import { StepTime } from './StepTime';
 import { StepTitle } from './StepTitle';
-import { type EventFormData, initialFormData, type WizardState, wizardReducer } from './types';
+import {
+  type EventFormData,
+  EventFormDataSchema,
+  initialFormData,
+  type WizardState,
+  wizardReducer,
+} from './types';
 
 interface EventWizardProps {
   initialData?: WizardState | undefined;
@@ -52,7 +58,9 @@ export function EventWizard({
 
   function handleSubmit() {
     if (!state.eventType) return;
-    onSubmit({ ...state, eventType: state.eventType });
+    const result = EventFormDataSchema.safeParse({ ...state, eventType: state.eventType });
+    if (!result.success) return;
+    onSubmit(result.data);
   }
 
   return (
