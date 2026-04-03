@@ -3,15 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite dev --port 4200",
     "build": "vite build",
-    "typecheck": "tsc --noEmit",
-    "typegen": "varlock typegen && react-router typegen",
-    "test": "vitest run --config vitest.config.ts",
-    "lint": "biome lint",
-    "format": "biome check --write",
     "ci:lint": "biome ci",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "dev": "vite dev --port 4200",
+    "format": "biome check --write",
+    "lint": "biome lint",
+    "test": "vitest run --config vitest.config.ts",
+    "typecheck": "tsc --noEmit",
+    "typegen": "varlock typegen && react-router typegen"
   },
   "dependencies": {
     "@dt65/api-client": "workspace:*",

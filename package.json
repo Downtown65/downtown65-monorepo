@@ -2,28 +2,19 @@
   "name": "@dt65/root",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
   "scripts": {
-    "dev": "pnpm -r --parallel run dev",
     "build": "pnpm -r run build",
-    "typegen": "pnpm -r run typegen",
-    "generate-openapi": "pnpm -r run generate-openapi",
     "check": "pnpm -r run ci:lint && pnpm knip && sherif",
-    "lint": "pnpm -r run lint",
-    "format": "pnpm -r run format",
     "ci:lint": "pnpm -r run ci:lint",
-    "typecheck": "tsc --build",
-    "test": "pnpm -r run test",
     "clean": "pnpm -r run clean",
-    "kill-apps": "lsof -ti :4000,:4100,:4200 | xargs kill -9 2>/dev/null || true"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "lefthook",
-      "sharp",
-      "workerd"
-    ]
+    "dev": "pnpm -r --parallel run dev",
+    "format": "pnpm -r run format",
+    "generate-openapi": "pnpm -r run generate-openapi",
+    "kill-apps": "lsof -ti :4000,:4100,:4200 | xargs kill -9 2>/dev/null || true",
+    "lint": "pnpm -r run lint",
+    "test": "pnpm -r run test",
+    "typecheck": "tsc --build",
+    "typegen": "pnpm -r run typegen"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.14",
@@ -34,7 +25,17 @@
     "lefthook": "latest",
     "rimraf": "catalog:",
     "sherif": "^1.10.0",
+    "sort-package-json": "^3.6.1",
     "tsx": "^4.21.0",
     "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lefthook",
+      "sharp",
+      "workerd"
+    ]
   }
 }
