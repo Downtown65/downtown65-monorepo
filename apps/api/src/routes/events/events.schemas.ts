@@ -61,9 +61,15 @@ export const EventSchema = EventBaseSchema.extend({
 }).openapi('Event');
 
 export const EventSummarySchema = EventBaseSchema.extend({
-  race: z.number().transform((v) => v === 1),
+  race: z
+    .number()
+    .transform((v) => v === 1)
+    .openapi({ type: 'boolean' }),
   participantCount: z.number(),
-  isParticipant: z.number().transform((v) => v === 1),
+  isParticipant: z
+    .number()
+    .transform((v) => v === 1)
+    .openapi({ type: 'boolean' }),
   creator: CreatorSchema,
 }).openapi('EventSummary');
 

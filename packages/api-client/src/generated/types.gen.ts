@@ -133,9 +133,9 @@ export type EventSummary = {
     dateStart: string;
     timeStart: string | null;
     location: string;
-    race: number;
+    race: boolean;
     participantCount: number;
-    isParticipant: number;
+    isParticipant: boolean;
     creator: Creator;
 };
 
