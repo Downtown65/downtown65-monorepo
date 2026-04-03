@@ -36,17 +36,17 @@ export const Auth0ManagementUserSchema = z
         subscribeEventCreationEmail: z.boolean().optional(),
         subscribeWeeklyEmail: z.boolean().optional(),
       })
-      .passthrough()
+      .loose()
       .optional(),
     app_metadata: z
       .object({
         role: z.string().optional(),
         fees: z.record(z.string(), z.boolean()).optional(),
       })
-      .passthrough()
+      .loose()
       .optional(),
   })
-  .passthrough();
+  .loose();
 export type Auth0ManagementUser = z.infer<typeof Auth0ManagementUserSchema>;
 
 // Paginated user list from Management API
