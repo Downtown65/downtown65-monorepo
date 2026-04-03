@@ -501,13 +501,13 @@
             "type": "string"
           },
           "race": {
-            "type": ["boolean", "null"]
+            "type": "number"
           },
           "participantCount": {
             "type": "number"
           },
           "isParticipant": {
-            "type": ["boolean", "null"]
+            "type": "number"
           },
           "creator": {
             "$ref": "#/components/schemas/Creator"
@@ -521,7 +521,9 @@
           "dateStart",
           "timeStart",
           "location",
+          "race",
           "participantCount",
+          "isParticipant",
           "creator"
         ]
       },
@@ -1012,7 +1014,7 @@
       },
       "put": {
         "tags": ["Events"],
-        "summary": "Update an event (owner only)",
+        "summary": "Update an event",
         "parameters": [
           {
             "schema": {
@@ -1041,16 +1043,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Event"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Not the event owner",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
